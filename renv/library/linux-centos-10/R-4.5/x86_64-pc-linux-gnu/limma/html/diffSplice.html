@@ -1,0 +1,187 @@
+<!DOCTYPE html><html><head><title>R: Test for Differential Transcript Usage</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>diffSplice {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Test for Differential Transcript Usage</h2>
+
+<h3>Description</h3>
+
+<p>Given a linear model fit at the transcript (or exon) level, test for differences in transcript (or exon) usage within genes between experimental conditions.
+More generally, test for differential usage within genes of any set of splice-events or isoform-identifying features.</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>## S3 method for class 'MArrayLM'
+diffSplice(fit, geneid, exonid = NULL,
+     robust = FALSE, legacy = FALSE, verbose = TRUE, ...)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="fit">fit</code></td>
+<td>
+<p>an <code>MArrayLM</code> fitted model object produced by <code>voomLmFit</code>, <code>lmFit</code> or <code>contrasts.fit</code>. Rows should correspond to transcripts, for a DTU analysis, or to exons and exon-exon junctions for a DEU analysis.</p>
+</td></tr>
+<tr><td><code id="geneid">geneid</code></td>
+<td>
+<p>gene identifiers. Either a vector of length <code>nrow(fit)</code> or the name of the column of <code>fit$genes</code> containing the gene identifiers. Rows with the same ID are assumed to belong to the same gene.</p>
+</td></tr>
+<tr><td><code id="exonid">exonid</code></td>
+<td>
+<p>exon identifiers. Either a vector of length <code>nrow(fit)</code> or the name of the column of <code>fit$genes</code> containing the exon identifiers.</p>
+</td></tr>
+<tr><td><code id="robust">robust</code></td>
+<td>
+<p>logical, should the estimation of the empirical Bayes prior parameters be robustified against outlier sample variances?</p>
+</td></tr>
+<tr><td><code id="legacy">legacy</code></td>
+<td>
+<p>logical. If <code>FALSE</code> then the new empirical Bayes hyperparameter estimation (introduced in limma 3.61.8) will be used, if <code>TRUE</code> the earlier hyperparameter estimation will be used. The new method is particularly appropriate when the residual degrees of freedom are not all equal, which is likely to be the case for <code>diffSplice</code>.</p>
+</td></tr>
+<tr><td><code id="verbose">verbose</code></td>
+<td>
+<p>logical, if <code>TRUE</code> some diagnostic information about the number of genes and exons is output.</p>
+</td></tr>
+<tr><td><code id="...">...</code></td>
+<td>
+<p>other arguments are not currently used.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This function tests for differential usage of the row-wise isoform features contained in <code>fit</code> for each gene and for each column of <code>fit</code>.
+The isoform features can be transcripts for a differential transcript usage (DTU) analysis, or can be a combination of exons and exon-exon junctions for a differential exon usage (DEU) analysis.
+</p>
+<p>Testing for differential transcript usage is equivalent to testing whether the log-fold-changes in the <code>fit</code> differ between transcripts for the same gene.
+Two different tests are provided.
+The first is a F-test for differences between the log-fold-changes for each gene.
+This is equivalent to testing for interaction between the transcripts for that gene and the coefficient of the linear model.
+The other is a series of t-tests in which each transcript is compared to the weighted average of all other transcripts for the same gene.
+The transcript-level t-tests are converted into genewise tests by adjusting the p-values for the same gene by Simes method.
+Alternatively, the transcript-level t-tests are also converted into genewise tests by adjusting the smallest p-value for each gene by Bonferroni's method.
+</p>
+<p>This function can be used on transcript level RNA-seq counts from Salmon or kallisto, after using the edgeR functions catchSalmon() or catchKallisto() and voomLmFit(), as described by Baldoni et al (2025).
+It can also be used on equivalence-class counts from Salmon or kallisto, after pre-processing by voomLmFit(), as described by Cmero et al (2019).
+It can also be used on exon-level read counts or on data from an exon microarray.
+</p>
+
+
+<h3>Value</h3>
+
+<p>An object of class <code>MArrayLM</code> containing both exon level and gene level tests.
+Results are sorted by geneid and by exonid within gene.
+</p>
+<table role = "presentation">
+<tr><td><code>coefficients</code></td>
+<td>
+<p>numeric matrix of coefficients of same dimensions as <code>fit</code>. Each coefficient is the difference between the log-fold-change for that exon versus the average log-fold-change for all other exons for the same gene.</p>
+</td></tr>
+<tr><td><code>t</code></td>
+<td>
+<p>numeric matrix of moderated t-statistics, of same dimensions as <code>fit</code>.</p>
+</td></tr>
+<tr><td><code>p.value</code></td>
+<td>
+<p>numeric vector of p-values corresponding to the t-statistics</p>
+</td></tr>
+<tr><td><code>genes</code></td>
+<td>
+<p>data.frame of exon annotation</p>
+</td></tr>
+<tr><td><code>genecolname</code></td>
+<td>
+<p>character string giving the name of the column of <code>genes</code> containing gene IDs</p>
+</td></tr>
+<tr><td><code>gene.F</code></td>
+<td>
+<p>numeric matrix of moderated F-statistics, one row for each gene.</p>
+</td></tr>
+<tr><td><code>gene.F.p.value</code></td>
+<td>
+<p>numeric matrix of p-values corresponding to <code>gene.F</code></p>
+</td></tr>
+<tr><td><code>gene.simes.p.value</code></td>
+<td>
+<p>numeric matrix of Simes adjusted p-values, one row for each gene.</p>
+</td></tr>
+<tr><td><code>gene.bonferroni.p.value</code></td>
+<td>
+<p>numeric matrix of Bonferroni adjusted p-values, one row for each gene.</p>
+</td></tr>
+<tr><td><code>gene.genes</code></td>
+<td>
+<p>data.frame of gene annotation.</p>
+</td></tr>
+</table>
+
+
+<h3>Note</h3>
+
+<p>This function is not designed for situations with a very high level of multi-counting of RNA-seq reads that overlap two or more exons.
+In particular, it is not designed for use with &quot;chopped&quot; exons, where overlapping exons belonging to different transcripts of the same gene are chopped up into unique sub-exons, because artificial exons of this sort lead to high levels of multi-counting.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth and Charity Law</p>
+
+
+<h3>References</h3>
+
+<p>Baldoni PL, Chen L, Li M, Chen Y, Smyth GK (2025).
+Dividing out quantification uncertainty enables assessment of differential transcript usage with limma and edgeR.
+<em>bioRxiv</em>
+<a href="https://doi.org/10.1101/2025.04.07.647659">doi:10.1101/2025.04.07.647659</a>.
+</p>
+<p>Cmero M, Davidson NM, Oshlack A (2019).
+Using equivalence class counts for fast and accurate testing of differential transcript usage.
+<em>F1000Research</em> 8, 265.
+<a href="https://doi.org/10.12688/f1000research.18276.2">doi:10.12688/f1000research.18276.2</a>.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../limma/help/topSplice.html">topSplice</a></code> and <code><a href="../../limma/help/plotSplice.html">plotSplice</a></code> are downstream functions that operate on the output from <code>diffSplice</code>.
+</p>
+<p>Also see <code>diffSplice.DGEGLM</code> in the edgeR package, which has comparable functionality but for edgeR fit objects.
+</p>
+<p>A summary of functions available in LIMMA for RNA-seq analysis is given in <a href="../../limma/help/11.RNAseq.html">11.RNAseq</a>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>## Not run: 
+fit &lt;- voomLmFit(dge, design)
+ex &lt;- diffSplice(fit, geneid="GeneID")
+topSplice(ex)
+plotSplice(ex, xlab="Transcript")
+
+## End(Not run)
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>limma</em> version 3.66.0 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

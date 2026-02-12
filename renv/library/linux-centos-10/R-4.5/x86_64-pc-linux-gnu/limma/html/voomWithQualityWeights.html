@@ -1,0 +1,192 @@
+<!DOCTYPE html><html><head><title>R: Transform RNA-Seq Counts for Linear Modeling With Precision...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>voomWithQualityWeights {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Transform RNA-Seq Counts for Linear Modeling With Precision and Sample Weights</h2>
+
+<h3>Description</h3>
+
+<p>Combine voom observational-level precision weights with sample-specific quality weights in a designed experiment.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>voomWithQualityWeights(counts, design = NULL, lib.size = NULL, normalize.method = "none",
+             plot = FALSE, span = 0.5, adaptive.span = TRUE,
+             var.design = NULL, var.group = NULL,
+             method = "genebygene", maxiter = 50, tol = 1e-5, trace = FALSE,
+             col = NULL, ...)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="counts">counts</code></td>
+<td>
+
+<p>a numeric <code>matrix</code> containing raw counts, or an <code>ExpressionSet</code> containing raw counts, or a <code>DGEList</code> object.
+Counts must be non-negative and NAs are not permitted.
+</p>
+</td></tr>
+<tr><td><code id="design">design</code></td>
+<td>
+
+<p>design matrix with rows corresponding to samples and columns to coefficients to be estimated.
+Defaults to <code>model.matrix(~group, data=counts$samples)</code> if <code>counts</code> is a DGEList, otherwise defaults to the unit vector meaning that all samples are treated as replicates.
+</p>
+</td></tr>
+<tr><td><code id="lib.size">lib.size</code></td>
+<td>
+
+<p>numeric vector containing total library sizes for each sample.
+If <code>NULL</code> and <code>counts</code> is a <code>DGEList</code> then, the normalized library sizes are taken from <code>counts</code>.
+Otherwise library sizes are calculated from the columnwise counts totals.
+</p>
+</td></tr>
+<tr><td><code id="normalize.method">normalize.method</code></td>
+<td>
+
+<p>the microarray-style normalization method to be applied to the logCPM values.
+Choices are as for the <code>method</code> argument of <code>normalizeBetweenArrays</code> when the data is single-channel.
+</p>
+</td></tr>
+<tr><td><code id="plot">plot</code></td>
+<td>
+
+<p>logical, should a plot of the mean-variance trend and sample-specific weights be displayed?
+</p>
+</td></tr>
+<tr><td><code id="span">span</code></td>
+<td>
+
+<p>width of the smoothing window used for the lowess mean-variance trend.
+Expressed as a proportion between 0 and 1.
+</p>
+</td></tr>
+<tr><td><code id="adaptive.span">adaptive.span</code></td>
+<td>
+
+<p>logical.
+If <code>TRUE</code>, then an optimal value for <code>span</code> will be chosen depending on the number of genes, and the value set by the <code>span</code> argument will be ignored.
+</p>
+</td></tr>
+<tr><td><code id="var.design">var.design</code></td>
+<td>
+
+<p>design matrix for the variance model.
+Defaults to the sample-specific model whereby each sample has a distinct quality weight.
+</p>
+</td></tr>
+<tr><td><code id="var.group">var.group</code></td>
+<td>
+
+<p>vector or factor indicating groups to have different quality weights.
+This is another way to specify <code>var.design</code> for groupwise variance models.
+</p>
+</td></tr>
+<tr><td><code id="method">method</code></td>
+<td>
+
+<p>character string specifying the method used to estimate the quality weights.
+Choices are <code>"genebygene"</code> or <code>"reml"</code>.
+</p>
+</td></tr>
+<tr><td><code id="maxiter">maxiter</code></td>
+<td>
+
+<p>maximum number of iterations allowed for quality weight estimation when <code>method = "reml"</code>.
+</p>
+</td></tr>
+<tr><td><code id="tol">tol</code></td>
+<td>
+
+<p>convergence tolerance for quality weight estimation when <code>method = "reml"</code>.
+</p>
+</td></tr>
+<tr><td><code id="trace">trace</code></td>
+<td>
+
+<p>logical.
+If <code>TRUE</code> then diagnostic information is output at each iteration of the <code>"reml"</code> algorithm, or at every 1000th iteration of the <code>"genebygene"</code> algorithm.
+</p>
+</td></tr>
+<tr><td><code id="col">col</code></td>
+<td>
+
+<p>colors to use in the barplot of sample-specific weights if <code>plot=TRUE</code>).
+If <code>NULL</code>, then bars are plotted in grey.
+</p>
+</td></tr>
+<tr><td><code id="...">...</code></td>
+<td>
+
+<p>other arguments are passed to <code>voom</code> and hence to <code>lmFit</code>.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This function is an alternative to <code>voom</code> and, like <code>voom</code>, is intended to process RNA-seq data prior to linear modeling in limma.
+It combines observational-level weights from <code>voom</code> with sample-specific weights estimated using the <code>arrayWeights</code> function.
+The method is described by Liu et al (2015).
+</p>
+
+
+<h3>Value</h3>
+
+<p>An <code><a href="../help/EList.html">EList</a></code> object similar to that from <code><a href="../../limma/help/voom.html">voom</a></code>,
+with an extra column <code>sample.weights</code> containing the vector of sample quality factors added to the <code>targets</code> data.frame.
+The <code>weights</code> component combines the sample weights and the usual voom precision weights.
+</p>
+
+
+<h3>Note</h3>
+
+<p>Users are now recommended to use <code>edgeR::voomLmFit</code>, which is a further developed version of <code>voomWithQualityWeights</code> with extra capabilities.
+<code>voomLmFit</code> estimates both sample weights and intrablock correlation and also improves variance estimation for sparse data.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Matthew Ritchie, Cynthia Liu, Gordon Smyth</p>
+
+
+<h3>References</h3>
+
+<p>Liu R, Holik AZ, Su S, Jansz N, Chen K, Leong HS, Blewitt ME, Asselin-Labat ML, Smyth GK, Ritchie ME (2015).
+Why weight? Combining voom with estimates of sample quality improves power in RNA-seq analyses.
+<em>Nucleic Acids Research</em> 43, e97.
+<a href="https://doi.org/10.1093/nar/gkv412">doi:10.1093/nar/gkv412</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../limma/help/voom.html">voom</a></code>, <code><a href="../../limma/help/arrayWeights.html">arrayWeights</a></code>, <code><a href="../../limma/help/lmFit.html">lmFit</a></code>, <code>voomLmFit</code>.
+</p>
+<p>A summary of limma functions for RNA-seq analysis is given in <a href="../../limma/help/11.RNAseq.html">11.RNAseq</a>.
+</p>
+
+<hr><div style="text-align: center;">[Package <em>limma</em> version 3.66.0 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

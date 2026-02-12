@@ -1,0 +1,112 @@
+<!DOCTYPE html><html><head><title>R: Oneway ANOVA</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>oneway {matrixTests}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Oneway ANOVA</h2>
+
+<h3>Description</h3>
+
+<p>Performs an analysis of variance tests on each row/column of the input matrix.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>row_oneway_equalvar(x, g)
+
+col_oneway_equalvar(x, g)
+
+row_oneway_welch(x, g)
+
+col_oneway_welch(x, g)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="x">x</code></td>
+<td>
+<p>numeric matrix.</p>
+</td></tr>
+<tr><td><code id="g">g</code></td>
+<td>
+<p>a vector specifying group membership for each observation of x.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Functions to perform ONEWAY ANOVA analysis for rows/columns of matrices.
+</p>
+<p><code>row_oneway_equalvar(x, g)</code> - oneway ANOVA on rows.
+<code>col_oneway_equalvar(x, g)</code> - oneway ANOVA on columns.
+</p>
+<p>Results should be the same as running <code>aov(x ~ g)</code>
+on every row (or column) of <code>x</code>
+</p>
+<p><code>row_oneway_welch(x, g)</code> - oneway ANOVA with Welch correction on rows.
+<code>col_oneway_welch(x, g)</code> - oneway ANOVA with Welch correction on columns.
+</p>
+<p>Results should be the same as running <code>oneway.test(x, g, var.equal=FALSE)</code>
+on every row (or column) of <code>x</code>
+</p>
+
+
+<h3>Value</h3>
+
+<p>a data.frame where each row contains the results of an oneway anova
+test performed on the corresponding row/column of x.
+The columns will vary depending on the type of test performed.<br><br>
+They will contain a subset of the following information:<br>
+1. obs.tot - total number of observations<br>
+2. obs.groups - number of groups<br>
+3. sumsq.between - between group (treatment) sum of squares<br>
+4. sumsq.within - within group (residual) sum of squares<br>
+5. meansq.between - between group mean squares<br>
+6. meansq.within - within group mean squares<br>
+7. df.between - between group (treatment) degrees of freedom<br>
+8. df.within - within group (residual) degrees of freedom<br>
+9. statistic - F statistic<br>
+10. pvalue - p.value
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Karolis Koncevičius
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code>aov()</code>, <code>oneway.test()</code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>col_oneway_welch(iris[,1:4], iris$Species)
+row_oneway_equalvar(t(iris[,1:4]), iris$Species)
+
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>matrixTests</em> version 0.2.3.1 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

@@ -1,0 +1,157 @@
+<!DOCTYPE html><html><head><title>R: rowsum() and colsum() on a DelayedMatrix object</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>DelayedMatrix-rowsum {DelayedArray}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>rowsum() and colsum() on a DelayedMatrix object</h2>
+
+<h3>Description</h3>
+
+<p>Like ordinary matrices in base R, <a href="../../DelayedArray/help/DelayedMatrix.html">DelayedMatrix</a> objects and
+derivatives support <code>rowsum()</code> and <code>colsum()</code>.
+</p>
+
+
+<h3>Details</h3>
+
+<p>Note that the <code>rowsum()</code> and <code>colsum()</code> operations are not
+delayed: the output matrix is realized block by block.
+The <em>automatic realization backend</em> controls where realization
+happens e.g. in memory as an ordinary matrix if not set (i.e. set to
+<code>NULL</code>), or in an HDF5 file if set to <code>"HDF5Array"</code>.
+See <code>?<a href="../../DelayedArray/help/setAutoRealizationBackend.html">setAutoRealizationBackend</a></code> for more information
+about realization backends.
+</p>
+
+
+<h3>Value</h3>
+
+<p>The object returned by the <code>rowsum()</code> or <code>colsum()</code> method
+for <a href="../../DelayedArray/help/DelayedMatrix.html">DelayedMatrix</a> objects will be either:
+</p>
+
+<ul>
+<li><p> An ordinary matrix if the <em>automatic realization backend</em>
+is <code>NULL</code> (the default).
+</p>
+</li>
+<li><p> A <a href="../../DelayedArray/help/DelayedMatrix.html">DelayedMatrix</a> object if the <em>automatic realization
+backend</em> is not <code>NULL</code>. In this case, the returned
+<a href="../../DelayedArray/help/DelayedMatrix.html">DelayedMatrix</a> object will be either <em>pristine</em>
+or made of several <em>pristine</em> <a href="../../DelayedArray/help/DelayedMatrix.html">DelayedMatrix</a> objects
+bound together (via <code>rbind()</code> or <code>cbind()</code>, both
+are delayed operations).
+</p>
+<p>For example, if the <em>automatic realization backend</em> is
+<code>"HDF5Array"</code>, then the returned <a href="../../DelayedArray/help/DelayedMatrix.html">DelayedMatrix</a> object
+will be either an <a href="../../HDF5Array/help/HDF5Array.html">HDF5Array</a> object, or it will
+be a <a href="../../DelayedArray/help/DelayedMatrix.html">DelayedMatrix</a> object made of several
+<a href="../../HDF5Array/help/HDF5Array.html">HDF5Array</a> objects bound together.
+</p>
+</li></ul>
+
+
+
+<h3>See Also</h3>
+
+
+<ul>
+<li> <p><code><a href="../../base/help/rowsum.html">rowsum</a></code> in base R.
+</p>
+</li>
+<li> <p><code>S4Arrays::<a href="../../S4Arrays/help/rowsum.html">rowsum</a></code> in the <span class="pkg">S4Arrays</span>
+package for the <code>rowsum()</code> and <code>colsum()</code> S4 generic
+functions.
+</p>
+</li>
+<li> <p><code><a href="../../DelayedArray/help/getAutoRealizationBackend.html">getAutoRealizationBackend</a></code> and
+<code><a href="../../DelayedArray/help/setAutoRealizationBackend.html">setAutoRealizationBackend</a></code> for getting and setting
+the <em>automatic realization backend</em>.
+</p>
+</li>
+<li> <p><a href="../../DelayedArray/help/matrixStats-methods.html">matrixStats-methods</a> for <a href="../../DelayedArray/help/DelayedMatrix.html">DelayedMatrix</a> row/col
+summarization.
+</p>
+</li>
+<li> <p><a href="../../DelayedArray/help/DelayedMatrix-mult.html">DelayedMatrix-mult</a> for <a href="../../DelayedArray/help/DelayedMatrix.html">DelayedMatrix</a> multiplication
+and cross-product.
+</p>
+</li>
+<li> <p><a href="../../DelayedArray/help/DelayedArray.html">DelayedArray</a> objects.
+</p>
+</li>
+<li> <p><code><a href="../../HDF5Array/help/writeHDF5Array.html">writeHDF5Array</a></code> in the <span class="pkg">HDF5Array</span>
+package for writing an array-like object to an HDF5 file and other
+low-level utilities to control the location of automatically created
+HDF5 datasets.
+</p>
+</li>
+<li> <p><a href="../../HDF5Array/help/HDF5Array.html">HDF5Array</a> objects in the <span class="pkg">HDF5Array</span> package.
+</p>
+</li></ul>
+
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>library(HDF5Array)
+set.seed(123)
+m0 &lt;- matrix(runif(14400000), ncol=2250,
+             dimnames=list(NULL, sprintf("C%04d", 1:2250)))
+M0 &lt;- writeHDF5Array(m0, chunkdim=c(200, 250))
+dimnames(M0) &lt;- dimnames(m0)
+
+## --- rowsum() ---
+
+group &lt;- sample(90, nrow(M0), replace=TRUE)  # define groups of rows
+rs &lt;- rowsum(M0, group)
+rs[1:5, 1:8]
+rs2 &lt;- rowsum(M0, group, reorder=FALSE)
+rs2[1:5, 1:8]
+
+## Let's see block processing in action:
+DelayedArray:::set_verbose_block_processing(TRUE)
+setAutoBlockSize(2e6)
+rs3 &lt;- rowsum(M0, group)
+setAutoBlockSize()
+DelayedArray:::set_verbose_block_processing(FALSE)
+
+## Sanity checks:
+stopifnot(all.equal(rowsum(m0, group), rs))
+stopifnot(all.equal(rowsum(m0, group, reorder=FALSE), rs2))
+stopifnot(all.equal(rs, rs3))
+
+## --- colsum() ---
+
+group &lt;- sample(30, ncol(M0), replace=TRUE)  # define groups of cols
+cs &lt;- colsum(M0, group)
+cs[1:5, 1:7]
+cs2 &lt;- colsum(M0, group, reorder=FALSE)
+cs2[1:5, 1:7]
+
+## Sanity checks:
+stopifnot(all.equal(colsum(m0, group), cs))
+stopifnot(all.equal(cs, t(rowsum(t(m0), group))))
+stopifnot(all.equal(cs, t(rowsum(t(M0), group))))
+stopifnot(all.equal(colsum(m0, group, reorder=FALSE), cs2))
+stopifnot(all.equal(cs2, t(rowsum(t(m0), group, reorder=FALSE))))
+stopifnot(all.equal(cs2, t(rowsum(t(M0), group, reorder=FALSE))))
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>DelayedArray</em> version 0.36.0 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

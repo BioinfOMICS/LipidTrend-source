@@ -1,0 +1,112 @@
+<!DOCTYPE html><html><head><title>R: Function to trace back</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>traceBack {MKmisc}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>
+Function to trace back
+</h2>
+
+<h3>Description</h3>
+
+<p>Function computes an optimal global or local alignment based on a trace back
+matrix as provided by function <code><a href="../../MKmisc/help/stringDist.html">stringDist</a></code> or <code><a href="../../MKmisc/help/stringSim.html">stringSim</a></code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>traceBack(D, global = TRUE)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="D">D</code></td>
+<td>
+<p>object of class <code>"stringDist"</code></p>
+</td></tr>
+<tr><td><code id="global">global</code></td>
+<td>
+<p>logical,  global or local alignment</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Computes one possible optimal global or local alignment based on the trace back
+matrix saved in an object of class <code>"stringDist"</code> or <code>"stringSim"</code>.
+</p>
+
+
+<h3>Value</h3>
+
+<p>matrix: pairwise global/local alignment</p>
+
+
+<h3>Note</h3>
+
+<p>The function is mainly for teaching purposes.
+</p>
+<p>For distances between strings and string alignments see Bioconductor package
+<span class="pkg">Biostrings</span>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Matthias Kohl <a href="mailto:Matthias.Kohl@stamats.de">Matthias.Kohl@stamats.de</a></p>
+
+
+<h3>References</h3>
+
+<p>R. Merkl and S. Waack (2009). Bioinformatik Interaktiv. Wiley.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../MKmisc/help/stringDist.html">stringDist</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>x &lt;- "GACGGATTATG"
+y &lt;- "GATCGGAATAG"
+
+## Levenshtein distance
+d &lt;- stringDist(x, y)
+## optimal global alignment
+traceBack(d)
+
+## Optimal global alignment score
+d &lt;- stringSim(x, y)
+## optimal global alignment
+traceBack(d)
+
+## Optimal local alignment score
+d &lt;- stringSim(x, y, global = FALSE)
+## optimal local alignment
+traceBack(d, global = FALSE)
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>MKmisc</em> version 1.9 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

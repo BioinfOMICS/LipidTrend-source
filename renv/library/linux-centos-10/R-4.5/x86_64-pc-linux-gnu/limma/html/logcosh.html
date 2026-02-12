@@ -1,0 +1,75 @@
+<!DOCTYPE html><html><head><title>R: Logarithm of cosh</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>logcosh {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Logarithm of cosh</h2>
+
+<h3>Description</h3>
+
+<p>Compute <code>log(cosh(x))</code> without floating overflow or underflow</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>logcosh(x)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="x">x</code></td>
+<td>
+<p>a numeric vector or matrix.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The computation uses asymptotic expressions for very large or very small arguments.
+For intermediate arguments, <code>log(cosh(x))</code> is returned.
+</p>
+
+
+<h3>Value</h3>
+
+<p>Numeric vector or matrix of same dimensions as <code>x</code>.</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon K Smyth</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../limma/help/logsumexp.html">logsumexp</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>x &lt;- c(1e-8,1e-7,1e-6,1e-5,1e-4,1,3,50,800)
+logcosh(x)
+log(cosh(x))
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>limma</em> version 3.66.0 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

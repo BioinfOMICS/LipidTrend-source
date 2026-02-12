@@ -1,0 +1,128 @@
+<!DOCTYPE html><html><head><title>R: Fit Gamma Generalized Linear Model by Fisher Scoring with...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>glmgam.fit {statmod}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Fit Gamma Generalized Linear Model by Fisher Scoring with Identity Link</h2>
+
+<h3>Description</h3>
+
+<p>Fit a generalized linear model with secure convergence.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>glmgam.fit(X, y, coef.start = NULL, tol = 1e-6, maxit = 50, trace = FALSE)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="X">X</code></td>
+<td>
+<p>design matrix, assumed to be of full column rank.  Missing values not allowed.</p>
+</td></tr>
+<tr><td><code id="y">y</code></td>
+<td>
+<p>numeric vector of responses. Negative or missing values not allowed.</p>
+</td></tr>
+<tr><td><code id="coef.start">coef.start</code></td>
+<td>
+<p>numeric vector of starting values for the regression coefficients</p>
+</td></tr>
+<tr><td><code id="tol">tol</code></td>
+<td>
+<p>small positive numeric value giving convergence tolerance</p>
+</td></tr>
+<tr><td><code id="maxit">maxit</code></td>
+<td>
+<p>maximum number of iterations allowed</p>
+</td></tr>
+<tr><td><code id="trace">trace</code></td>
+<td>
+<p>logical value. If <code>TRUE</code> then output diagnostic information at each iteration.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This function implements a modified Fisher scoring algorithm for generalized linear models, similar to the Levenberg-Marquardt algorithm for nonlinear least squares.
+The Levenberg-Marquardt modification checks for a reduction in the deviance at each step, and avoids the possibility of divergence.
+The result is a very secure algorithm that converges for almost all datasets.
+</p>
+<p><code>glmgam.fit</code> is in principle equivalent to <code>glm.fit(X,y,family=Gamma(link="identity"))</code> but with much more secure convergence.
+</p>
+
+
+<h3>Value</h3>
+
+<p>List with the following components:
+</p>
+<table role = "presentation">
+<tr><td><code>coefficients</code></td>
+<td>
+<p>numeric vector of regression coefficients</p>
+</td></tr>
+<tr><td><code>fitted</code></td>
+<td>
+<p>numeric vector of fitted values</p>
+</td></tr>
+<tr><td><code>deviance</code></td>
+<td>
+<p>residual deviance</p>
+</td></tr>
+<tr><td><code>iter</code></td>
+<td>
+<p>number of iterations used to convergence. If convergence was not achieved then <code>iter</code> is set to <code>maxit+1</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth and Yunshun Chen</p>
+
+
+<h3>References</h3>
+
+<p>Dunn, PK, and Smyth, GK (2018).
+<em>Generalized linear models with examples in R</em>. Springer, New York, NY.
+<a href="https://doi.org/10.1007/978-1-4419-0118-7">doi:10.1007/978-1-4419-0118-7</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code>glmgam.fit</code> is called by <code><a href="../../statmod/help/mixedModel2Fit.html">mixedModel2Fit</a></code>.
+</p>
+<p><code><a href="../../stats/html/glm.html">glm</a></code> is the standard glm fitting function in the stats package.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>y &lt;- rgamma(10, shape=5)
+X &lt;- cbind(1, 1:10)
+fit &lt;- glmgam.fit(X, y, trace=TRUE)
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>statmod</em> version 1.5.1 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

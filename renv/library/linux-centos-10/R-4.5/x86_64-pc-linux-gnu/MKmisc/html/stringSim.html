@@ -1,0 +1,134 @@
+<!DOCTYPE html><html><head><title>R: Function to compute similarity scores between strings</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>stringSim {MKmisc}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Function to compute similarity scores between strings</h2>
+
+<h3>Description</h3>
+
+<p>The function can be used to compute similarity scores between strings.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>stringSim(x, y, global = TRUE, match = 1, mismatch = -1, gap = -1, minSim = 0)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="x">x</code></td>
+<td>
+<p>character vector, first string</p>
+</td></tr>
+<tr><td><code id="y">y</code></td>
+<td>
+<p>character vector, second string</p>
+</td></tr>
+<tr><td><code id="global">global</code></td>
+<td>
+<p>logical; global or local alignment</p>
+</td></tr>
+<tr><td><code id="match">match</code></td>
+<td>
+<p>numeric, score for a match between symbols</p>
+</td></tr>
+<tr><td><code id="mismatch">mismatch</code></td>
+<td>
+<p>numeric, score for a mismatch between symbols</p>
+</td></tr>
+<tr><td><code id="gap">gap</code></td>
+<td>
+<p>numeric, penalty for inserting a gap</p>
+</td></tr>
+<tr><td><code id="minSim">minSim</code></td>
+<td>
+<p>numeric, used as required minimum score in case of local alignments</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The function computes optimal alignment scores for global (Needleman-Wunsch) 
+and local (Smith-Waterman) alignments with constant gap penalties. 
+</p>
+<p>Scoring and trace-back matrix are computed and saved in form of attributes 
+<code>"ScoringMatrix"</code> and <code>"TraceBackMatrix"</code>. 
+The characters in the trace-back matrix reflect insertion of a gap in 
+string <code>y</code> (<code>d</code>: deletion), match (<code>m</code>), mismatch (<code>mm</code>), 
+and insertion of a gap in string <code>x</code> (<code>i</code>). In addition <code>stop</code>
+indicates that the minimum similarity score has been reached.
+</p>
+
+
+<h3>Value</h3>
+
+<p><code>stringSim</code> returns an object of S3 class <code>"stringSim"</code> inherited 
+from class <code>"dist"</code>; cf. <code><a href="../../stats/help/dist.html">dist</a></code>.
+</p>
+
+
+<h3>Note</h3>
+
+<p>The function is mainly for teaching purposes.
+</p>
+<p>For distances between strings and string alignments see also Bioconductor package
+<span class="pkg">Biostrings</span>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Matthias Kohl <a href="mailto:Matthias.Kohl@stamats.de">Matthias.Kohl@stamats.de</a> </p>
+
+
+<h3>References</h3>
+
+<p>R. Merkl and S. Waack (2009). Bioinformatik Interaktiv. Wiley.
+</p>
+
+
+<h3>See Also</h3>
+
+ <p><code><a href="../../stats/help/dist.html">dist</a></code>, <code><a href="../../MKmisc/help/stringDist.html">stringDist</a></code> </p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>x &lt;- "GACGGATTATG"
+y &lt;- "GATCGGAATAG"
+
+## optimal global alignment score
+d &lt;- stringSim(x, y)
+d
+attr(d, "ScoringMatrix")
+attr(d, "TraceBackMatrix")
+
+## optimal local alignment score
+d &lt;- stringSim(x, y, global = FALSE)
+d
+attr(d, "ScoringMatrix")
+attr(d, "TraceBackMatrix")
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>MKmisc</em> version 1.9 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

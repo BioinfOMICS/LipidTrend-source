@@ -1,0 +1,220 @@
+<!DOCTYPE html><html><head><title>R: Apply vooma-lmFit Pipeline With Automatic Estimation of...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>voomaLmFit {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Apply vooma-lmFit Pipeline With Automatic Estimation of Sample Weights and Block Correlation</h2>
+
+<h3>Description</h3>
+
+<p>Estimate the variance trend, use it to compute observational weights and use the weights to a fit a linear model.
+Includes automatic estimation of sample weights and block correlation.
+Equivalent to calling vooma(), arrayWeights(), duplicateCorrelation() and lmFit() iteratively.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>voomaLmFit(y, design = NULL, prior.weights = NULL, block = NULL,
+           sample.weights = FALSE, var.design = NULL, var.group = NULL, prior.n = 10,
+           predictor = NULL, span = NULL, legacy.span = FALSE,
+           plot = FALSE, save.plot = FALSE, keep.EList = TRUE)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="y">y</code></td>
+<td>
+
+<p>a numeric <code>matrix</code>, <code>EList</code> object, or any object containing log-expression data that can be coerced to a matrix.
+Rows correspond to genes and columns to samples.
+</p>
+</td></tr>
+<tr><td><code id="design">design</code></td>
+<td>
+
+<p>design matrix with rows corresponding to samples and columns to coefficients to be estimated.
+Defaults to the unit vector meaning that samples are treated as replicates.
+</p>
+</td></tr>
+<tr><td><code id="prior.weights">prior.weights</code></td>
+<td>
+
+<p>prior weights.
+Can be a numeric matrix of individual weights of same dimensions as the <code>counts</code>,
+or a numeric vector of sample weights with length equal to <code>ncol(counts)</code>,
+or a numeric vector of gene weights with length equal to <code>nrow(counts)</code>.
+</p>
+</td></tr>
+<tr><td><code id="block">block</code></td>
+<td>
+
+<p>vector or factor specifying a blocking variable on the arrays.
+Has length equal to <code>ncol(y)</code>.
+</p>
+</td></tr>
+<tr><td><code id="sample.weights">sample.weights</code></td>
+<td>
+
+<p>logical value. If <code>TRUE</code> then empirical sample quality weights will be estimated.
+</p>
+</td></tr>
+<tr><td><code id="var.design">var.design</code></td>
+<td>
+
+<p>design matrix for predicting the sample variances.
+Defaults to the sample-specific model whereby each sample has a different variance.
+</p>
+</td></tr>
+<tr><td><code id="var.group">var.group</code></td>
+<td>
+
+<p>vector or factor indicating groups to have different sample weights.
+This is another way to specify <code>var.design</code> for groupwise sample weights.
+</p>
+</td></tr>
+<tr><td><code id="prior.n">prior.n</code></td>
+<td>
+
+<p>prior number of genes for squeezing the weights towards equality.
+Larger values squeeze the sample weights more strongly towards equality.
+</p>
+</td></tr>
+<tr><td><code id="predictor">predictor</code></td>
+<td>
+
+<p>precision predictor.
+Either a column vector of length <code>nrow(y)</code> or a numeric matrix of the same dimensions as <code>y</code> that predicts the precision of each log-expression value.
+Is used as a second covariate together with the log-intensities to predict the variances and produce the final precision weights.
+</p>
+</td></tr>
+<tr><td><code id="span">span</code></td>
+<td>
+
+<p>width of the smoothing window, as a proportion of the data set.
+Defaults to a value between 0.3 and 1 that depends the number of genes (<code>nrow(y)</code>).
+Equal to 1 if the number of genes is less than or equal to 50, then decreases slowly to 0.3 if the number of genes is very large.
+</p>
+</td></tr>
+<tr><td><code id="legacy.span">legacy.span</code></td>
+<td>
+
+<p>logical.
+If <code>TRUE</code>, then the original default setting will be used for <code>span</code>, which is slightly smaller than the new default.
+</p>
+</td></tr>
+<tr><td><code id="plot">plot</code></td>
+<td>
+
+<p>logical.
+If <code>TRUE</code>, a plot of the mean-variance trend is displayed.
+</p>
+</td></tr>
+<tr><td><code id="save.plot">save.plot</code></td>
+<td>
+
+<p>logical, should the coordinates and line of the plot be saved in the output?
+</p>
+</td></tr>
+<tr><td><code id="keep.EList">keep.EList</code></td>
+<td>
+
+<p>logical. If <code>TRUE</code>, then the <code>EList</code> object containing log-expression values and observation weights will be saved in the component <code>EList</code> of the output object.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This function is analogous to <code>voomLmFit</code> in the edgeR package but for microarray-like data with continuous log-expression values.
+The function is equivalent to calling <code>vooma()</code> followed by <code>lmFit()</code>, optionally with <code>arrayWeights()</code> and <code>duplicateCorrelation()</code> as well to estimate sample weights and block correlation.
+The function finishes with <code>lmFit()</code> and returns a fitted model object.
+</p>
+<p>Like <code>vooma</code>, <code>voomaLmFit</code> estimates the mean-variance relationship in the data and uses it to compute appropriate precision weights for each observation.
+The mean-variance trend is estimated from gene-level data but is extrapolated back to individual observations to obtain a precision weight (inverse variance) for each observation.
+The weights are then used by <code>lmFit()</code> to adjust for heteroscedasticity.
+</p>
+<p>If <code>span=NULL</code>, then an optimal span value is estimated depending on <code>nrow(y)</code>.
+The span is chosen by <code>chooseLowessSpan</code> with <code>n=nrow(y)</code>, <code>small.n=50</code>, <code>min.span=0.3</code> and <code>power=1/3</code>.
+If <code>legacy.span=TRUE</code>, then the <code>chooseLowessSpan</code> arguments are reset to <code>small.n=10</code>, <code>min.span=0.3</code> and <code>power=0.5</code> to match the settings used by <code>vooma</code> in limma version 3.59.1 and earlier.
+</p>
+<p>If <code>predictor</code> is not <code>NULL</code>, then the variance trend is modeled as a function of both the mean log-expression and the <code>predictor</code> using a multiple linear regression with the two predictors.
+In this case, the <code>predictor</code> is assumed to be some prior predictor of the precision or standard deviation of each log-expression value.
+Any <code>predictor</code> that is correlated with the precision of each observation should give good results.
+This ability to model the variance trend using two covariates (mean log-expression and the predictor covariate) was described for the first time by Li (2024).
+</p>
+<p>Sample weights will be estimated using <code>arrayWeights</code> if <code>sample.weights = TRUE</code> or if either <code>var.design</code> or <code>var.group</code> are non-NULL.
+An intra-block correlation will be estimated using <code>duplicateCorrelation</code> if <code>block</code> is non-NULL.
+In either case, the whole estimation pipeline will be repeated twice to update the sample weights and/or block correlation.
+</p>
+
+
+<h3>Value</h3>
+
+<p>An MArrayLM object containing linear model fits for each row of data.
+If sample weights are estimated, then the output object will include a <code>targets</code> data.frame component with the sample weights as a column with heading <code>"sample.weights"</code>.
+</p>
+<p>If <code>save.plot=TRUE</code> then the output object will include components <code>voom.xy</code> and <code>voom.line</code>.
+<code>voom.xy</code> contains the x and y coordinates of the points in the vooma variance-trend plot and <code>voom.line</code> contains the estimated trend line.
+</p>
+<p>If <code>keep.EList=TRUE</code>, then the output includes component <code>EList</code> with sub-components <code>Elist$E</code> and <code>EList$weights</code>.
+If <code>y</code> was an EList object, then the output <code>EList</code> preserves all the components of <code>y</code> and adds the weights.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Mengbo Li and Gordon Smyth</p>
+
+
+<h3>References</h3>
+
+<p>Li M (2024).
+Linear Models and Empirical Bayes Methods for Mass Spectrometry-based Proteomics Data.
+PhD Thesis, University of Melbourne.
+http://hdl.handle.net/11343/351600
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../limma/help/vooma.html">vooma</a></code>, <code><a href="../../limma/help/lmFit.html">lmFit</a></code>, <code>voomLmFit</code> (in the edgeR package).
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'># Example with a precision predictor
+group &lt;- gl(2,4)
+design &lt;- model.matrix(~group)
+y &lt;- matrix(rnorm(500*8),500,8)
+u &lt;- matrix(runif(length(y)),500,8)
+yu &lt;- y*u
+fit &lt;- voomaLmFit(yu,design,plot=TRUE,predictor=u)
+
+# Reproducing vooma plot from output object
+fit &lt;- voomaLmFit(yu,design,predictor=u,save.plot=TRUE)
+do.call(plot,fit$voom.xy)
+do.call(lines,fit$voom.line)
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>limma</em> version 3.66.0 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

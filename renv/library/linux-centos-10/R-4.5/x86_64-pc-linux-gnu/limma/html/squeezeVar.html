@@ -1,0 +1,169 @@
+<!DOCTYPE html><html><head><title>R: Squeeze Sample Variances</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>squeezeVar {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Squeeze Sample Variances</h2>
+
+<h3>Description</h3>
+
+<p>Squeeze a set of sample variances together by computing empirical Bayes posterior means.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>squeezeVar(var, df, covariate = NULL, span = NULL,
+           robust = FALSE, winsor.tail.p = c(0.05,0.1), legacy = NULL)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="var">var</code></td>
+<td>
+<p>numeric vector of independent sample variances.</p>
+</td></tr>
+<tr><td><code id="df">df</code></td>
+<td>
+<p>numeric vector of degrees of freedom for the sample variances. Can be a unit vector or of same length as <code>var</code>.</p>
+</td></tr>
+<tr><td><code id="covariate">covariate</code></td>
+<td>
+<p>numeric covariate of same length as <code>var</code> for estimating a trended prior variance. If <code>NULL</code>, then the prior variance <code>var.prior</code> is constant.</p>
+</td></tr>
+<tr><td><code id="span">span</code></td>
+<td>
+<p>lowess span used for prior variance trend.</p>
+</td></tr>
+<tr><td><code id="robust">robust</code></td>
+<td>
+<p>logical, should the estimation of <code>df.prior</code> and <code>var.prior</code> be robustified against outlier sample variances?</p>
+</td></tr>
+<tr><td><code id="winsor.tail.p">winsor.tail.p</code></td>
+<td>
+<p>numeric vector of length 1 or 2, giving left and right tail proportions of <code>x</code> to Winsorize when <code>robust=TRUE</code>.</p>
+</td></tr>
+<tr><td><code id="legacy">legacy</code></td>
+<td>
+<p>logical. If <code>FALSE</code> then the new function <code>fitFDistUnequalDF1</code> will be called internally, otherwise the legacy functions <code>fitFDist</code> or <code>fitFDistRobustly</code> will be used. If <code>NULL</code>, then <code>fitFDistUnequalDF1</code> will be used whenever the degrees of freedom <code>df</code> are not all equal. If <code>span</code> is set, then this argument will be ignored and <code>fitFDistUnequalDF1</code> will be used.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This function implements empirical Bayes algorithms proposed by Smyth (2004) and Phipson et al (2016).
+</p>
+<p>A conjugate Bayesian hierarchical model is assumed for a set of sample variances.
+The hyperparameters are estimated by fitting a scaled F-distribution to the sample variances.
+The function returns the posterior variances and the estimated hyperparameters.
+</p>
+<p>Specifically, the sample variances <code>var</code> are assumed to follow scaled chi-squared distributions, conditional on the true variances,
+and an scaled inverse chi-squared prior is assumed for the true variances.
+The scale and degrees of freedom of this prior distribution are estimated from the values of <code>var</code>.
+</p>
+<p>The effect of this function is to squeeze the variances towards a common value, or to a global trend if a <code>covariate</code> is provided.
+The squeezed variances have a smaller expected mean square error to the true variances than do the sample variances themselves.
+</p>
+<p>The amount of squeezing is controlled by the <code>prior.df</code>.
+Both the global trend and the prior df are estimated internally but fitting an F-distribution to the sample variances, using either <code>fitFDist()</code> or <code>fitFDistRobustly()</code> or <code>fitFDistUnequalDF1()</code>.
+</p>
+<p>If <code>covariate</code> is non-null, then the scale parameter of the prior distribution is assumed to depend on the covariate.
+If the covariate is average log-expression, then the effect is an intensity-dependent trend similar to that in Sartor et al (2006).
+</p>
+<p><code>robust=TRUE</code> implements the robust empirical Bayes procedure of Phipson et al (2016), which allows some of the <code>var</code> values to be outliers.
+</p>
+<p>The <code>legacy</code> argument was added in limma version 3.61.8 (August 2024).
+If <code>legacy=FALSE</code>, then the new function <code>fitFDistUnequalDF1()</code> provides improved estimation of the global trend and prior df hyperparameters, especially when the <code>df</code> values are unequal.
+<code>legacy=TRUE</code> provides legacy behavior for backward compatibility.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A list with components
+</p>
+<table role = "presentation">
+<tr><td><code>var.post</code></td>
+<td>
+<p>numeric vector of posterior variances. Of same length as <code>var</code>.</p>
+</td></tr>
+<tr><td><code>var.prior</code></td>
+<td>
+<p>location or scale of prior distribution. A vector of same length as <code>var</code> if <code>covariate</code> is non-<code>NULL</code>, otherwise a single value.</p>
+</td></tr>
+<tr><td><code>df.prior</code></td>
+<td>
+<p>degrees of freedom of prior distribution. A vector of same length as <code>var</code> if <code>robust=TRUE</code>, otherwise a single value.</p>
+</td></tr>
+</table>
+
+
+<h3>Note</h3>
+
+<p>This function is called by <code>eBayes</code>, but beware a possible confusion with the output from that function.
+The values <code>var.prior</code> and <code>var.post</code> output by <code>squeezeVar</code> correspond to the quantities <code>s2.prior</code> and <code>s2.post</code> output by <code>eBayes</code>, whereas <code>var.prior</code> output by <code>eBayes</code> relates to a different parameter.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth</p>
+
+
+<h3>References</h3>
+
+<p>Phipson B, Lee S, Majewski IJ, Alexander WS, and Smyth GK (2016).
+Robust hyperparameter estimation protects against hypervariable genes and improves power to detect differential expression.
+<em>Annals of Applied Statistics</em> 10, 946-963.
+<a href="https://doi.org/10.1214/16-AOAS920">doi:10.1214/16-AOAS920</a>
+</p>
+<p>Sartor MA, Tomlinson CR, Wesselkamper SC, Sivaganesan S, Leikauf GD, Medvedovic M (2006).
+Intensity-based hierarchical Bayes method improves testing for differentially expressed genes in microarray experiments.
+<em>BMC bioinformatics</em> 7, 538.
+</p>
+<p>Smyth GK (2004).
+Linear models and empirical Bayes methods for assessing differential expression in microarray experiments.
+<em>Statistical Applications in Genetics and Molecular Biology</em> Volume 3, Issue 1, Article 3.
+<a href="https://doi.org/10.2202/1544-6115.1027">doi:10.2202/1544-6115.1027</a>.
+See also the Preprint Version
+<a href="https://gksmyth.github.io/pubs/ebayes.pdf">https://gksmyth.github.io/pubs/ebayes.pdf</a>
+incorporating corrections to 30 June 2009.
+</p>
+
+
+<h3>See Also</h3>
+
+<p>This function is called by <code><a href="../../limma/help/eBayes.html">eBayes</a></code>.
+</p>
+<p>This function calls <code><a href="../../limma/help/fitFDist.html">fitFDist</a></code>, <code><a href="../../limma/help/fitFDistRobustly.html">fitFDistRobustly</a></code> or <code><a href="../../limma/help/fitFDistUnequalDF1.html">fitFDistUnequalDF1</a></code> .
+</p>
+<p>An overview of linear model functions in limma is given by <a href="../../limma/help/06.LinearModels.html">06.LinearModels</a>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>s2 &lt;- rchisq(20,df=5)/5
+squeezeVar(s2, df=5)
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>limma</em> version 3.66.0 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

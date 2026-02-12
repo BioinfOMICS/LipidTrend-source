@@ -1,0 +1,111 @@
+<!DOCTYPE html><html><head><title>R: Constructor for Objects &quot;Psi Function&quot; Class</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>psiFunc {robustbase}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Constructor for Objects &quot;Psi Function&quot; Class</h2>
+
+<h3>Description</h3>
+
+<p><code>psiFunc(..)</code> is a convenience interface to
+<code>new("psi_func",..)</code>, i.e. for constructing objects of class
+<code>"psi_func"</code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>psiFunc(rho, psi, wgt, Dpsi,Dwgt, Erho = NULL, Epsi2 = NULL, EDpsi = NULL, name, ...)
+
+huberPsi
+hampelPsi
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="rho">rho</code>, <code id="psi">psi</code>, <code id="wgt">wgt</code>, <code id="Dpsi">Dpsi</code>, <code id="Dwgt">Dwgt</code></td>
+<td>
+<p>each a <code><a href="../../base/html/function.html">function</a></code> of <code>x</code> and
+tuning parameters typically. Specification of Dwgt is optional.</p>
+</td></tr>
+<tr><td><code id="Erho">Erho</code>, <code id="Epsi2">Epsi2</code>, <code id="EDpsi">EDpsi</code></td>
+<td>
+<p>see <code><a href="../../robustbase/help/psi_func-class.html">psi_func</a></code>, and note
+that these may change in the future.</p>
+</td></tr>
+<tr><td><code id="name">name</code></td>
+<td>
+<p>Name of <code class="reqn">\psi</code>-function used for printing.</p>
+</td></tr>
+<tr><td><code id="...">...</code></td>
+<td>
+<p>potential further arguments for specifying tuning
+parameter names and defaults.</p>
+</td></tr> 
+</table>
+
+
+<h3>Author(s)</h3>
+
+<p>Martin Maechler</p>
+
+
+<h3>See Also</h3>
+
+<p>The description of class <code><a href="../../robustbase/help/psi_func-class.html">psi_func</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>plot(huberPsi) # =&gt; shows "all" {as an object with a smart plot() method}
+
+## classical (Gaussian / "least-squares") psi {trivial}:
+F1 &lt;- function(x, .) rep.int(1, length(x))
+FF &lt;- function(.) rep.int(1, length(.))
+cPsi &lt;- psiFunc(rho = function(x,.) x^2 / 2, psi = function(x, .) x,
+                wgt = F1, Dpsi = F1,
+                Erho = function(.) rep.int(1/2, length(.)),
+                Epsi2 = FF, EDpsi = FF, name = "classic", . = Inf)
+show(cPsi)
+plot(cPsi)
+## is the same as the limit of Huber's:
+plot(chgDefaults(huberPsi, k = Inf))
+
+## Hampel's psi and rho:
+H.38 &lt;- chgDefaults(hampelPsi, k = c(1.5, 3.5, 8))
+k. &lt;- H.38@xtras$tuningP$k ; k.. &lt;- as.vector(outer(c(-1,1), k.))
+c.t &lt;- adjustcolor("skyblue3", .8)
+.ax.k &lt;- function(side) { abline(h=0, v=0, lty=2)
+  axis(side, at = k.., labels=formatC(k..), pos=0, col=c.t, col.axis=c.t) }
+op &lt;- par(mfrow=c(2,1), mgp = c(1.5, .6, 0), mar = .6+c(2,2,1,.5))
+curve(H.38@psi(x), -10, 10, col=2, lwd=2, n=512)
+lines(k.., H.38@psi(k..), type = "h", lty=3, col=c.t); .ax.k(1)
+curve(H.38@rho(x), -10, 10, col=2, lwd=2, n=512); abline(h=0, v=0, lty=2)
+lines(k.., H.38@rho(k..), type = "h", lty=3, col=c.t); .ax.k(1)
+title(expression("Hampel's " ~~~ psi(x) ~~ "and" ~~ rho(x) ~~~ " functions"))
+par(op)
+
+## Not the same, but similar, directly using the plot() method:
+plot(H.38)
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>robustbase</em> version 0.99-7 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

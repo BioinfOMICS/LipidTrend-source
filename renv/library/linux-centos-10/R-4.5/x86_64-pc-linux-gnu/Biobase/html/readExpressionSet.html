@@ -1,0 +1,167 @@
+<!DOCTYPE html><html><head><title>R: Read 'ExpressionSet'</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>readExpressionSet {Biobase}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Read 'ExpressionSet'</h2>
+
+<h3>Description</h3>
+
+<p>Create an instance of class ExpressionSet by reading data from files.
+&lsquo;widget&rsquo; functionality is not implemented for readExpressionSet.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>readExpressionSet(exprsFile,
+      phenoDataFile,
+      experimentDataFile,
+      notesFile,
+      path,
+      annotation,
+      ## arguments to read.* methods 
+      exprsArgs=list(sep=sep, header=header, row.names=row.names,
+        quote=quote, ...),
+      phenoDataArgs=list(sep=sep, header=header, row.names=row.names,
+        quote=quote, stringsAsFactors=stringsAsFactors, ...),
+      experimentDataArgs=list(sep=sep, header=header,
+        row.names=row.names, quote=quote,
+        stringsAsFactors=stringsAsFactors, ...),
+      sep = "\t", header = TRUE, quote = "", stringsAsFactors = FALSE,
+      row.names = 1L,
+      ## widget
+      widget = getOption("BioC")$Base$use.widgets,
+      ...)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="exprsFile">exprsFile</code></td>
+<td>
+<p>(character) File or connection from which to read expression
+values. The file should contain a matrix with rows as features and
+columns as samples. <code><a href="../../utils/html/read.table.html">read.table</a></code> is called with this
+as its <code>file</code> argument and further arguments given by <code>exprsArgs</code>.</p>
+</td></tr>
+<tr><td><code id="phenoDataFile">phenoDataFile</code></td>
+<td>
+<p>(character) File or connection from which to read
+phenotypic data. <code><a href="../../Biobase/help/read.AnnotatedDataFrame.html">read.AnnotatedDataFrame</a></code> is called
+with this as its <code>file</code> argument and further arguments given by
+<code>phenoDataArgs</code>.</p>
+</td></tr>
+<tr><td><code id="experimentDataFile">experimentDataFile</code></td>
+<td>
+<p>(character) File or connection from which to read
+experiment data. <code><a href="../../Biobase/help/read.MIAME.html">read.MIAME</a></code> is called with this
+as its <code>file</code> argument and further arguments given by
+<code>experimentDataArgs</code>.</p>
+</td></tr>
+<tr><td><code id="notesFile">notesFile</code></td>
+<td>
+<p>(character) File or connection from which to read notes;
+<code><a href="../../base/html/readLines.html">readLines</a></code> is used to input the file.</p>
+</td></tr>
+<tr><td><code id="path">path</code></td>
+<td>
+<p>(optional) directory in which to find all the above files.</p>
+</td></tr>
+<tr><td><code id="annotation">annotation</code></td>
+<td>
+<p>(character) A single character string indicating the
+annotation associated with this ExpressionSet.</p>
+</td></tr>
+<tr><td><code id="exprsArgs">exprsArgs</code></td>
+<td>
+<p>A list of arguments to be used with
+<code><a href="../../utils/html/read.table.html">read.table</a></code> when reading in the expression matrix.</p>
+</td></tr>
+<tr><td><code id="phenoDataArgs">phenoDataArgs</code></td>
+<td>
+<p>A list of arguments to be used (with
+<code><a href="../../Biobase/help/read.AnnotatedDataFrame.html">read.AnnotatedDataFrame</a></code>) when reading
+the phenotypic data.</p>
+</td></tr>
+<tr><td><code id="experimentDataArgs">experimentDataArgs</code></td>
+<td>
+<p>A list of arguments to be used (with
+<code><a href="../../Biobase/help/read.MIAME.html">read.MIAME</a></code>) when reading the experiment data.</p>
+</td></tr>
+<tr><td><code id="sep">sep</code>, <code id="header">header</code>, <code id="quote">quote</code>, <code id="stringsAsFactors">stringsAsFactors</code>, <code id="row.names">row.names</code></td>
+<td>
+<p>arguments used
+by the <code><a href="../../utils/html/read.table.html">read.table</a></code>-like functions.</p>
+</td></tr>
+<tr><td><code id="widget">widget</code></td>
+<td>
+<p>A boolean value indicating whether widgets can be
+used. Widgets are NOT yet implemented for
+<code>read.AnnotatedDataFrame</code>.</p>
+</td></tr>
+<tr><td><code id="...">...</code></td>
+<td>
+<p>Further arguments that can be passed on to the
+<code><a href="../../utils/html/read.table.html">read.table</a></code>-like functions.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Expression values are read using the <code><a href="../../utils/html/read.table.html">read.table</a></code>
+function. Phenotypic data are read using the
+<code><a href="../../Biobase/help/read.AnnotatedDataFrame.html">read.AnnotatedDataFrame</a></code> function. Experiment data are
+read using the <code><a href="../../Biobase/help/read.MIAME.html">read.MIAME</a></code> function. Notes are read using
+the <code><a href="../../base/html/readLines.html">readLines</a></code> function. The return value must be a valid
+<code>ExpressionSet</code>. Only the <code>exprsFile</code> argument is required.
+</p>
+
+
+<h3>Value</h3>
+
+<p>An instance of the <code><a href="../../Biobase/help/ExpressionSet-class.html">ExpressionSet</a></code> class.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Martin Morgan &lt;mtmorgan@fhcrc.org&gt;</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../Biobase/help/ExpressionSet.html">ExpressionSet</a></code> for additional methods.</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>
+exprsFile = system.file("extdata", "exprsData.txt", package="Biobase")
+phenoFile = system.file("extdata", "pData.txt", package="Biobase")
+
+## Read ExpressionSet with appropriate parameters
+obj = readExpressionSet(exprsFile, phenoFile, sep = "\t", header=TRUE)
+obj
+
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>Biobase</em> version 2.70.0 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

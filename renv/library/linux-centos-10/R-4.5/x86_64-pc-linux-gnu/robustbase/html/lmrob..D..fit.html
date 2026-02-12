@@ -1,0 +1,128 @@
+<!DOCTYPE html><html><head><title>R: Compute Design Adaptive Scale estimate</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>lmrob..D..fit {robustbase}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Compute Design Adaptive Scale estimate</h2>
+
+<h3>Description</h3>
+
+<p>This function calculates a Design Adaptive Scale estimate
+for a given MM-estimate. This is supposed to be a part of a chain of
+estimates like <code>SMD</code> or <code>SMDM</code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>lmrob..D..fit(obj, x=obj$x, control = obj$control,
+              mf,
+              method = obj$control$method)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="obj">obj</code></td>
+<td>
+<p><code>lmrob</code>-object based on which the estimate is to be
+calculated.</p>
+</td></tr>
+<tr><td><code id="x">x</code></td>
+<td>
+<p>the design matrix; if <code><a href="../../base/html/missing.html">missing</a></code>, the method tries
+to get it from <code>obj$x</code> and if this fails from <code>obj$model</code>.</p>
+</td></tr>
+<tr><td><code id="control">control</code></td>
+<td>
+<p>list of control parameters, as returned
+by <code><a href="../../robustbase/help/lmrob.control.html">lmrob.control</a></code>.</p>
+</td></tr>
+<tr><td><code id="mf">mf</code></td>
+<td>
+<p>defunct.</p>
+</td></tr>
+<tr><td><code id="method">method</code></td>
+<td>
+<p>optional; the <code>method</code> used for <em>obj</em> computation.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This function is used by <code><a href="../../robustbase/help/lmrob.fit.html">lmrob.fit</a></code> and typically not to
+be used on its own.  Note that <code>lmrob.fit()</code> specifies
+<code>control</code> potentially differently than the default, but does use
+the default for <code>method</code>.
+</p>
+
+
+<h3>Value</h3>
+
+<p>The given <code>lmrob</code>-object with the following elements updated:
+</p>
+<table role = "presentation">
+<tr><td><code>scale</code></td>
+<td>
+<p>The Design Adaptive Scale estimate</p>
+</td></tr>
+<tr><td><code>converged</code></td>
+<td>
+ <p><code>TRUE</code> if the scale calculation converged,
+<code>FALSE</code> other.</p>
+</td></tr>
+</table>
+
+
+<h3>Author(s)</h3>
+
+<p>Manuel Koller</p>
+
+
+<h3>References</h3>
+
+<p>Koller, M. and Stahel, W.A. (2011), Sharpening Wald-type inference in
+robust regression for small samples, <em>Computational Statistics &amp;
+Data Analysis</em> <b>55</b>(8), 2504&ndash;2515.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../robustbase/help/lmrob.fit.html">lmrob.fit</a></code>, <code><a href="../../robustbase/help/lmrob.html">lmrob</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>data(stackloss)
+## Compute manual SMD-estimate:
+## 1) MM-estimate
+m1 &lt;- lmrob(stack.loss ~ ., data = stackloss)
+## 2) Add Design Adaptive Scale estimate
+m2 &lt;- lmrob..D..fit(m1)
+print(c(m1$scale, m2$scale))
+
+summary(m1)
+summary(m2) ## the covariance matrix estimate is also updated
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>robustbase</em> version 0.99-7 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

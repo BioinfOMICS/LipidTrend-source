@@ -1,0 +1,180 @@
+<!DOCTYPE html><html><head><title>R: Does an object contain out-of-memory data?</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>containsOutOfMemoryData {BiocGenerics}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Does an object contain out-of-memory data?</h2>
+
+<h3>Description</h3>
+
+<p>Some objects in Bioconductor can use on-disk or other out-of-memory
+representation for their data, typically (but not necessarily) when
+the data is too big to fit in memory. For example the data in a
+<a href="../../GenomicFeatures/help/TxDb.html">TxDb</a> object is stored in an SQLite database,
+and the data in an <a href="../../HDF5Array/help/HDF5Array.html">HDF5Array</a> object is stored in
+an HDF5 file.
+</p>
+<p>The <code>containsOutOfMemoryData()</code> function determines whether an
+object contains out-of-memory data or not.
+</p>
+<p>Note that objects with out-of-memory data are usually not compatible
+with a serialization/unserialization roundtrip. More concretely,
+<code>base::<a href="../../base/help/saveRDS.html">saveRDS</a>()</code>/<code>base::<a href="../../base/help/readRDS.html">readRDS</a>()</code>
+tend to silently break them!
+</p>
+<p>See <code>?<a href="../../HDF5Array/help/saveHDF5SummarizedExperiment.html">saveHDF5SummarizedExperiment</a></code> in the
+<span class="pkg">HDF5Array</span> package for a more extensive discussion about this.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>containsOutOfMemoryData(object)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="object">object</code></td>
+<td>
+
+<p>The object to be tested.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>An object can store <em>some</em> of its data on disk and
+<em>some</em> of it in memory. This is the case for example when a
+<a href="../../SummarizedExperiment/help/SummarizedExperiment.html">SummarizedExperiment</a> object (or derivative)
+has some of its assays on disk (e.g. in <a href="../../HDF5Array/help/HDF5Matrix.html">HDF5Matrix</a>
+objects) and others in memory (e.g. in ordinary matrices and/or
+<a href="../../SparseArray/help/SparseMatrix.html">SparseMatrix</a> objects).
+</p>
+<p>Of course in this case, <code>containsOutOfMemoryData()</code> will still return
+<code>TRUE</code>. In other words, <code>containsOutOfMemoryData(object)</code> will
+only return <code>FALSE</code> when all the data in <code>object</code> resides in
+memory, that is, when the object can safely be serialized.
+</p>
+
+
+<h3>Value</h3>
+
+<p><code>TRUE</code> or <code>FALSE</code>.
+</p>
+
+
+<h3>Note</h3>
+
+<p>TO DEVELOPERS:
+</p>
+<p>The <span class="pkg">BiocGenerics</span> package also defines the following:
+</p>
+
+<ul>
+<li><p> A default <code>containsOutOfMemoryData()</code> method that returns
+<code>TRUE</code> if <code>object</code> is an S4 object with at least one
+slot for which <code>containsOutOfMemoryData()</code> is <code>TRUE</code>
+(recursive definition), and <code>FALSE</code> otherwise.
+</p>
+</li>
+<li><p> A <code>containsOutOfMemoryData()</code> method for <code>list</code> objects
+that returns <code>TRUE</code> if <code>object</code> has at least one
+list element for which <code>containsOutOfMemoryData()</code> is
+<code>TRUE</code> (recursive definition), and <code>FALSE</code> otherwise.
+</p>
+</li>
+<li><p> A <code>containsOutOfMemoryData()</code> method for <code>environment</code>
+objects that returns <code>TRUE</code> if <code>object</code> contains at least
+one object for which <code>containsOutOfMemoryData()</code> is <code>TRUE</code>
+(recursive definition), and <code>FALSE</code> otherwise.
+</p>
+</li>
+<li><p> The OutOfMemoryObject class. This is a virtual S4 class with
+no slots that any class defined in Bioconductor that represents
+out-of-memory objects should extend.
+</p>
+</li>
+<li><p> A <code>containsOutOfMemoryData()</code> method for OutOfMemoryObject
+derivatives that returns <code>TRUE</code>.
+</p>
+</li></ul>
+
+<p>Therefore, if you implement a class that uses an out-of-memory
+representation, make sure that it contains the OutOfMemoryObject class.
+This will make <code>containsOutOfMemoryData()</code> return <code>TRUE</code> on your
+objects, so you don't need to define a <code>containsOutOfMemoryData()</code>
+method for them.
+</p>
+
+
+<h3>See Also</h3>
+
+
+<ul>
+<li> <p><code><a href="../../methods/help/showMethods.html">showMethods</a></code> for displaying a summary of the
+methods defined for a given generic function.
+</p>
+</li>
+<li> <p><code><a href="../../methods/help/selectMethod.html">selectMethod</a></code> for getting the definition of
+a specific method.
+</p>
+</li>
+<li> <p><a href="../../BiocGenerics/help/BiocGenerics.html">BiocGenerics</a> for a summary of all the generics defined
+in the <span class="pkg">BiocGenerics</span> package.
+</p>
+</li></ul>
+
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>containsOutOfMemoryData
+showMethods("containsOutOfMemoryData")
+
+## The default method:
+selectMethod("containsOutOfMemoryData", "ANY")
+
+## The method for list objects:
+selectMethod("containsOutOfMemoryData", "list")
+
+## The method for OutOfMemoryObject derivatives:
+selectMethod("containsOutOfMemoryData", "OutOfMemoryObject")
+
+m &lt;- matrix(0, nrow=7, ncol=10)
+m[sample(length(m), 20)] &lt;- runif(20)
+containsOutOfMemoryData(m)  # FALSE
+
+library(SparseArray)
+svt &lt;- as(m, "SparseArray")
+svt
+containsOutOfMemoryData(m)  # FALSE
+containsOutOfMemoryData(list(m, svt))  # FALSE
+
+library(HDF5Array)
+M &lt;- as(m, "HDF5Array")
+M
+containsOutOfMemoryData(M)  # TRUE
+containsOutOfMemoryData(list(m, svt, M))  # TRUE
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>BiocGenerics</em> version 0.56.0 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

@@ -1,0 +1,149 @@
+<!DOCTYPE html><html><head><title>R: DataFrame comparison methods</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>DataFrame-comparison {S4Vectors}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>DataFrame comparison methods</h2>
+
+<h3>Description</h3>
+
+<p>The <code>DataFrame</code> class provides methods to compare across
+rows of the <code>DataFrame</code>, including ordering and matching. Each
+<code>DataFrame</code> is effectively treated as a vector of rows.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>## S4 method for signature 'DataFrame'
+sameAsPreviousROW(x)
+
+## S4 method for signature 'DataFrame,DataFrame'
+match(x, table, nomatch = NA_integer_, incomparables = NULL, ...)
+
+## S4 method for signature 'DataFrame'
+order(..., na.last = TRUE, decreasing = FALSE, method = c("auto", 
+    "shell", "radix"))
+
+## S4 method for signature 'DataFrame,DataFrame'
+pcompare(x, y)
+
+## S4 method for signature 'DataFrame,DataFrame'
+e1 == e2
+
+## S4 method for signature 'DataFrame,DataFrame'
+e1 &lt;= e2
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="x">x</code>, <code id="table">table</code>, <code id="y">y</code>, <code id="e1">e1</code>, <code id="e2">e2</code></td>
+<td>
+
+<p>A <code><a href="../../S4Vectors/help/DataFrame-class.html">DataFrame</a></code> object.
+</p>
+</td></tr>
+<tr><td><code id="nomatch">nomatch</code>, <code id="incomparables">incomparables</code></td>
+<td>
+
+<p>See <code>?base::<a href="../../base/help/match.html">match</a></code>.
+</p>
+</td></tr>
+<tr><td><code id="...">...</code></td>
+<td>
+
+<p>For <code>match</code>, further arguments to pass to <code><a href="../../base/help/match.html">match</a></code>.
+</p>
+<p>For <code>order</code>, one or more <code><a href="../../S4Vectors/help/DataFrame-class.html">DataFrame</a></code> objects.
+</p>
+</td></tr>
+<tr><td><code id="decreasing">decreasing</code>, <code id="na.last">na.last</code>, <code id="method">method</code></td>
+<td>
+
+<p>See <code>?base::<a href="../../base/help/order.html">order</a></code>.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The treatment of a <code>DataFrame</code> as a &ldquo;vector of rows&rdquo;
+is useful in many cases, e.g., when each row is a record that needs
+to be ordered or matched. The methods provided here allow the use of
+all methods described in <code>?<a href="../../S4Vectors/help/Vector-comparison.html">Vector-comparison</a></code>, including
+sorting, matching, de-duplication, and so on.
+</p>
+<p>Careful readers will notice this behaviour differs from the usual 
+semantics of a <code>data.frame</code>, which acts as a list-like vector 
+of columns. This discrepancy rarely causes problems, as it is not
+particularly common to compare columns of a <code>data.frame</code> in 
+the first place.
+</p>
+<p>Note that a <code>match</code> method for <code>DataFrame</code> objects is 
+explicitly defined to avoid calling the corresponding method for 
+<code><a href="../../S4Vectors/help/List.html">List</a></code> objects, which would yield the (undesired) list-like
+semantics. The same rationale is behind the explicit definition of
+<code>&lt;=</code> and <code>==</code> despite the availability of <code>pcompare</code>.
+</p>
+
+
+<h3>Value</h3>
+
+<p>For <code>sameAsPreviousROW</code>: see <code><a href="../../S4Vectors/help/sameAsPreviousROW.html">sameAsPreviousROW</a></code>.
+</p>
+<p>For <code>match</code>: see <code><a href="../../base/help/match.html">match</a></code>.
+</p>
+<p>For <code>order</code>: see <code><a href="../../base/help/order.html">order</a></code>.
+</p>
+<p>For <code>pcompare</code>, <code>==</code> and <code>&lt;=</code>: see <code><a href="../../S4Vectors/help/pcompare.html">pcompare</a></code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Aaron Lun
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'># Mocking up a DataFrame.
+DF &lt;- DataFrame(
+    A=sample(LETTERS, 100, replace=TRUE),
+    B=sample(5, 100, replace=TRUE)
+)
+
+# Matching:
+match(DF, DF[1:10,])
+selfmatch(DF)
+unique(DF)
+
+# Ordering, alone and with other vectors:
+sort(DF)
+order(DF, runif(nrow(DF)))
+
+# Parallel comparison:
+DF==DF
+DF==DF[1,]
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>S4Vectors</em> version 0.48.0 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

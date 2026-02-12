@@ -1,0 +1,113 @@
+<!DOCTYPE html><html><head><title>R: Mean-Difference Plot</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>mdplot {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Mean-Difference Plot</h2>
+
+<h3>Description</h3>
+
+<p>Creates a mean-difference plot of two columns of a matrix.</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>mdplot(x, columns=c(1,2), xlab="Mean", ylab="Difference", main=NULL, ...)</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="x">x</code></td>
+<td>
+<p>numeric <code>matrix</code> with at least two columns.</p>
+</td></tr>
+<tr><td><code id="columns">columns</code></td>
+<td>
+<p>which columns of <code>x</code> to compare. Plot will display second minus first.</p>
+</td></tr>
+<tr><td><code id="xlab">xlab</code></td>
+<td>
+<p>label for the x-axis.</p>
+</td></tr>
+<tr><td><code id="ylab">ylab</code></td>
+<td>
+<p>label for the y-axis.</p>
+</td></tr>
+<tr><td><code id="main">main</code></td>
+<td>
+<p>title of the plot. Defaults to </p>
+</td></tr>
+<tr><td><code id="...">...</code></td>
+<td>
+<p>any other arguments are passed to <code><a href="../../limma/help/plotWithHighlights.html">plotWithHighlights</a></code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Plots differences vs means for a set of bivariate values.
+This is a generally useful approach for comparing two correlated measures of the same underlying phenomenon.
+Bland and Altman (1986) argue it is more information than a simple scatterplot of the two variables.
+The bivariate values are stored as columns of <code>x</code>.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A plot is created on the current graphics device.</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth</p>
+
+
+<h3>References</h3>
+
+<p>Cleveland WS (1993). <em>Visualizing Data</em>. Hobart Press.
+</p>
+<p>Bland JM, Altman DG (1986). Statistical methods for assessing agreement between two methods of clinical measurement. <em>Lancet</em> 327, 307-310.
+</p>
+<p>See also <a href="http://www.statsci.org/micrarra/refs/maplots.html">http://www.statsci.org/micrarra/refs/maplots.html</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../limma/help/plotWithHighlights.html">plotWithHighlights</a></code>
+</p>
+<p><code><a href="../../limma/help/plotMD.html">plotMD</a></code> is an object-oriented implementation of mean-difference plots for expression data.
+</p>
+<p>An overview of diagnostic functions available in LIMMA is given in <a href="../../limma/help/09.Diagnostics.html">09.Diagnostics</a>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>x1 &lt;- runif(100)
+x2 &lt;- (x1 + rnorm(100,sd=0.01))^1.2
+oldpar &lt;- par(mfrow=c(1,2))
+plot(x1,x2)
+mdplot(cbind(x1,x2),bg.pch=1,bg.cex=1)
+par(oldpar)
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>limma</em> version 3.66.0 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

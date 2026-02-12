@@ -1,0 +1,71 @@
+<!DOCTYPE html><html><head><title>R: Retrieve and set eSet notes.</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>notes {Biobase}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Retrieve and set eSet notes.</h2>
+
+<h3>Description</h3>
+
+<p>These generic functions access notes (unstructured descriptive data)
+associated <code><a href="../../Biobase/help/eSet-class.html">eSet-class</a></code>.
+</p>
+<p><code>notes(&lt;ExpressionSet&gt;) &lt;- &lt;character&gt;</code> is unusual, in that the
+character vector is appended to the list of notes; use
+<code>notes(&lt;ExpressionSet&gt;) &lt;- &lt;list&gt;</code> to entirely replace the list.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>notes(object)
+notes(object) &lt;- value
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="object">object</code></td>
+<td>
+<p>Object, possibly derived from class <code>eSet-class</code>.</p>
+</td></tr>
+<tr><td><code id="value">value</code></td>
+<td>
+<p>Character vector containing unstructured information describing the experinement.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p><code>notes</code> returns a list.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Biocore</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../Biobase/help/ExpressionSet-class.html">ExpressionSet-class</a></code>, <code><a href="../../Biobase/help/SnpSet-class.html">SnpSet-class</a></code></p>
+
+<hr><div style="text-align: center;">[Package <em>Biobase</em> version 2.70.0 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

@@ -1,0 +1,103 @@
+<!DOCTYPE html><html><head><title>R: Retrieve information about versioned classes</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>classVersion {Biobase}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Retrieve information about versioned classes</h2>
+
+<h3>Description</h3>
+
+<p>These generic functions return version information for classes
+derived from <code><a href="../../Biobase/help/Versioned-class.html">Versioned-class</a></code>, or
+<code><a href="../../Biobase/help/VersionsNull-class.html">VersionsNull-class</a></code> for unversioned objects. The
+version information is an object of <code><a href="../../Biobase/help/Versions-class.html">Versions-class</a></code>.
+</p>
+<p>By default, <code>classVersion</code> has the following behaviors:
+</p>
+
+<dl>
+<dt><code>classVersion(Versioned-instance)</code></dt><dd><p>Returns a <code>Versions-class</code> object obtained from the object.</p>
+</dd>
+<dt><code>classVersion{"class"}</code></dt><dd><p>Consults the definition of <code>class</code> and return the current version information, if available.</p>
+</dd>
+<dt><code>classVersion(ANY)</code></dt><dd><p>Return a <code><a href="../../Biobase/help/VersionsNull-class.html">VersionsNull-class</a></code> object to indicate no version information available.</p>
+</dd>
+</dl>
+
+<p>By default, the <code>classVersion&lt;-</code> method has the following behavior:
+</p>
+
+<dl>
+<dt><code>classVersion(Versioned-instance)["id"] &lt;- value</code></dt><dd><p>Assign (update or add) <code>value</code> to <code>Versions-instance</code>. <code>value</code> is coerced to a valid version description. see <code><a href="../../Biobase/help/Versions-class.html">Versions-class</a></code> for additional access methods.</p>
+</dd>
+</dl>
+
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>classVersion(object)
+classVersion(object) &lt;- value
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="object">object</code></td>
+<td>
+<p>Object whose version is to be determined, as described above.</p>
+</td></tr>
+<tr><td><code id="value">value</code></td>
+<td>
+<p><code>Version-class</code> object to assign to object of <code>Versioned-class</code> object.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p><code>classVersion</code> returns an instance of <code><a href="../../Biobase/help/Versions-class.html">Versions-class</a></code>
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Biocore team</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../Biobase/help/Versions-class.html">Versions-class</a></code></p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>obj &lt;- new("VersionedBiobase")
+
+classVersion(obj)
+classVersion(obj)["Biobase"]
+classVersion(1:10) # no version
+classVersion("ExpressionSet") # consult ExpressionSet prototype
+
+classVersion(obj)["MyVersion"] &lt;- "1.0.0"
+classVersion(obj)
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>Biobase</em> version 2.70.0 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

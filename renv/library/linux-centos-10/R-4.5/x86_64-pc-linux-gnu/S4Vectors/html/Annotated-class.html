@@ -1,0 +1,73 @@
+<!DOCTYPE html><html><head><title>R: Annotated class</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>Annotated-class {S4Vectors}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Annotated class</h2>
+
+<h3>Description</h3>
+
+<p>The virtual class <code>Annotated</code> is used to standardize the
+storage of metadata with a subclass.</p>
+
+
+<h3>Details</h3>
+
+<p>The <code>Annotated</code> class supports the storage of global metadata in a
+subclass. This is done through the <code>metadata</code> slot that stores a list
+object.
+</p>
+
+
+<h3>Accessors</h3>
+
+<p>In the code snippet below, <code>x</code> is an Annotated object.
+</p>
+
+<dl>
+<dt><code>metadata(x)</code>, <code>metadata(x) &lt;- value</code>:</dt><dd><p> Get or set the list
+holding arbitrary R objects as annotations. May be, and often is, empty.
+</p>
+</dd>
+</dl>
+
+
+
+<h3>Author(s)</h3>
+
+<p>P. Aboyoun</p>
+
+
+<h3>See Also</h3>
+
+<p>The <a href="../../S4Vectors/help/Vector.html">Vector</a> class, which extends Annotated directly.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>showClass("Annotated")  # shows (some of) the known subclasses
+
+## If the IRanges package was not already loaded, this will show
+## more subclasses:
+library(IRanges)
+showClass("Annotated")
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>S4Vectors</em> version 0.48.0 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

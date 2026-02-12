@@ -1,0 +1,170 @@
+<!DOCTYPE html><html><head><title>R: Conduct statistical to analyze lipid features tendencies</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>analyzeLipidRegion {LipidTrend}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Conduct statistical to analyze lipid features tendencies</h2>
+
+<h3>Description</h3>
+
+<p>Performs region-based statistical analysis to identify lipidomic trends
+between groups. This function applies a two-stage procedure:
+</p>
+
+<ol>
+<li> <p><b>Marginal Test</b>:
+Each lipid feature is first tested individually using
+either a t-test (with glog10 transformation) or a Wilcoxon test to obtain
+marginal statistics and p-values.
+</p>
+</li>
+<li> <p><b>Region-Based Permutation Test with Smoothing</b>:
+Marginal statistics are smoothed using a Gaussian kernel that incorporates
+neighborhood information (e.g., proximity in chain length or double bond
+count). Statistical significance is assessed by comparing the smoothed
+statistic against a null distribution generated through permutation.
+</p>
+</li></ol>
+
+<p>This approach enhances statistical robustness, especially for small-sample
+datasets. It supports both one-dimensional and two-dimensional analyses
+depending on the number of features provided in the input.
+</p>
+<p>The input must be a <code>SummarizedExperiment</code> object, and the output is a
+<code>LipidTrendSE</code> object, which can be used for result visualization or
+further downstream analysis.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>analyzeLipidRegion(
+  lipid_se,
+  ref_group,
+  split_chain = FALSE,
+  chain_col = NULL,
+  radius = 3,
+  own_contri = 0.5,
+  test = "t.test",
+  abund_weight = TRUE,
+  permute_time = 1e+05
+)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="lipid_se">lipid_se</code></td>
+<td>
+<p>A SummarizedExperiment object. Must contain following data:
+</p>
+
+<ol>
+<li><p>Assay: A matrix containing lipid abundance data, where rows
+represent lipids and columns represent samples.
+</p>
+</li>
+<li><p>RowData: A data frame of lipid features (e.g., double bond count,
+chain length), with rows as lipids and columns as lipid features (
+limited to 1 or 2 columns). The order of lipids must match the abundance
+data. If RowData contains one column, a one-dimensional analysis will
+be performed. If <code>rowData</code> includes two columns, a two-dimensional
+analysis will be conducted.
+</p>
+</li>
+<li><p>ColData: A data frame containing group information, where rows
+represent sample names and columns must include sample name, label name,
+and group, arranged accordingly.
+</p>
+</li></ol>
+</td></tr>
+<tr><td><code id="ref_group">ref_group</code></td>
+<td>
+<p>Character. Group name of the reference group. It must be
+one of the group names in the <code>colData$group</code> column.</p>
+</td></tr>
+<tr><td><code id="split_chain">split_chain</code></td>
+<td>
+<p>Logical. If <code>TRUE</code> the results will split to shown by
+odd and even chain. Default is <code>FALSE</code>.</p>
+</td></tr>
+<tr><td><code id="chain_col">chain_col</code></td>
+<td>
+<p>Character. The column name in <code>rowData</code> that specifies
+chain length. Must be provided if <code>split_chain=TRUE</code>, otherwise should
+be set to <code>NULL</code>. Default is <code>NULL</code>.</p>
+</td></tr>
+<tr><td><code id="radius">radius</code></td>
+<td>
+<p>Numeric. Distance of neighboring features to be included in
+the smoothing kernel. Default is <code>3</code>.</p>
+</td></tr>
+<tr><td><code id="own_contri">own_contri</code></td>
+<td>
+<p>Numeric. Proportion of self-contribution when smoothing.
+Default is <code>0.5</code>. Recommended range: 0.5–1 to avoid over-emphasizing
+neighbors.</p>
+</td></tr>
+<tr><td><code id="test">test</code></td>
+<td>
+<p>Character. Type of statistical test: either <code>"t.test"</code>
+or <code>"Wilcoxon"</code>. Default is <code>"t.test"</code>.</p>
+</td></tr>
+<tr><td><code id="abund_weight">abund_weight</code></td>
+<td>
+<p>Logical. Whether to use average abundance as a weight
+in calculating the region-based smoothed statistic. When set to TRUE, lipid
+species with higher mean abundance contribute more to the smoothed trend.
+Default is <code>TRUE</code>.</p>
+</td></tr>
+<tr><td><code id="permute_time">permute_time</code></td>
+<td>
+<p>Integer. Number of permutations used to calculate
+empirical p-values in the region-based permutation test. Default is
+<code>100000</code>. For the Wilcoxon test (i.e., <code>test="Wilcoxon"</code>),
+we recommend setting <code>permute_time</code> to fewer than 10,000 to ensure
+reasonable runtime.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A LipidTrendSE object containing lipidomic feature testing result.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../LipidTrend/help/plotRegion1D.html">plotRegion1D</a></code> for one-dimensional visualization
+<code><a href="../../LipidTrend/help/plotRegion2D.html">plotRegion2D</a></code> for two-dimensional visualization
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>data("lipid_se_CL")
+res_se &lt;- analyzeLipidRegion(
+    lipid_se=lipid_se_CL, ref_group="sgCtrl", split_chain=FALSE,
+    chain_col=NULL, radius=3, own_contri=0.5, test="t.test",
+    abund_weight=TRUE, permute_time=100)
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>LipidTrend</em> version 1.0.0 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

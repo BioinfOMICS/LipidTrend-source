@@ -1,0 +1,95 @@
+<!DOCTYPE html><html><head><title>R: Two dimensional Moving Averages with 3x3 Window</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>ma3x3 {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Two dimensional Moving Averages with 3x3 Window</h2>
+
+<h3>Description</h3>
+
+<p>Apply a specified function to each to each value of a matrix and its immediate neighbors.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>ma3x3.matrix(x,FUN=mean,na.rm=TRUE,...)
+ma3x3.spottedarray(x,printer,FUN=mean,na.rm=TRUE,...)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="x">x</code></td>
+<td>
+<p>numeric matrix</p>
+</td></tr>
+<tr><td><code id="FUN">FUN</code></td>
+<td>
+<p>function to apply to each window of values</p>
+</td></tr>
+<tr><td><code id="na.rm">na.rm</code></td>
+<td>
+<p>logical value, should missing values be removed when applying <code>FUN</code></p>
+</td></tr>
+<tr><td><code id="...">...</code></td>
+<td>
+<p>other arguments are passed to <code>FUN</code></p>
+</td></tr>
+<tr><td><code id="printer">printer</code></td>
+<td>
+<p>list giving the printer layout, see <code><a href="../../limma/help/PrintLayout-class.html">PrintLayout-class</a></code></p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>For <code>ma3x3.matrix</code>, <code>x</code> is an arbitrary function.
+for <code>ma3x3.spotted</code>, each column of <code>x</code> is assumed to contain the expression values of a spotted array in standard order.
+The printer layout information is used to re-arrange the values of each column as a spatial matrix before applying <code>ma3x3.matrix</code>.
+</p>
+
+
+<h3>Value</h3>
+
+<p>Numeric matrix of same dimension as <code>x</code> containing smoothed values
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth</p>
+
+
+<h3>See Also</h3>
+
+<p>An overview of functions for background correction are given in <code><a href="../../limma/help/04.Background.html">04.Background</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>x &lt;- matrix(c(2,5,3,1,6,3,10,12,4,6,4,8,2,1,9,0),4,4)
+ma3x3.matrix(x,FUN="mean")
+ma3x3.matrix(x,FUN="min")
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>limma</em> version 3.66.0 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

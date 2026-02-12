@@ -1,0 +1,56 @@
+<!DOCTYPE html><html><head><title>R: RleArraySeed objects</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>RleArraySeed-class {DelayedArray}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>RleArraySeed objects</h2>
+
+<h3>Description</h3>
+
+<p>RleArraySeed is a low-level helper class for representing an in-memory
+Run Length Encoded array-like dataset.
+RleArraySeed objects are not intended to be used directly. Most
+end users should create and manipulate <a href="../../DelayedArray/help/RleArray.html">RleArray</a> objects
+instead. See <code>?<a href="../../DelayedArray/help/RleArray.html">RleArray</a></code> for more information.
+</p>
+
+
+<h3>Details</h3>
+
+<p>No operation can be performed directly on an RleArraySeed object.
+It first needs to be wrapped in a <a href="../help/DelayedArray.html">DelayedArray</a>
+object. The result of this wrapping is an <a href="../../DelayedArray/help/RleArray.html">RleArray</a> object
+(an <a href="../../DelayedArray/help/RleArray.html">RleArray</a> object is just an RleArraySeed object wrapped
+in a <a href="../help/DelayedArray.html">DelayedArray</a> object).
+</p>
+
+
+<h3>See Also</h3>
+
+
+<ul>
+<li> <p><a href="../../DelayedArray/help/RleArray.html">RleArray</a> objects.
+</p>
+</li>
+<li> <p><a href="../../S4Vectors/help/Rle.html">Rle</a> objects in the <span class="pkg">S4Vectors</span> package.
+</p>
+</li></ul>
+
+
+<hr><div style="text-align: center;">[Package <em>DelayedArray</em> version 0.36.0 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

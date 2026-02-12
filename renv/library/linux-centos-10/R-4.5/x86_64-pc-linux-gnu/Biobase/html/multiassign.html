@@ -1,0 +1,109 @@
+<!DOCTYPE html><html><head><title>R: Assign Values to a Names</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>multiassign {Biobase}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Assign Values to a Names</h2>
+
+<h3>Description</h3>
+
+<p>Assign values to names in an environment.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>multiassign(x, value, envir = parent.frame(), inherits=FALSE)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="x">x</code></td>
+<td>
+<p>A vector or list of names, represented by strings.</p>
+</td></tr>
+<tr><td><code id="value">value</code></td>
+<td>
+<p>a vector or list of values to be assigned.</p>
+</td></tr>
+<tr><td><code id="envir">envir</code></td>
+<td>
+<p>the <code><a href="../../base/html/environment.html">environment</a></code> to use. See the details section.</p>
+</td></tr>
+<tr><td><code id="inherits">inherits</code></td>
+<td>
+<p>should the enclosing frames of the environment be
+inspected?</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The <code>pos</code> argument can specify the  environment in which to assign
+the object in any of several ways:
+as an integer (the position in the <code><a href="../../base/html/search.html">search</a></code> list); as
+the character string name of an element in the search list; or as an
+<code><a href="../../base/html/environment.html">environment</a></code> (including using <code><a href="../../base/html/sys.parent.html">sys.frame</a></code> to
+access the currently active function calls).
+The <code>envir</code> argument is an alternative way to specify an
+environment, but is primarily there for back compatibility.
+</p>
+<p>If <code>value</code> is missing and <code>x</code> has names then the values in
+each element of <code>x</code> are assigned to the names of <code>x</code>.
+</p>
+
+
+<h3>Value</h3>
+
+<p>This function is invoked for its side effect, which is assigning
+the <code>values</code> to the variables in <code>x</code>.  If no <code>envir</code> is
+specified, then the assignment takes place in the currently active
+environment.
+</p>
+<p>If <code>inherits</code> is <code>TRUE</code>, enclosing environments of the supplied
+environment are searched until the variable <code>x</code> is encountered.
+The value is then assigned in the environment in which the variable is
+encountered.  If the symbol is not encountered then assignment takes
+place in the user's workspace (the global environment).
+</p>
+<p>If <code>inherits</code> is <code>FALSE</code>, assignment takes place in the
+initial frame of <code>envir</code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>#-- Create objects  'r1', 'r2', ... 'r6' --
+nam &lt;- paste("r",1:6, sep=".")
+
+multiassign(nam, 11:16)
+ls(pat="^r..$")
+
+#assign the values in y to variables with the names from y
+
+y&lt;-list(a=4,d=mean,c="aaa")
+multiassign(y)
+
+
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>Biobase</em> version 2.70.0 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

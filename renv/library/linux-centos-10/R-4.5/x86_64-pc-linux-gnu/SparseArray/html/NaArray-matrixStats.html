@@ -1,0 +1,183 @@
+<!DOCTYPE html><html><head><title>R: NaArray col/row summarization</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>NaArray-matrixStats {SparseArray}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>NaArray col/row summarization</h2>
+
+<h3>Description</h3>
+
+<p>EXPERIMENTAL!!!
+</p>
+<p>The <span class="pkg">SparseArray</span> package provides memory-efficient col/row
+summarization methods (a.k.a. matrixStats methods) for <a href="../../SparseArray/help/NaArray.html">NaArray</a>
+objects, like <code>colSums()</code>, <code>rowSums()</code>, <code>colMeans()</code>,
+<code>rowMeans()</code>, etc...
+</p>
+<p>Note that these are <em>S4 generic functions</em> defined in the
+<span class="pkg">MatrixGenerics</span> package, with methods for ordinary matrices
+defined in the <span class="pkg">matrixStats</span> package. This man page documents
+the methods defined for <a href="../../SparseArray/help/NaArray.html">NaArray</a> objects.
+</p>
+<p>IMPORTANT NOTE: This is WORK-IN-PROGRESS! All the <code>col*()</code> methods
+listed below are supported. However, among the <code>row*()</code> methods,
+only <code>rowAnyNAs()</code>, <code>rowMins()</code>, <code>rowMaxs()</code>,
+<code>rowRanges()</code>, <code>rowSums()</code>, and <code>rowSums2()</code> are
+supported on <a href="../../SparseArray/help/NaArray.html">NaArray</a> objects at the moment.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>## N.B.: Showing ONLY the col*() methods (usage of row*() methods is
+## the same):
+
+## S4 method for signature 'NaArray'
+colAnyNAs(x, rows=NULL, cols=NULL, dims=1, ..., useNames=NA)
+
+## S4 method for signature 'NaArray'
+colAnys(x, rows=NULL, cols=NULL, na.rm=FALSE, dims=1, ..., useNames=NA)
+
+## S4 method for signature 'NaArray'
+colAlls(x, rows=NULL, cols=NULL, na.rm=FALSE, dims=1, ..., useNames=NA)
+
+## S4 method for signature 'NaArray'
+colMins(x, rows=NULL, cols=NULL, na.rm=FALSE, dims=1, ..., useNames=NA)
+
+## S4 method for signature 'NaArray'
+colMaxs(x, rows=NULL, cols=NULL, na.rm=FALSE, dims=1, ..., useNames=NA)
+
+## S4 method for signature 'NaArray'
+colRanges(x, rows=NULL, cols=NULL, na.rm=FALSE, dims=1, ..., useNames=NA)
+
+## S4 method for signature 'NaArray'
+colSums(x, na.rm=FALSE, dims=1)
+
+## S4 method for signature 'NaArray'
+colProds(x, rows=NULL, cols=NULL, na.rm=FALSE, dims=1, ..., useNames=NA)
+
+## S4 method for signature 'NaArray'
+colMeans(x, na.rm=FALSE, dims=1)
+
+## S4 method for signature 'NaArray'
+colSums2(x, rows=NULL, cols=NULL, na.rm=FALSE, dims=1, ..., useNames=NA)
+
+## S4 method for signature 'NaArray'
+colMeans2(x, rows=NULL, cols=NULL, na.rm=FALSE, dims=1, ..., useNames=NA)
+
+## S4 method for signature 'NaArray'
+colVars(x, rows=NULL, cols=NULL, na.rm=FALSE, center=NULL, dims=1,
+           ..., useNames=NA)
+
+## S4 method for signature 'NaArray'
+colSds(x, rows=NULL, cols=NULL, na.rm=FALSE, center=NULL, dims=1,
+          ..., useNames=NA)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="x">x</code></td>
+<td>
+
+<p>An <a href="../../SparseArray/help/NaMatrix.html">NaMatrix</a> or <a href="../../SparseArray/help/NaArray.html">NaArray</a> object.
+</p>
+</td></tr>
+<tr><td><code id="rows">rows</code>, <code id="cols">cols</code>, <code id="...">...</code></td>
+<td>
+
+<p>Not supported.
+</p>
+</td></tr>
+<tr><td><code id="na.rm">na.rm</code>, <code id="useNames">useNames</code>, <code id="center">center</code></td>
+<td>
+
+<p>See man pages of the corresponding generics in the <span class="pkg">MatrixGenerics</span>
+package (e.g. <code>?MatrixGenerics::<a href="../../MatrixGenerics/help/colVars.html">colVars</a></code>)
+for a description of these arguments.
+</p>
+<p>Note that, unlike the methods for ordinary matrices defined in
+the <span class="pkg">matrixStats</span> package, the <code>center</code> argument of the
+<code>colVars()</code>, <code>rowVars()</code>, <code>colSds()</code>, and <code>rowSds()</code>
+methods for <a href="../../SparseArray/help/SparseArray.html">SparseArray</a> objects can only be a
+<em>single value</em> (or a <code>NULL</code>). In particular, if <code>x</code>
+has more than one column, then <code>center</code> cannot be a vector
+with one value per column in <code>x</code>.
+</p>
+</td></tr>
+<tr><td><code id="dims">dims</code></td>
+<td>
+
+<p>See <code>?base::<a href="../../base/help/colSums.html">colSums</a></code> for a description of this
+argument.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>These methods are typically used with <code>na.rm=TRUE</code> when called
+on an <a href="../../SparseArray/help/NaMatrix.html">NaMatrix</a> or <a href="../../SparseArray/help/NaArray.html">NaArray</a> object.
+</p>
+<p>All these methods operate <em>natively</em> on the <a href="../../SparseArray/help/NaArray.html">NaArray</a>
+internal representation, for maximum efficiency.
+</p>
+<p>Note that more col/row summarization methods might be added in the future.
+</p>
+
+
+<h3>Value</h3>
+
+<p>See man pages of the corresponding generics in the <span class="pkg">MatrixGenerics</span>
+package (e.g. <code>?MatrixGenerics::<a href="../../MatrixGenerics/help/colRanges.html">colRanges</a></code>)
+for the value returned by these methods.
+</p>
+
+
+<h3>Note</h3>
+
+<p>Most <code>col*()</code> methods for <a href="../../SparseArray/help/NaArray.html">NaArray</a> objects are multithreaded.
+See <code><a href="../../SparseArray/help/set_SparseArray_nthread.html">set_SparseArray_nthread</a></code> for how to control the number
+of threads.
+</p>
+
+
+<h3>See Also</h3>
+
+
+<ul>
+<li> <p><a href="../../SparseArray/help/NaArray.html">NaArray</a> objects.
+</p>
+</li>
+<li><p> The man pages of the various generic functions defined
+in the <span class="pkg">MatrixGenerics</span> package e.g.
+<code>MatrixGenerics::<a href="../../MatrixGenerics/help/colVars.html">colVars</a></code> etc...
+</p>
+</li></ul>
+
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'># COMING SOON...
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>SparseArray</em> version 1.10.8 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

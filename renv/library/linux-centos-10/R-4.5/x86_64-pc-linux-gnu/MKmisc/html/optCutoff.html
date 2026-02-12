@@ -1,0 +1,109 @@
+<!DOCTYPE html><html><head><title>R: Compute the Optimal Cutoff for Binary Classification</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>optCutoff {MKmisc}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Compute the Optimal Cutoff for Binary Classification </h2>
+
+<h3>Description</h3>
+
+<p>The function computes the optimal cutoff for various performance weasures for
+binary classification.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>optCutoff(pred, truth, namePos, perfMeasure = "Youden's J statistic",
+          max = TRUE, parallel = FALSE, ncores, delta = 0.01)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="pred">pred</code></td>
+<td>
+<p> numeric values that shall be used for classification; e.g. probabilities
+to belong to the positive group. </p>
+</td></tr>
+<tr><td><code id="truth">truth</code></td>
+<td>
+<p> true grouping vector or factor. </p>
+</td></tr>
+<tr><td><code id="namePos">namePos</code></td>
+<td>
+<p> value representing the positive group.</p>
+</td></tr>
+<tr><td><code id="perfMeasure">perfMeasure</code></td>
+<td>
+<p> a performance measure computed by function <code>perfMeasure</code>.</p>
+</td></tr>
+<tr><td><code id="max">max</code></td>
+<td>
+<p>logical value. Whether to maximize or minimize the performacne
+measure.</p>
+</td></tr>
+<tr><td><code id="parallel">parallel</code></td>
+<td>
+<p> logical value. If <code>TRUE</code> packages foreach and doParallel
+are used to parallelize the computations.</p>
+</td></tr>
+<tr><td><code id="ncores">ncores</code></td>
+<td>
+<p>integer value, number of cores that shall be used to parallelize
+the computations.</p>
+</td></tr>
+<tr><td><code id="delta">delta</code></td>
+<td>
+<p>numeric value for setting up grid for optimization; start is 
+minimum of <code>pred-delta</code>, end is maximum of <code>pred+delta</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The function is ablte to compute the optimal cutoff for various performance
+measures, all performance measures that are implemented in function
+<code>perfMeasures</code>.
+</p>
+
+
+<h3>Value</h3>
+
+<p>Optimal cutoff and value of the optimized performance measure based on a 
+simple grid search.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> Matthias Kohl <a href="mailto:Matthias.Kohl@stamats.de">Matthias.Kohl@stamats.de</a></p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>## example from dataset infert
+fit &lt;- glm(case ~ spontaneous+induced, data = infert, family = binomial())
+pred &lt;- predict(fit, type = "response")
+optCutoff(pred, truth = infert$case, namePos = 1)
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>MKmisc</em> version 1.9 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

@@ -1,0 +1,66 @@
+AUC                     Compute AUC
+AUC.test                AUC-Test
+CV                      Compute CV
+HLgof.test              Hosmer-Lemeshow goodness of fit tests.
+IQrange                 The Interquartile Range
+MKmisc-package          Miscellaneous Functions from M. Kohl.
+SNR                     Compute SNR
+binomCI                 Confidence Intervals for Binomial Proportions
+corDist                 Correlation Distance Matrix Computation
+corPlot                 Plot of similarity matrix based on correlation
+cvCI                    Confidence Intervals for Coefficient of
+                        Variation
+fiveNS                  Five-Number Summaries
+glog                    Compute Generalized Logarithm
+glog_trans              New Transformations for Use with ggplot2
+                        Package
+heatmapCol              Generate colors for heatmaps
+hsu.t.test              Hsu Two-Sample t-Test
+imputeSD                Impute Standard Deviations for Changes from
+                        Baseline
+madMatrix               Compute MAD between colums of a matrix or
+                        data.frame
+madPlot                 Plot of similarity matrix based on MAD
+meanAD                  The Mean Absolute Deviation
+melt.long               Transform data.frame to Long Form
+mi.t.test               Multiple Imputation Student's t-Test
+mod.oneway.test         Moderated 1-Way ANOVA
+mod.t.test              Moderated t-Test
+normCI                  Confidence Intervals for Mean and Standard
+                        Deviation
+normDiffCI              Confidence Intervals for Difference of Means
+oneWayAnova             A function for Analysis of Variance
+optCutoff               Compute the Optimal Cutoff for Binary
+                        Classification
+or2rr                   Transform OR to RR
+pairwise.auc            Compute pairwise AUCs
+pairwise.fc             Compute pairwise fold changes
+pairwise.fun            Compute pairwise values for a given function
+pairwise.logfc          Compute pairwise log-fold changes
+pairwise.mod.t.test     Pairwise Moderated t-Tests
+perfMeasures            Compute Performance Measures and Scores for
+                        Binary Classification
+power.diagnostic.test   Power calculations for a diagnostic test
+power.hsu.t.test        Power calculations for two sample Hsu t test
+power.nb.test           Power calculation for comparing two negative
+                        binomial rates
+power.welch.t.test      Power calculations for two sample Welch t test
+predValues              Compute PPV and NPV.
+print.confint           Print Method for Confidence Intervals
+qboxplot                Box Plots
+qbxp.stats              Box Plot Statistics
+quantileCI              Confidence Intervals for Quantiles
+repMeans                Compute mean of replicated spots
+risks                   Compute RR, OR, etc.
+rrCI                    Compute Approximate Confidence Interval for RR.
+simCorVars              Simulate correlated variables.
+simPlot                 Plot of a similarity matrix.
+ssize.pcc               Sample Size Planning for Developing Classifiers
+                        Using High Dimensional Data
+stringDist              Function to compute distances between strings
+stringSim               Function to compute similarity scores between
+                        strings
+thyroid                 Plot TSH, fT3 and fT4 with respect to reference
+                        range.
+traceBack               Function to trace back
+twoWayAnova             A function for Analysis of Variance

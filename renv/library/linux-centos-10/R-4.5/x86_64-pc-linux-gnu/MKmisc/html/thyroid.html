@@ -1,0 +1,92 @@
+<!DOCTYPE html><html><head><title>R: Plot TSH, fT3 and fT4 with respect to reference range.</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>thyroid {MKmisc}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Plot TSH, fT3 and fT4 with respect to reference range. </h2>
+
+<h3>Description</h3>
+
+<p>The function computes and plots TSH, fT3 and fT4 values with respect to
+the provided reference range.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>thyroid(TSH, fT3, fT4, TSHref, fT3ref, fT4ref)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="TSH">TSH</code></td>
+<td>
+<p> numeric vector of length 1: measured TSH concentration.</p>
+</td></tr>
+<tr><td><code id="fT3">fT3</code></td>
+<td>
+<p> numeric vector of length 1: measured fT3 concentration.</p>
+</td></tr>
+<tr><td><code id="fT4">fT4</code></td>
+<td>
+<p> numeric vector of length 1: measured fT4 concentration.</p>
+</td></tr>
+<tr><td><code id="TSHref">TSHref</code></td>
+<td>
+<p> numeric vector of length 2: reference range TSH.</p>
+</td></tr>
+<tr><td><code id="fT3ref">fT3ref</code></td>
+<td>
+<p> numeric vector of length 2: reference range fT3.</p>
+</td></tr>
+<tr><td><code id="fT4ref">fT4ref</code></td>
+<td>
+<p> numeric vector of length 2: reference range fT4.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>A simple function that computes the relative values of the measured values
+with respect to the provided reference range and visualizes the values
+using a barplot. Relative values between 40% and 60% are marked as O.K..
+</p>
+
+
+<h3>Value</h3>
+
+<p>Invisible <code>data.frame</code> with the relative values.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> Matthias Kohl <a href="mailto:Matthias.Kohl@stamats.de">Matthias.Kohl@stamats.de</a></p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>thyroid(TSH = 1.5, fT3 = 2.5, fT4 = 14, TSHref = c(0.2, 3.0),
+        fT3ref = c(1.7, 4.2), fT4ref = c(7.6, 15.0))
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>MKmisc</em> version 1.9 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

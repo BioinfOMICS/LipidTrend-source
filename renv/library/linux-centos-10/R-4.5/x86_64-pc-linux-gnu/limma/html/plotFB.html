@@ -1,0 +1,107 @@
+<!DOCTYPE html><html><head><title>R: FB-Plot</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>plotFB {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>FB-Plot</h2>
+
+<h3>Description</h3>
+
+<p>Creates foreground-background plots.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>## S3 method for class 'RGList'
+plotFB(x, array = 1, lim = "separate", pch = 16, cex = 0.3,
+     xlab = "log2 Background", ylab = "log2 Foreground", main = colnames(x)[array], ...)
+## S3 method for class 'EListRaw'
+plotFB(x, array = 1, pch = 16, cex=0.3,
+     xlab = "log2 Background", ylab = "log2 Foreground", main = colnames(x)[array], ...)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="x">x</code></td>
+<td>
+<p>an <code>RGList</code> or <code>EListRaw</code> object.</p>
+</td></tr>
+<tr><td><code id="array">array</code></td>
+<td>
+<p>integer giving the array to be plotted.</p>
+</td></tr>
+<tr><td><code id="lim">lim</code></td>
+<td>
+<p>character string indicating whether the red and green plots should have <code>"separate"</code> or <code>"common"</code> x- and y- co-ordinate limits.</p>
+</td></tr>
+<tr><td><code id="pch">pch</code></td>
+<td>
+<p>vector or list of plotting characters. Defaults to integer code 16.</p>
+</td></tr>
+<tr><td><code id="cex">cex</code></td>
+<td>
+<p>numeric vector of plot symbol expansions.</p>
+</td></tr> 
+<tr><td><code id="xlab">xlab</code></td>
+<td>
+<p>character string, label for x-axis.</p>
+</td></tr>
+<tr><td><code id="ylab">ylab</code></td>
+<td>
+<p>character string, label for y-axis.</p>
+</td></tr>
+<tr><td><code id="main">main</code></td>
+<td>
+<p>character string, title for plot.</p>
+</td></tr>
+<tr><td><code id="...">...</code></td>
+<td>
+<p>any other arguments are passed to <code>plot</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>A foreground-background plot is a plot of log2-foreground vs log2-background for a particular array.
+For two-color arrays, this function produces a pair of plots, one for the green channel and one for the red.
+</p>
+<p>See <code><a href="../../graphics/help/points.html">points</a></code> for possible values for <code>pch</code>, <code>col</code> and <code>cex</code>.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A plot is created on the current graphics device.</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth</p>
+
+
+<h3>See Also</h3>
+
+<p>An overview of diagnostic functions available in LIMMA is given in <a href="../../limma/help/09.Diagnostics.html">09.Diagnostics</a>.
+</p>
+
+<hr><div style="text-align: center;">[Package <em>limma</em> version 3.66.0 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

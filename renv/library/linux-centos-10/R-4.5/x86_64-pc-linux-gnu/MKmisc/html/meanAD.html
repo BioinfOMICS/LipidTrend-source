@@ -1,0 +1,127 @@
+<!DOCTYPE html><html><head><title>R: The Mean Absolute Deviation</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>meanAD {MKmisc}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>The Mean Absolute Deviation</h2>
+
+<h3>Description</h3>
+
+<p>Computes (standardized) mean absolute deviation.</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>meanAD(x, na.rm = FALSE, constant = sqrt(pi/2))
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="x">x</code></td>
+<td>
+<p>a numeric vector.</p>
+</td></tr>
+<tr><td><code id="na.rm">na.rm</code></td>
+<td>
+<p>logical. Should missing values be removed?</p>
+</td></tr>
+<tr><td><code id="constant">constant</code></td>
+<td>
+<p> standardizing contant; see details below. </p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The mean absolute deviation is a consistent estimator of 
+<code class="reqn">\sqrt{2/\pi}\sigma</code> for the standard deviation of
+a normal distribution. Under minor deviations of the normal distributions
+its asymptotic variance is smaller than that of the sample standard 
+deviation (Tukey (1960)).
+</p>
+<p>It works well under the assumption of symmetric, where mean and median
+coincide. Under the normal distribution it's about 18% more efficient
+(asymptotic relative efficiency) than the median absolute deviation 
+(<code>(1/qnorm(0.75))/sqrt(pi/2)</code>) and about 12% less efficient than the 
+sample standard deviation (Tukey (1960)).
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> Matthias Kohl <a href="mailto:Matthias.Kohl@stamats.de">Matthias.Kohl@stamats.de</a></p>
+
+
+<h3>References</h3>
+
+<p>Tukey, J. W. (1960). A survey of sampling from contaminated distribution.
+In Olink, I., editor, <em>Contributions to Probablity and Statistics. 
+Essays in Honor of H. Hotelling.</em>, pages 448-485. Stanford University Press.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../stats/help/sd.html">sd</a></code>, <code><a href="../../stats/help/mad.html">mad</a></code>, <code>sIQR</code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>## right skewed data
+## mean absolute deviation
+meanAD(rivers)
+## standardized IQR
+sIQR(rivers)
+## median absolute deviation
+mad(rivers)
+## sample standard deviation
+sd(rivers)
+
+## for normal data
+x &lt;- rnorm(100)
+sd(x)
+sIQR(x)
+mad(x)
+meanAD(x)
+
+## Asymptotic relative efficiency for Tukey's symmetric gross-error model
+## (1-eps)*Norm(mean, sd = sigma) + eps*Norm(mean, sd = 3*sigma)
+eps &lt;- seq(from = 0, to = 1, by = 0.001)
+ARE &lt;- function(eps){
+  0.25*((3*(1+80*eps))/((1+8*eps)^2)-1)/(pi*(1+8*eps)/(2*(1+2*eps)^2)-1)
+}
+plot(eps, ARE(eps), type = "l", xlab = "Proportion of gross-errors",
+     ylab = "Asymptotic relative efficiency", 
+     main = "ARE of mean absolute deviation w.r.t. sample standard deviation")
+abline(h = 1.0, col = "red")
+text(x = 0.5, y = 1.5, "Mean absolute deviation is better", col = "red", 
+    cex = 1, font = 1)
+## lower bound of interval
+uniroot(function(x){ ARE(x)-1 }, interval = c(0, 0.002))
+## upper bound of interval
+uniroot(function(x){ ARE(x)-1 }, interval = c(0.5, 0.55))
+## worst case
+optimize(ARE, interval = c(0,1), maximum = TRUE)
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>MKmisc</em> version 1.9 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

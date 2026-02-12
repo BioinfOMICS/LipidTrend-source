@@ -1,0 +1,90 @@
+<!DOCTYPE html><html><head><title>R: Compute SNR</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>SNR {MKmisc}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Compute SNR </h2>
+
+<h3>Description</h3>
+
+<p>The functions compute SNR as well as two robust versions of the SNR.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>SNR(x, na.rm = FALSE)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="x">x</code></td>
+<td>
+<p> numeric vector. </p>
+</td></tr>
+<tr><td><code id="na.rm">na.rm</code></td>
+<td>
+<p>logical. Should missing values be removed?</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The functions compute the (classical) coefficient of variation as well as
+two robust variants.
+</p>
+<p><code>medSNR</code> uses the (standardized) MAD instead of SD and median instead of mean.
+</p>
+<p><code>iqrSNR</code> uses the (standardized) IQR instead of SD and median instead of mean.
+</p>
+
+
+<h3>Value</h3>
+
+<p>SNR value.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> Matthias Kohl <a href="mailto:Matthias.Kohl@stamats.de">Matthias.Kohl@stamats.de</a></p>
+
+
+<h3>References</h3>
+
+<p>C.N.P.G. Arachchige, L.A. Prendergast and R.G. Staudte. Robust analogues
+to the Coefficient of Variation. https://arxiv.org/abs/1907.01110.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>## 5% outliers
+out &lt;- rbinom(100, prob = 0.05, size = 1)
+sum(out)
+x &lt;- (1-out)*rnorm(100, mean = 10, sd = 2) + out*25
+SNR(x)
+medSNR(x)
+iqrSNR(x)
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>MKmisc</em> version 1.9 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

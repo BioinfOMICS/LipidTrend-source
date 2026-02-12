@@ -1,0 +1,79 @@
+<!DOCTYPE html><html><head><title>R: Extract 'Sigma' - Standard Deviation of Errors for Robust...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>sigma {robustbase}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Extract 'Sigma' - Standard Deviation of Errors for Robust Models</h2>
+
+<h3>Description</h3>
+
+<p>Extract the estimated standard deviation of the errors, the
+&ldquo;residual standard deviation&rdquo; (misnomed also
+&ldquo;residual standard error&rdquo;) from a fitted model.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>## S3 method for class 'lmrob'
+sigma(object, ...)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="object">object</code></td>
+<td>
+<p>a fitted model.</p>
+</td></tr>
+<tr><td><code id="...">...</code></td>
+<td>
+<p>additional, optional arguments.  (None are
+used in our methods)</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>For <span class="rlang"><b>R</b></span> <code>&lt;= 3.2.x</code>, we provide an (S3) generic function (as e.g.,
+package <a href="https://CRAN.R-project.org/package=lme4"><span class="pkg">lme4</span></a>) and methods for <code><a href="../../robustbase/help/lmrob.html">lmrob</a></code>,
+<code><a href="../../robustbase/help/nlrob.html">nlrob</a></code>, and <code><a href="../../stats/html/nls.html">nls</a></code>.
+</p>
+<p>From <span class="rlang"><b>R</b></span> <code>&gt;= 3.3.0</code>, we provide methods for our
+<code><a href="../../robustbase/help/lmrob.html">lmrob</a></code> and <code><a href="../../robustbase/help/nlrob.html">nlrob</a></code> models.
+</p>
+
+
+<h3>Value</h3>
+
+<p>the residual standard error as a scalar
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>      m.cl &lt;-   lm (Y ~ ., data=coleman)
+if(getRversion() &gt;= "3.3.0")  sigma(m.cl)  else  summary(m.cl)$sigma
+sigma( m1  &lt;- lmrob(Y ~ ., data=coleman) )
+sigma( m2  &lt;- lmrob(Y ~ ., data=coleman, setting = "KS2014") )
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>robustbase</em> version 0.99-7 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

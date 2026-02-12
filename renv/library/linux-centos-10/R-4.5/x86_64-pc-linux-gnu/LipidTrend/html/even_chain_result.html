@@ -1,0 +1,122 @@
+<!DOCTYPE html><html><head><title>R: Get Even Chain Result from LipidTrendSE</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>even_chain_result {LipidTrend}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Get Even Chain Result from LipidTrendSE</h2>
+
+<h3>Description</h3>
+
+<p>Get Even Chain Result from LipidTrendSE
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>even_chain_result(object)
+
+## S4 method for signature 'LipidTrendSE'
+even_chain_result(object)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="object">object</code></td>
+<td>
+<p>A LipidTrendSE object</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A data frame containing even chain result. The result table includes
+the following columns:
+</p>
+
+<ol>
+<li><p>Feature columns: Lipid feature values from the input <code>rowData</code>,
+such as chain length or double bond count. Column names vary depending on
+input.
+</p>
+</li>
+<li><p>avg.abund: Mean abundance of each lipid across all samples. For
+one-dimensional analysis, this may also include <code>avg.abund.ctrl</code> and
+<code>avg.abund.case</code> for group-wise means.
+</p>
+</li>
+<li><p>direction: Sign of the smoothed statistic:
+</p>
+
+<ul>
+<li><p>+ : Trend increases in the case group.
+</p>
+</li>
+<li><p>- : Trend decreases in the case group.
+</p>
+</li></ul>
+
+
+</li>
+<li><p>smoothing.pval.BH: Benjamini–Hochberg adjusted p-value from the
+region-based permutation test.
+</p>
+</li>
+<li><p>marginal.pval.BH: Benjamini–Hochberg adjusted p-value from the
+marginal test (per lipid).
+</p>
+</li>
+<li><p>log2.FC: Log2 fold-change in abundance between case and control
+groups.
+</p>
+</li>
+<li><p>significance: Overall significance label based on smoothed test and
+FC direction:
+</p>
+
+<ul>
+<li><p>Increase: Significant positive trend in case group.
+</p>
+</li>
+<li><p>Decrease: Significant negative trend in case group.
+</p>
+</li>
+<li><p>NS: Not significant.
+</p>
+</li></ul>
+
+
+</li></ol>
+
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>data("lipid_se_CL")
+sub &lt;- lipid_se_CL[seq_len(10), ]
+res_se &lt;- analyzeLipidRegion(
+    lipid_se=sub, ref_group="sgCtrl", split_chain=TRUE,
+    chain_col="chain", radius=3, own_contri=0.5, permute_time=100)
+# Get complete result summary
+results &lt;- even_chain_result(res_se)
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>LipidTrend</em> version 1.0.0 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

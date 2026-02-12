@@ -1,0 +1,101 @@
+<!DOCTYPE html><html><head><title>R: SparseMatrix multiplication and cross-product</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>SparseMatrix-mult {SparseArray}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>SparseMatrix multiplication and cross-product</h2>
+
+<h3>Description</h3>
+
+<p>Like ordinary matrices in base R, <a href="../../SparseArray/help/SparseMatrix.html">SparseMatrix</a> derivatives can
+be multiplied with the <code>%*%</code> operator. They also support
+<code><a href="../../base/help/crossprod.html">crossprod</a>()</code> and <code><a href="../../base/help/tcrossprod.html">tcrossprod</a>()</code>.
+</p>
+
+
+<h3>Value</h3>
+
+<p>The <code>%*%</code>, <code>crossprod()</code> and <code>tcrossprod()</code> methods
+for <a href="../../SparseArray/help/SparseMatrix.html">SparseMatrix</a> objects always return an <em>ordinary</em> matrix
+of <code>type()</code> <code>"double"</code>.
+</p>
+
+
+<h3>Note</h3>
+
+<p>Matrix multiplication and cross-product of <a href="../../SparseArray/help/SparseMatrix.html">SparseMatrix</a>
+derivatives are multithreaded.
+See <code><a href="../../SparseArray/help/set_SparseArray_nthread.html">set_SparseArray_nthread</a></code> for how to control the number
+of threads.
+</p>
+
+
+<h3>See Also</h3>
+
+
+<ul>
+<li> <p><code><a href="../../base/help/+25+2A+25.html">%*%</a></code> and <code><a href="../../base/help/crossprod.html">crossprod</a></code> in base R.
+</p>
+</li>
+<li> <p><a href="../../SparseArray/help/SparseMatrix.html">SparseMatrix</a> objects.
+</p>
+</li>
+<li> <p><code>S4Arrays::<a href="../../S4Arrays/help/type.html">type</a></code> in the <span class="pkg">S4Arrays</span>
+package to get the type of the elements of an array-like object.
+</p>
+</li>
+<li><p> Ordinary <a href="../../base/help/matrix.html">matrix</a> objects in base R.
+</p>
+</li></ul>
+
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>m1 &lt;- matrix(0L, nrow=15, ncol=6)
+m1[c(2, 6, 12:17, 22:33, 55, 59:62, 90)] &lt;- 101:126
+svt1 &lt;- as(m1, "SVT_SparseMatrix")
+
+set.seed(333)
+svt2 &lt;- poissonSparseMatrix(nrow=6, ncol=7, density=0.2)
+
+svt1 %*% svt2
+m1   %*% svt2
+
+## Unary crossprod() and tcrossprod():
+crossprod(svt1)               # same as t(svt1) %*% svt1
+tcrossprod(svt1)              # same as svt1 %*% t(svt1)
+
+## Binary crossprod() and tcrossprod():
+crossprod(svt1[1:6, ], svt2)  # same as t(svt1[1:6, ]) %*% svt2
+tcrossprod(svt1, t(svt2))     # same as svt1 %*% svt2
+
+## Sanity checks:
+m12 &lt;- m1 %*% as.matrix(svt2)
+stopifnot(
+  identical(svt1 %*% svt2, m12),
+  identical(m1 %*% svt2, m12),
+  identical(crossprod(svt1), t(svt1) %*% svt1),
+  identical(tcrossprod(svt1), svt1 %*% t(svt1)),
+  identical(crossprod(svt1[1:6, ], svt2), t(svt1[1:6, ]) %*% svt2),
+  identical(tcrossprod(svt1, t(svt2)), m12)
+)
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>SparseArray</em> version 1.10.8 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

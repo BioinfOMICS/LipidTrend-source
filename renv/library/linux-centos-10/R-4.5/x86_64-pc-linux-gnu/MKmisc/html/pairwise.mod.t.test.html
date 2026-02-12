@@ -1,0 +1,97 @@
+<!DOCTYPE html><html><head><title>R: Pairwise Moderated t-Tests</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>pairwise.mod.t.test {MKmisc}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Pairwise Moderated t-Tests</h2>
+
+<h3>Description</h3>
+
+<p>Performs pairwise moderated t-tests based on Bioconductor package limma.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>pairwise.mod.t.test(x, group, adjust.method = "BH", sort.by = "none")
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="x">x</code></td>
+<td>
+<p>a (non-empty) numeric matrix of data values.</p>
+</td></tr>
+<tr><td><code id="group">group</code></td>
+<td>
+<p>an optional factor representing the groups.</p>
+</td></tr>
+<tr><td><code id="adjust.method">adjust.method</code></td>
+<td>
+<p>see <code><a href="../../stats/html/p.adjust.html">p.adjust</a></code></p>
+</td></tr>
+<tr><td><code id="sort.by">sort.by</code></td>
+<td>
+<p>see <code><a href="../../limma/help/toptable.html">toptable</a></code></p>
+</td></tr></table>
+<p>, where <code>"logFC"</code>
+corresponds to difference in means.
+</p>
+
+
+<h3>Details</h3>
+
+<p>The function uses Bioconductor package limma to compute pairwise moderated
+t-tests. For more details we refer to <code><a href="../../limma/help/ebayes.html">ebayes</a></code>.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A data.frame with the results.
+</p>
+
+
+<h3>References</h3>
+
+<p>B. Phipson, S. Lee, I.J. Majewski, W.S. Alexander, G.H. Smyth (2016). Robust
+hyperparameter estimation protects against hypervariable genes and improves
+power to detect differential expression. <em>Annals of Applied Statistics</em>
+10(2), 946-963.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../stats/html/oneway.test.html">oneway.test</a></code>, <code>mod.t.test</code></p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>set.seed(123)
+X &lt;- rbind(matrix(rnorm(5*20), nrow = 5, ncol = 20),
+           matrix(rnorm(5*20, mean = 1), nrow = 5, ncol = 20))
+gr &lt;- factor(c(rep("A1", 5), rep("B2", 5), rep("C3", 5), rep("D4", 5)))
+mod.oneway.test(X, gr)
+pairwise.mod.t.test(X, gr)
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>MKmisc</em> version 1.9 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

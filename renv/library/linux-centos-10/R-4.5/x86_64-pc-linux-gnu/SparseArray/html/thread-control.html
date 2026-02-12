@@ -1,0 +1,130 @@
+<!DOCTYPE html><html><head><title>R: Number of threads used by SparseArray operations</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>thread-control {SparseArray}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Number of threads used by SparseArray operations</h2>
+
+<h3>Description</h3>
+
+<p>Use <code>get_SparseArray_nthread</code> or <code>set_SparseArray_nthread</code>
+to get or set the number of threads to use by the multithreaded
+operations implemented in the <span class="pkg">SparseArray</span> package.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>get_SparseArray_nthread()
+set_SparseArray_nthread(nthread=NULL)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="nthread">nthread</code></td>
+<td>
+
+<p>The number of threads to use by multithreaded operations implemented
+in the <span class="pkg">SparseArray</span> package.
+</p>
+<p>On systems where OpenMP is available, this must be <code>NULL</code>
+or an integer value &gt;= 1. When <code>NULL</code> (the default),
+a &quot;reasonable&quot; value will be used that never exceeds one third
+of the number of logical cpus available on the machine.
+</p>
+<p>On systems where OpenMP is not available, the supplied <code>nthread</code>
+is ignored and <code>set_SparseArray_nthread()</code> is a no-op.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Multithreaded operations in the <span class="pkg">SparseArray</span> package are implemented
+in C with OpenMP (<a href="https://www.openmp.org/">https://www.openmp.org/</a>).
+</p>
+<p>Note that OpenMP is not available on all systems. On systems where it's
+available, <code>get_SparseArray_nthread()</code> is guaranteed to return a
+value &gt;= 1. On systems where it's not available (e.g. macOS),
+<code>get_SparseArray_nthread()</code> returns 0 and
+<code>set_SparseArray_nthread()</code> is a no-op.
+</p>
+<p>IMPORTANT: The portable way to disable multithreading is by calling
+<code>set_SparseArray_nthread(1)</code>, NOT <code>set_SparseArray_nthread(0)</code>
+(the latter returns an error on systems where OpenMP is available).
+</p>
+
+
+<h3>Value</h3>
+
+<p><code>get_SparseArray_nthread()</code> returns an integer value &gt;= 1 on systems
+where OpenMP is available, and 0 on systems where it's not.
+</p>
+<p><code>set_SparseArray_nthread()</code> returns the <em>previous</em> <code>nthread</code>
+value, that is, the value returned by <code>get_SparseArray_nthread()</code>
+before the call to <code>set_SparseArray_nthread()</code>. Note that the value
+is returned invisibly.
+</p>
+
+
+<h3>See Also</h3>
+
+
+<ul>
+<li> <p><a href="../../SparseArray/help/SparseArray_matrixStats.html">SparseArray_matrixStats</a> for SparseArray col/row
+summarization methods.
+</p>
+</li>
+<li> <p><a href="../../SparseArray/help/SparseMatrix_mult.html">SparseMatrix_mult</a> for SparseMatrix multiplication and
+cross-product.
+</p>
+</li>
+<li> <p><a href="../../SparseArray/help/SparseArray.html">SparseArray</a> objects.
+</p>
+</li></ul>
+
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>get_SparseArray_nthread()
+
+if (get_SparseArray_nthread() != 0) {  # multithreading is available
+    svt1 &lt;- poissonSparseMatrix(77000L, 15000L, density=0.01)
+
+    ## 'user' time is typically N x 'elapsed' time where N is roughly the
+    ## number of threads that was effectively used:
+    system.time(cv1 &lt;- colVars(svt1))
+
+    svt2 &lt;- poissonSparseMatrix(77000L, 300L, density=0.3) * 0.77
+    system.time(cp12 &lt;- crossprod(svt1, svt2))
+
+    prev_nthread &lt;- set_SparseArray_nthread(1)  # disable multithreading
+    system.time(cv1 &lt;- colVars(svt1))
+    system.time(cp12 &lt;- crossprod(svt1, svt2))
+
+    ## Restore previous 'nthread' value:
+    set_SparseArray_nthread(prev_nthread)
+}
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>SparseArray</em> version 1.10.8 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

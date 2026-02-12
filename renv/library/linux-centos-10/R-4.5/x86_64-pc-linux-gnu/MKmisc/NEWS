@@ -1,0 +1,262 @@
+###############################################################################
+## NEWS to package MKmisc
+###############################################################################
+
+###########################################################
+## Version 1.9
+###########################################################
+- removed escaped LaTeX specials: \&
+- changed package URL to GitHub repository
+
+
+###########################################################
+## Version 1.8
+###########################################################
+- adapted links (http -> https) as requested by CRAN during submission.
+
+
+###########################################################
+## Version 1.7
+###########################################################
+- Changed return value of imputeSD
+- Removed bug in power.welch.t.test reported by Nicholas Lewin-Koh, when
+  delta should be computed for given n, power, etc.
+
+
+###########################################################
+## Version 1.6
+###########################################################
+- Removed bug in mi.t.test in case a subset is specified as reported by 
+  Pablo Emilio Verde
+- Added function meanAD to compute the mean absolute deviation.
+- Added function imputeSD to impute standard deviations for changes from
+  baseline following the Cochrane handbook, Section 16.1.3.2.
+- Modified function optCutoff. Should give better results now.
+- Minor change in function perfMeasures to avoid unnecessary error message.
+
+
+###########################################################
+## Version 1.5
+###########################################################
+- Corrected minor bug in power.welch.t.test
+- Change of function perfMeasures, now includes only statistics requiring
+  dichotomization/discretization
+- Added function perfScores including scores for binary classification
+  (no dichotomization needed)
+- Added functions to compute CV and two robust variants.
+- Added functions to compute SNR and two robust variants.
+- Added function to compute various confidence interval for CV.
+
+###########################################################
+## Version 1.4
+###########################################################
+- Changed encoding of vignette from latin1 to utf8, as requested by B. Ripley
+- Added some more performance measures: no information rate, weighted accuracy,
+  postive likelihood ratio, negative likelihood ratio, weighted predictive value,
+  balanced predictive value, detection rate, weighted Brier score
+
+###########################################################
+## Version 1.3
+###########################################################
+- added function normDiffCI to compute confidence intervals for the difference
+  of two means.
+- extended the print function for confidence intervals. Now, optional additional
+  information is also printed.
+- added function hsu.t.test to compute the Hsu two-sample t-test.
+- added function power.hsu.t.test to compute power of the Hsu two-sample
+  t-test, or determine parameters to obtain a target power.
+- added function mod.t.test to compute moderated t-test based on package limma
+- added function mod.oneway.test to compute moderated 1-way ANOVA based on
+  package limma
+- added function pairwise.mod.t.test to compute pairwise moderated t-tests.
+
+###########################################################
+## Version 1.2
+###########################################################
+- added as.numeric in the computation of AUC to avoid integer overflow as
+  reported by Mike Harwood
+- added function power.welch.t.test to compute power of the Welch two-sample
+  t-test, or determine parameters to obtain a target power.
+
+###########################################################
+## Version 1.1
+###########################################################
+- added new function glog, glog10, glog2, inv.glog, inv.glog10, inv.glog2 to
+  compute the generalized logarithm and its inverse
+- added new function melt.long to transform a data.frame form wide to long
+  form
+- added new functions to scale axes in ggplot2 plots by glog and neglog
+- extended function perfMeasures by argument cutoff, predictions are no longer
+  restricted to [0,1]
+- added new function optCutoff to compute optimal cutoff for various performance
+  measures for binary classification
+
+###########################################################
+## Version 1.0
+###########################################################
+- added a vignette
+
+###########################################################
+## Version 0.999
+###########################################################
+- added new function perfMeasures to compute various performance measures
+  for binary classification
+- added new function thyroid for plotting TSH, fT3, fT4
+- removed upper bound n = 100 in modified wilson confidence interval
+  (thanks to Andri Signorell for detecting this inconsistency)
+
+###########################################################
+## Version 0.998
+###########################################################
+- extended function normCI - now mean or sd can be known
+- added print function for confidence intervals
+
+###########################################################
+## Version 0.997
+###########################################################
+- added function risks to compute RR, OR, etc.
+- added function rrCI to compute an approximate confidence interval for the
+  relative risk (RR).
+
+###########################################################
+## Version 0.996
+###########################################################
+- extended function or2rr
+- added function normCI for computing confidence intervals for mean and sd
+  of a normal distribution
+
+###########################################################
+## Version 0.995
+###########################################################
+- added function sIQR for computing standardized IQR
+
+###########################################################
+## Version 0.994
+###########################################################
+- added function power.nb.test for computing sample size or power for comparing
+  two negative binomial rates
+
+###########################################################
+## Version 0.993
+###########################################################
+- added function madCI for computing confidence intervals for MAD
+
+###########################################################
+## Version 0.992
+###########################################################
+- corrected bug in quantileCI reported by Rogier Donders (estimate always
+  median independent of specified prob)
+
+###########################################################
+## Version 0.991
+###########################################################
+- added function simCorVars to simulate a pair of variables with a prespecified
+  correlation
+
+###########################################################
+## Version 0.99
+###########################################################
+- added function to compute t-test based on multiple imputed datasets
+- moved packages stats and graphics from Depends to Imports and added respective
+  imports directives to NAMESPACE file
+- added grDevices to Imports
+- use of importFrom in NAMESPACE file except for package stats
+- added Amelia to Suggests
+
+
+###########################################################
+## Version 0.98
+###########################################################
+- added function predValues to compute PPV and NPV
+- added function ssize.pcc to calculate sample sizes for developing classifiers
+  using high-dimensional data
+- provide a more detailed description of the package in the DESCRIPTION file
+
+
+###########################################################
+## Version 0.97
+###########################################################
+- corrected copy and paste error in documentation of quantileCI.
+- added function or2rr to transform OR to RR.
+- CITATION file now uses bibentry
+- added argument minLength to quantileCI and medianCI
+
+
+###########################################################
+## Version 0.96
+###########################################################
+- corrected a bug identified by Steven Kern in the modified Jeffreys interval
+  for binomial proportions.
+
+
+###########################################################
+## Version 0.95
+###########################################################
+- added functions quantileCI and medianCI to compute confidence intervals
+  for quantiles
+- moved RColorBrewer and robustbase from Depends to Imports
+- corrected some minor bugs in traceBack and corDist
+
+
+###########################################################
+## Version 0.94
+###########################################################
+- added function stringSim to compute optimal global and local alignment scores
+  (Needleman-Wunsch and Smith-Waterman algorithm with constant gap penalties)
+- added function traceBack to compute an optimal alignment based on the
+  trace back matrix included in objects of class stringDist or stringSim
+- corrected bug in function stringDist: wrong initialisation for Levenshtein
+  distance
+
+
+###########################################################
+## Version 0.93
+###########################################################
+- added function power.diagnostic.test to compute power resp. sample size
+  for a diagnostic test by approach of Flahault et al. (2005) incorporating
+  the correction of Chu and Cole (2007)
+
+
+###########################################################
+## Version 0.92
+###########################################################
+- added an additional Parameter to function AUC, which can be used to suppress
+  switching of the AUC values from x to 1-x if x < 0.5
+  (a request by Yuta Tanoue)
+
+
+###########################################################
+## Version 0.91
+###########################################################
+- added function stringDist to compute Hamming and Levenshtein distance of two
+  strings (sequences)
+
+
+###########################################################
+## Version 0.9
+###########################################################
+- extended simPlot and corPlot by argument "lab.both.axes" which also to add
+  labels on both axes (a request by Sunghee OH).
+- example to HLgof.test was wrong as pointed out by Dan O'Shea. This was
+  corrected and the function slightly modified (intercept is no longer added
+  inside of HLgof.test for the le Cessie-van Houwelingen-Copas-Hosmer
+  unweighted sum of squares test for global goodness of fit)
+
+
+###########################################################
+## Version 0.8
+###########################################################
+- added function simPlot for plotting similarity matrices (a slight
+  modification of function corPlot)
+
+
+###########################################################
+## Version 0.7
+###########################################################
+- added NEWS file
+- modified function oneWayAnova: instead of lm and anova now oneway.test is
+  used allowing for unequal variances
+- added functions AUC, pairwise.auc and AUC.test as well as pairwise.fun and
+  HLgof.test
+- added NAMESPACE file
+

@@ -1,0 +1,192 @@
+<!DOCTYPE html><html><head><title>R: is_nonna() and the nna*() functions</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>is_nonna {SparseArray}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>is_nonna() and the nna*() functions</h2>
+
+<h3>Description</h3>
+
+<p>A set of functions for direct manipulation of the non-NA elements
+of an array-like object.
+</p>
+<p>Note that, for all these functions, a non-NA element is an element
+for which <code>is.na()</code> is FALSE or <code>is.nan()</code> is TRUE.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>is_nonna(x)
+
+nnacount(x)
+nnawhich(x, arr.ind=FALSE)
+nnavals(x)
+nnavals(x) &lt;- value
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="x">x</code></td>
+<td>
+
+<p>Typically (but not necessarily) an array-like object that is
+<em>non-NA sparse</em>, like an <a href="../../SparseArray/help/NaArray.html">NaArray</a> object.
+</p>
+<p>However, <code>x</code> can also be an ordinary matrix or array, or any
+matrix-like or array-like object.
+</p>
+</td></tr>
+<tr><td><code id="arr.ind">arr.ind</code></td>
+<td>
+
+<p>If <code>arr.ind=FALSE</code> (the default), the indices of the non-NA
+array elements are returned in a numeric vector (a.k.a. <em>L-index</em>).
+Otherwise, they're returned in an ordinary matrix (a.k.a. <em>M-index</em>).
+</p>
+<p>See <code>?<a href="../../S4Arrays/help/Lindex.html">Lindex</a></code> in the <span class="pkg">S4Arrays</span> package for
+more information about <em>L-index</em> and <em>M-index</em>, and how to
+convert from one to the other.
+</p>
+<p>Note that using <code>arr.ind=TRUE</code> won't work if <code>nnacount(x)</code>
+is &gt;= <code>.Machine$integer.max</code> (= 2^31), because, in that case,
+the returned <em>M-index</em> would need to be a matrix with more rows
+than what is supported by base R.
+</p>
+</td></tr>
+<tr><td><code id="value">value</code></td>
+<td>
+
+<p>A vector, typically of length <code>nnacount(x)</code> (or 1) and type
+<code>type(x)</code>.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p><code>nnacount(x)</code> and <code>nnawhich(x)</code> are equivalent to, but
+typically more efficient than, <code>sum(is_nonna(x))</code> and
+<code>which(is_nonna(x))</code>, respectively.
+</p>
+<p><code>nnavals(x)</code> is equivalent to, but typically more efficient than,
+<code>x[nnawhich(x)]</code> (or <code>x[is_nonna(x)]</code>).
+</p>
+<p><code>nnavals(x) &lt;- value</code> replaces the values of the non-NA array
+elements in <code>x</code> with the supplied values. It's equivalent to,
+but typically more efficient than, <code>x[nnawhich(x)] &lt;- value</code>.
+</p>
+<p>Note that <code>nnavals(x) &lt;- nnavals(x)</code> is guaranteed to be a no-op.
+</p>
+
+
+<h3>Value</h3>
+
+<p><code>is_nonna()</code>: An array-like object of <code>type()</code> <code>"logical"</code>
+and same dimensions as the input object.
+</p>
+<p><code>nnacount()</code>: The number of non-NA array elements in <code>x</code>.
+</p>
+<p><code>nnawhich()</code>: The indices of the non-NA array elements in <code>x</code>,
+either as an <em>L-index</em> (if <code>arr.ind</code> is <code>FALSE</code>) or as
+an <em>M-index</em> (if <code>arr.ind</code> is <code>TRUE</code>).
+Note that the indices are returned sorted in strictly ascending order.
+</p>
+<p><code>nnavals()</code>: A vector of the same <code>type()</code> as <code>x</code> and
+containing the values of the non-NA array elements in <code>x</code>.
+Note that the returned vector is guaranteed to be <em>parallel</em>
+to <code>nnawhich(x)</code>.
+</p>
+
+
+<h3>See Also</h3>
+
+
+<ul>
+<li> <p><a href="../../SparseArray/help/is_nonzero.html">is_nonzero</a> for <code>is_nonzero()</code> and <code>nz*()</code> functions
+<code>nzcount()</code>, <code>nzwhich()</code>, etc...
+</p>
+</li>
+<li> <p><a href="../../SparseArray/help/NaArray.html">NaArray</a> objects.
+</p>
+</li>
+<li><p> Ordinary <a href="../../base/help/array.html">array</a> objects in base R.
+</p>
+</li>
+<li> <p><code>base::<a href="../../base/help/which.html">which</a></code> in base R.
+</p>
+</li></ul>
+
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>m &lt;- rbind(c(NA, 0, 3.25, NaN), c(NA, NaN, NA, 1))
+is_nonna(m)  # the NaN values are considered non-NA elements
+
+a &lt;- array(NA_integer_, dim=c(5, 12, 2))
+a[sample(length(a), 20)] &lt;- (-9):10
+
+is_nonna(a)
+
+## Get the number of non-NA array elements in 'a':
+nnacount(a)
+
+## nnawhich() returns the indices of the non-NA array elements in 'a'.
+## Either as a "L-index" i.e. an integer (or numeric) vector of
+## length 'nnacount(a)' containing "linear indices":
+nnaidx &lt;- nnawhich(a)
+length(nnaidx)
+head(nnaidx)
+
+## Or as an "M-index" i.e. an integer matrix with 'nnacount(a)' rows
+## and one column per dimension where the rows represent "array indices"
+## (a.k.a. "array coordinates"):
+Mnnaidx &lt;- nnawhich(a, arr.ind=TRUE)
+dim(Mnnaidx)
+
+## Each row in the matrix is an n-tuple representing the "array
+## coordinates" of a non-NA element in 'a':
+head(Mnnaidx)
+tail(Mnnaidx)
+
+## Extract the values of the non-NA array elements in 'a' and return
+## them in a vector "parallel" to 'nnawhich(a)':
+a_nnavals &lt;- nnavals(a)  # equivalent to 'a[nnawhich(a)]'
+length(a_nnavals)
+head(a_nnavals)
+
+nnavals(a) &lt;- 10 ^ nnavals(a)
+a
+
+## Sanity checks:
+stopifnot(
+  identical(as.matrix(is_nonna(NaArray(m))), is_nonna(m)),
+  identical(nnaidx, which(!is.na(a))),
+  identical(Mnnaidx, which(!is.na(a), arr.ind=TRUE, useNames=FALSE)),
+  identical(nnavals(a), a[nnaidx]),
+  identical(nnavals(a), a[Mnnaidx]),
+  identical(`nnavals&lt;-`(a, nnavals(a)), a)
+)
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>SparseArray</em> version 1.10.8 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

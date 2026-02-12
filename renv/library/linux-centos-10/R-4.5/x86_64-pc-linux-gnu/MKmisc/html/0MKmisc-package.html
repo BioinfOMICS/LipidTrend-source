@@ -1,0 +1,88 @@
+<!DOCTYPE html><html><head><title>R: Miscellaneous Functions from M. Kohl.</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>MKmisc-package {MKmisc}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>
+Miscellaneous Functions from M. Kohl.
+</h2>
+
+<h3>Description</h3>
+
+<p>Contains several functions for statistical data analysis; e.g. for sample size
+and power calculations, computation of confidence intervals, and generation of
+similarity matrices.
+</p>
+
+
+<h3>Details</h3>
+
+
+<table>
+<tr>
+ <td style="text-align: left;">
+Package: </td><td style="text-align: left;"> MKmisc</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+Type: </td><td style="text-align: left;"> Package</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+Version: </td><td style="text-align: left;"> 1.9</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+Date: </td><td style="text-align: left;"> 2022-11-19</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+Depends: </td><td style="text-align: left;"> R(&gt;= 3.5.0)</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+Imports: </td><td style="text-align: left;"> stats, utils, graphics, grDevices, RColorBrewer, robustbase, ggplot2, scales, limma</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+Suggests: </td><td style="text-align: left;"> gplots, Amelia, knitr, rmarkdown, exactRankTests, foreach, parallel, doParallel</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+License: </td><td style="text-align: left;"> LGPL-3</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+URL: </td><td style="text-align: left;"> https://github.com/stamats/MKmisc
+</td>
+</tr>
+
+</table>
+
+<p>library(MKmisc)
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> Matthias Kohl <a href="https://www.stamats.de">https://www.stamats.de</a>
+</p>
+<p>Maintainer: Matthias Kohl  <a href="mailto:matthias.kohl@stamats.de">matthias.kohl@stamats.de</a></p>
+
+<hr><div style="text-align: center;">[Package <em>MKmisc</em> version 1.9 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

@@ -1,0 +1,260 @@
+<!DOCTYPE html><html><head><title>R: Intra range transformations of a GRanges or GRangesList...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>intra-range-methods {GenomicRanges}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Intra range transformations of a GRanges or GRangesList object</h2>
+
+<h3>Description</h3>
+
+<p>This man page documents <em>intra range transformations</em> of a
+<a href="../../GenomicRanges/help/GenomicRanges.html">GenomicRanges</a> object (i.e. of an object that belongs to the
+<a href="../../GenomicRanges/help/GenomicRanges.html">GenomicRanges</a> class or one of its subclasses, this includes
+for example <a href="../../GenomicRanges/help/GRanges.html">GRanges</a> objects), or a <a href="../../GenomicRanges/help/GRangesList.html">GRangesList</a> object.
+</p>
+<p>See <code>?`<a href="../../IRanges/help/intra-range-methods.html">intra-range-methods</a>`</code> and
+<code>?`<a href="../../IRanges/help/inter-range-methods.html">inter-range-methods</a>`</code> in the <span class="pkg">IRanges</span>
+package for a quick introduction to <em>intra range</em> and <em>inter
+range transformations</em>.
+</p>
+<p><em>Intra range</em> methods for <a href="../../GenomicAlignments/help/GAlignments.html">GAlignments</a>
+and <a href="../../GenomicAlignments/help/GAlignmentsList.html">GAlignmentsList</a> objects are defined and
+documented in the <span class="pkg">GenomicAlignments</span> package.
+</p>
+<p>See <code>?`<a href="../help/inter-range-methods.html">inter-range-methods</a>`</code> for
+<em>inter range transformations</em> of a <a href="../../GenomicRanges/help/GenomicRanges.html">GenomicRanges</a> or
+<a href="../../GenomicRanges/help/GRangesList.html">GRangesList</a> object.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>## S4 method for signature 'GenomicRanges'
+shift(x, shift=0L, use.names=TRUE)
+
+## S4 method for signature 'GenomicRanges'
+narrow(x, start=NA, end=NA, width=NA, use.names=TRUE)
+
+## S4 method for signature 'GenomicRanges'
+resize(x, width, fix="start", use.names=TRUE, ignore.strand=FALSE)
+
+## S4 method for signature 'GenomicRanges'
+flank(x, width, start=TRUE, both=FALSE, use.names=TRUE,
+      ignore.strand=FALSE)
+
+## S4 method for signature 'GenomicRanges'
+promoters(x, upstream=2000, downstream=200, use.names=TRUE)
+## S4 method for signature 'GenomicRanges'
+terminators(x, upstream=2000, downstream=200, use.names=TRUE)
+
+## S4 method for signature 'GenomicRanges'
+restrict(x, start=NA, end=NA, keep.all.ranges=FALSE, use.names=TRUE)
+
+## S4 method for signature 'GenomicRanges'
+trim(x, use.names=TRUE)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="x">x</code></td>
+<td>
+<p>A <a href="../../GenomicRanges/help/GenomicRanges.html">GenomicRanges</a> object.</p>
+</td></tr>
+<tr><td><code id="shift">shift</code>, <code id="use.names">use.names</code>, <code id="start">start</code>, <code id="end">end</code>, <code id="width">width</code>, <code id="both">both</code>, <code id="fix">fix</code>, <code id="keep.all.ranges">keep.all.ranges</code>, <code id="upstream">upstream</code>, <code id="downstream">downstream</code></td>
+<td>
+
+<p>See <code>?`<a href="../../IRanges/help/intra-range-methods.html">intra-range-methods</a>`</code>.
+</p>
+</td></tr>
+<tr><td><code id="ignore.strand">ignore.strand</code></td>
+<td>
+
+<p><code>TRUE</code> or <code>FALSE</code>. Whether the strand of the input ranges
+should be ignored or not. See details below.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+
+<dl>
+<dt><code>shift</code>:</dt><dd><p> behaves like the <code>shift</code> method for
+<a href="../../IRanges/help/IntegerRanges.html">IntegerRanges</a> objects. See
+<code>?`<a href="../../IRanges/help/intra-range-methods.html">intra-range-methods</a>`</code> for the details.
+</p>
+</dd>
+<dt><code>narrow</code>:</dt><dd><p> on a <a href="../../GenomicRanges/help/GenomicRanges.html">GenomicRanges</a> object behaves
+like on an <a href="../../IRanges/help/IntegerRanges.html">IntegerRanges</a> object. See
+<code>?`<a href="../../IRanges/help/intra-range-methods.html">intra-range-methods</a>`</code> for the details.
+</p>
+<p>A major difference though is that it returns a <a href="../../GenomicRanges/help/GenomicRanges.html">GenomicRanges</a>
+object instead of an <a href="../../IRanges/help/IntegerRanges.html">IntegerRanges</a> object.
+The returned object is <em>parallel</em> (i.e. same length and names)
+to the original object <code>x</code>.
+</p>
+</dd>
+<dt><code>resize</code>:</dt><dd><p> returns an object of the same type and length as
+<code>x</code> containing intervals that have been resized to width
+<code>width</code> based on the <code>strand(x)</code> values.  Elements where
+<code>strand(x) == "+"</code> or <code>strand(x) == "*"</code> are anchored at
+<code>start(x)</code> and elements where <code>strand(x) == "-"</code> are anchored
+at the <code>end(x)</code>. The <code>use.names</code> argument determines whether
+or not to keep the names on the ranges.
+</p>
+</dd>
+<dt><code>flank</code>:</dt><dd><p> returns an object of the same type and length
+as <code>x</code> containing intervals of width <code>width</code> that flank
+the intervals in <code>x</code>. The <code>start</code> argument takes a
+logical indicating whether <code>x</code> should be flanked at the
+&quot;start&quot; (<code>TRUE</code>) or the &quot;end&quot; (<code>FALSE</code>), which for
+<code>strand(x) != "-"</code> is <code>start(x)</code> and <code>end(x)</code>
+respectively and for <code>strand(x) == "-"</code> is <code>end(x)</code> and
+<code>start(x)</code> respectively. The <code>both</code> argument takes a
+single logical value indicating whether the flanking region
+<code>width</code> positions extends <em>into</em> the range. If
+<code>both=TRUE</code>, the resulting range thus straddles the end
+point, with <code>width</code> positions on either side.
+</p>
+</dd>
+<dt><code>promoters</code>:</dt><dd><p> assumes that the ranges in <code>x</code> represent
+transcript regions and returns the ranges of the corresponding promoter
+regions. The result is another <a href="../../GenomicRanges/help/GenomicRanges.html">GenomicRanges</a> derivative
+<em>parallel</em> to the input, that is, of the same length as <code>x</code>
+and with the i-th element in the output corresponding to the i-th
+element in the input.
+</p>
+<p>The promoter regions extend around the transcription start
+sites (TSS) which are located at <code>start(x)</code> for ranges on the
+<code>+</code> or <code>*</code> strand, and at <code>end(x)</code> for ranges on the
+<code>-</code> strand.
+The <code>upstream</code> and <code>downstream</code> arguments define the
+number of nucleotides in the 5' and 3' direction, respectively.
+More precisely, the output range is defined as
+</p>
+<pre>    (start(x) - upstream) to (start(x) + downstream - 1)
+      </pre>
+<p>for ranges on the <code>+</code> or <code>*</code> strand, and as
+</p>
+<pre>    (end(x) - downstream + 1) to (end(x) + upstream)
+      </pre>
+<p>for ranges on the <code>-</code> strand.
+</p>
+<p>Be aware that the returned object might contain <em>out-of-bound</em>
+ranges i.e. ranges that start before the first nucleotide position
+and/or end after the last nucleotide position of the underlying sequence.
+</p>
+<p>The returned object will always have the same class as <code>x</code>,
+except when <code>x</code> is a <a href="../../GenomicRanges/help/GPos.html">GPos</a> object in which case a
+<a href="../../GenomicRanges/help/GRanges.html">GRanges</a> instance is returned.
+</p>
+</dd>
+<dt><code>terminators</code>:</dt><dd><p> like <code>promoters</code> but returns the ranges
+of the terminator regions. These regions extend around the transcription
+end sites (TES) which are located at <code>end(x)</code> for ranges on the
+<code>+</code> or <code>*</code> strand, and at <code>start(x)</code> for ranges on the
+<code>-</code> strand.
+</p>
+</dd>
+<dt><code>restrict</code>:</dt><dd><p> returns an object of the same type and length as
+<code>x</code> containing restricted ranges for distinct seqnames. The
+<code>start</code> and <code>end</code> arguments can be a named numeric vector of
+seqnames for the ranges to be resticted or a numeric vector or length 1
+if the restriction operation is to be applied to all the sequences in
+<code>x</code>. See <code>?`<a href="../../IRanges/help/intra-range-methods.html">intra-range-methods</a>`</code> for more
+information about range restriction and for a description of the optional
+arguments.
+</p>
+</dd>
+<dt><code>trim</code>:</dt><dd><p> trims out-of-bound ranges located on non-circular
+sequences whose length is not NA.
+</p>
+</dd>
+</dl>
+
+
+
+<h3>Author(s)</h3>
+
+<p>P. Aboyoun, V. Obenchain, and H. Pagès</p>
+
+
+<h3>See Also</h3>
+
+
+<ul>
+<li> <p><a href="../../GenomicRanges/help/GenomicRanges.html">GenomicRanges</a>, <a href="../../GenomicRanges/help/GRanges.html">GRanges</a>, and <a href="../../GenomicRanges/help/GRangesList.html">GRangesList</a> objects.
+</p>
+</li>
+<li><p> The <a href="../../IRanges/help/intra-range-methods.html">intra-range-methods</a> man page in the
+<span class="pkg">IRanges</span> package.
+</p>
+</li>
+<li><p> The <a href="../../IRanges/help/IntegerRanges.html">IntegerRanges</a> class in the <span class="pkg">IRanges</span> package.
+</p>
+</li></ul>
+
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>## ---------------------------------------------------------------------
+## A. ON A GRanges OBJECT
+## ---------------------------------------------------------------------
+gr &lt;- GRanges(
+        seqnames=Rle(paste("chr", c(1, 2, 1, 3), sep=""), c(1, 3, 2, 4)),
+        ranges=IRanges(1:10, width=10:1, names=letters[1:10]),
+        strand=Rle(strand(c("-", "+", "*", "+", "-")), c(1, 2, 2, 3, 2)),
+        score=1:10,
+        GC=seq(1, 0, length=10)
+      )
+gr
+
+shift(gr, 1)
+narrow(gr[-10], start=2, end=-2)
+resize(gr, width=10)
+flank(gr, width=10)
+restrict(gr, start=3, end=7)
+
+gr &lt;- GRanges("chr1", IRanges(rep(10, 3), width=8), c("+", "-", "*"))
+promoters(gr, 2, 5)
+promoters(gr, upstream=0, downstream=1)  # TSS
+terminators(gr, 2, 5)
+terminators(gr, upstream=0, downstream=1)  # TES
+
+## ---------------------------------------------------------------------
+## B. ON A GRangesList OBJECT
+## ---------------------------------------------------------------------
+gr1 &lt;- GRanges("chr2", IRanges(3, 6))
+gr2 &lt;- GRanges(c("chr1", "chr1"), IRanges(c(7,13), width=3),
+               strand=c("+", "-"))
+gr3 &lt;- GRanges(c("chr1", "chr2"), IRanges(c(1, 4), c(3, 9)),
+               strand="-")
+grl &lt;- GRangesList(gr1= gr1, gr2=gr2, gr3=gr3)
+grl
+
+resize(grl, width=20)
+flank(grl, width=20)
+restrict(grl, start=3)
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>GenomicRanges</em> version 1.62.1 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

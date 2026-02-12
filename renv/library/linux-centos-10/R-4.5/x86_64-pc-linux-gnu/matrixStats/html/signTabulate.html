@@ -1,0 +1,75 @@
+<!DOCTYPE html><html><head><title>R: Calculates the number of negative, zero, positive and missing...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>signTabulate {matrixStats}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Calculates the number of negative, zero, positive and missing values</h2>
+
+<h3>Description</h3>
+
+<p>Calculates the number of negative, zero, positive and missing values in a
+<code><a href="../../base/help/numeric.html">numeric</a></code> vector.  For <code><a href="../../base/help/double.html">double</a></code> vectors,
+the number of negative and positive infinite values are also counted.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>signTabulate(x, idxs = NULL, ...)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="x">x</code></td>
+<td>
+<p>a <code><a href="../../base/help/numeric.html">numeric</a></code> <code><a href="../../base/help/vector.html">vector</a></code>.</p>
+</td></tr>
+<tr><td><code id="idxs">idxs</code></td>
+<td>
+<p>A <code><a href="../../base/help/vector.html">vector</a></code> indicating subset of elements to
+operate over. If <code><a href="../../base/help/NULL.html">NULL</a></code>, no subsetting is done.</p>
+</td></tr>
+<tr><td><code id="...">...</code></td>
+<td>
+<p>Not used.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>Returns a <code><a href="../../base/help/name.html">name</a></code>d <code><a href="../../base/help/numeric.html">numeric</a></code>
+<code><a href="../../base/help/vector.html">vector</a></code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Henrik Bengtsson
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../base/help/sign.html">sign</a></code>().
+</p>
+
+<hr><div style="text-align: center;">[Package <em>matrixStats</em> version 1.5.0 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

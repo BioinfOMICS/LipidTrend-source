@@ -1,0 +1,254 @@
+<!DOCTYPE html><html><head><title>R: SparseArray col/row summarization</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>SparseArray-matrixStats {SparseArray}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>SparseArray col/row summarization</h2>
+
+<h3>Description</h3>
+
+<p>The <span class="pkg">SparseArray</span> package provides memory-efficient col/row
+summarization methods (a.k.a. matrixStats methods) for <a href="../../SparseArray/help/SparseArray.html">SparseArray</a>
+objects, like <code>colSums()</code>, <code>rowSums()</code>, <code>colMedians()</code>,
+<code>rowMedians()</code>, <code>colVars()</code>, <code>rowVars()</code>, etc...
+</p>
+<p>Note that these are <em>S4 generic functions</em> defined in the
+<span class="pkg">MatrixGenerics</span> package, with methods for ordinary matrices
+defined in the <span class="pkg">matrixStats</span> package. This man page documents
+the methods defined for <a href="../../SparseArray/help/SparseArray.html">SparseArray</a> objects.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>## N.B.: Showing ONLY the col*() methods (usage of row*() methods is
+## the same):
+
+## S4 method for signature 'SparseArray'
+colAnyNAs(x, rows=NULL, cols=NULL, dims=1, ..., useNames=NA)
+
+## S4 method for signature 'SparseArray'
+colAnys(x, rows=NULL, cols=NULL, na.rm=FALSE, dims=1, ..., useNames=NA)
+
+## S4 method for signature 'SparseArray'
+colAlls(x, rows=NULL, cols=NULL, na.rm=FALSE, dims=1, ..., useNames=NA)
+
+## S4 method for signature 'SparseArray'
+colMins(x, rows=NULL, cols=NULL, na.rm=FALSE, dims=1, ..., useNames=NA)
+
+## S4 method for signature 'SparseArray'
+colMaxs(x, rows=NULL, cols=NULL, na.rm=FALSE, dims=1, ..., useNames=NA)
+
+## S4 method for signature 'SparseArray'
+colRanges(x, rows=NULL, cols=NULL, na.rm=FALSE, dims=1, ..., useNames=NA)
+
+## S4 method for signature 'SparseArray'
+colSums(x, na.rm=FALSE, dims=1)
+
+## S4 method for signature 'SparseArray'
+colProds(x, rows=NULL, cols=NULL, na.rm=FALSE, dims=1, ..., useNames=NA)
+
+## S4 method for signature 'SparseArray'
+colMeans(x, na.rm=FALSE, dims=1)
+
+## S4 method for signature 'SparseArray'
+colSums2(x, rows=NULL, cols=NULL, na.rm=FALSE, dims=1, ..., useNames=NA)
+
+## S4 method for signature 'SparseArray'
+colMeans2(x, rows=NULL, cols=NULL, na.rm=FALSE, dims=1, ..., useNames=NA)
+
+## S4 method for signature 'SparseArray'
+colVars(x, rows=NULL, cols=NULL, na.rm=FALSE, center=NULL, dims=1,
+           ..., useNames=NA)
+
+## S4 method for signature 'SparseArray'
+colSds(x, rows=NULL, cols=NULL, na.rm=FALSE, center=NULL, dims=1,
+          ..., useNames=NA)
+
+## S4 method for signature 'SparseArray'
+colMedians(x, rows=NULL, cols=NULL, na.rm=FALSE, ..., useNames=NA)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="x">x</code></td>
+<td>
+
+<p>A <a href="../../SparseArray/help/SparseMatrix.html">SparseMatrix</a> or <a href="../../SparseArray/help/SparseArray.html">SparseArray</a> object.
+</p>
+<p>Note that the <code>colMedians()</code> and <code>rowMedians()</code> methods
+only support 2D objects (i.e. <a href="../../SparseArray/help/SparseMatrix.html">SparseMatrix</a> objects) at
+the moment.
+</p>
+</td></tr>
+<tr><td><code id="rows">rows</code>, <code id="cols">cols</code>, <code id="...">...</code></td>
+<td>
+
+<p>Not supported.
+</p>
+</td></tr>
+<tr><td><code id="na.rm">na.rm</code>, <code id="useNames">useNames</code>, <code id="center">center</code></td>
+<td>
+
+<p>See man pages of the corresponding generics in the <span class="pkg">MatrixGenerics</span>
+package (e.g. <code>?MatrixGenerics::<a href="../../MatrixGenerics/help/colVars.html">colVars</a></code>)
+for a description of these arguments.
+</p>
+<p>Note that, unlike the methods for ordinary matrices defined in
+the <span class="pkg">matrixStats</span> package, the <code>center</code> argument of the
+<code>colVars()</code>, <code>rowVars()</code>, <code>colSds()</code>, and <code>rowSds()</code>
+methods for <a href="../../SparseArray/help/SparseArray.html">SparseArray</a> objects can only be a
+<em>single value</em> (or a <code>NULL</code>). In particular, if <code>x</code>
+has more than one column, then <code>center</code> cannot be a vector
+with one value per column in <code>x</code>.
+</p>
+</td></tr>
+<tr><td><code id="dims">dims</code></td>
+<td>
+
+<p>See <code>?base::<a href="../../base/help/colSums.html">colSums</a></code> for a description of this
+argument. Note that all the methods above support it, except
+<code>colMedians()</code> and <code>rowMedians()</code>.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>All these methods operate <em>natively</em> on the <a href="../../SparseArray/help/SVT_SparseArray.html">SVT_SparseArray</a>
+internal representation, for maximum efficiency.
+</p>
+<p>Note that more col/row summarization methods might be added in the future.
+</p>
+
+
+<h3>Value</h3>
+
+<p>See man pages of the corresponding generics in the <span class="pkg">MatrixGenerics</span>
+package (e.g. <code>?MatrixGenerics::<a href="../../MatrixGenerics/help/colRanges.html">colRanges</a></code>)
+for the value returned by these methods.
+</p>
+
+
+<h3>Note</h3>
+
+<p>Most <code>col*()</code> methods for <a href="../../SparseArray/help/SparseArray.html">SparseArray</a> objects are multithreaded.
+See <code><a href="../../SparseArray/help/set_SparseArray_nthread.html">set_SparseArray_nthread</a></code> for how to control the number
+of threads.
+</p>
+
+
+<h3>See Also</h3>
+
+
+<ul>
+<li> <p><a href="../../SparseArray/help/SparseArray.html">SparseArray</a> objects.
+</p>
+</li>
+<li><p> The man pages of the various generic functions defined
+in the <span class="pkg">MatrixGenerics</span> package e.g.
+<code>MatrixGenerics::<a href="../../MatrixGenerics/help/colVars.html">colVars</a></code> etc...
+</p>
+</li></ul>
+
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>## ---------------------------------------------------------------------
+## 2D CASE
+## ---------------------------------------------------------------------
+m0 &lt;- matrix(0L, nrow=6, ncol=4, dimnames=list(letters[1:6], LETTERS[1:4]))
+m0[c(1:2, 8, 10, 15:17, 24)] &lt;- (1:8)*10L
+m0["e", "B"] &lt;- NA
+svt0 &lt;- SparseArray(m0)
+svt0
+
+colSums(svt0)
+colSums(svt0, na.rm=TRUE)
+
+rowSums(svt0)
+rowSums(svt0, na.rm=TRUE)
+
+colMeans(svt0)
+colMeans(svt0, na.rm=TRUE)
+
+colRanges(svt0)
+colRanges(svt0, useNames=FALSE)
+colRanges(svt0, na.rm=TRUE)
+colRanges(svt0, na.rm=TRUE, useNames=FALSE)
+
+colVars(svt0)
+colVars(svt0, useNames=FALSE)
+
+## Sanity checks:
+stopifnot(
+  identical(colSums(svt0), colSums(m0)),
+  identical(colSums(svt0, na.rm=TRUE), colSums(m0, na.rm=TRUE)),
+  identical(rowSums(svt0), rowSums(m0)),
+  identical(rowSums(svt0, na.rm=TRUE), rowSums(m0, na.rm=TRUE)),
+  identical(colMeans(svt0), colMeans(m0)),
+  identical(colMeans(svt0, na.rm=TRUE), colMeans(m0, na.rm=TRUE)),
+  identical(colRanges(svt0), colRanges(m0, useNames=TRUE)),
+  identical(colRanges(svt0, useNames=FALSE), colRanges(m0, useNames=FALSE)),
+  identical(colRanges(svt0, na.rm=TRUE),
+            colRanges(m0, na.rm=TRUE, useNames=TRUE)),
+  identical(colVars(svt0), colVars(m0, useNames=TRUE)),
+  identical(colVars(svt0, na.rm=TRUE),
+            colVars(m0, na.rm=TRUE, useNames=TRUE))
+)
+
+## ---------------------------------------------------------------------
+## 3D CASE (AND ARBITRARY NUMBER OF DIMENSIONS)
+## ---------------------------------------------------------------------
+set.seed(2009)
+svt &lt;- 6L * (poissonSparseArray(5:3, density=0.35) -
+             poissonSparseArray(5:3, density=0.35))
+dimnames(svt) &lt;- list(NULL, letters[1:4], LETTERS[1:3])
+
+cs1 &lt;- colSums(svt)
+cs1  # cs1[j , k] is equal to sum(svt[ , j, k])
+
+cs2 &lt;- colSums(svt, dims=2)
+cs2  # cv2[k] is equal to sum(svt[ , , k])
+
+cv1 &lt;- colVars(svt)
+cv1  # cv1[j , k] is equal to var(svt[ , j, k])
+
+cv2 &lt;- colVars(svt, dims=2) 
+cv2  # cv2[k] is equal to var(svt[ , , k])
+
+## Sanity checks:
+k_idx &lt;- setNames(seq_len(dim(svt)[3]), dimnames(svt)[[3]])
+j_idx &lt;- setNames(seq_len(dim(svt)[2]), dimnames(svt)[[2]])
+cv1b &lt;- sapply(k_idx, function(k)
+                      sapply(j_idx, function(j) var(svt[ , j, k, drop=FALSE])))
+cv2b &lt;- sapply(k_idx, function(k) var(svt[ , , k]))
+stopifnot(
+  identical(colSums(svt), colSums(as.array(svt))),
+  identical(colSums(svt, dims=2), colSums(as.array(svt), dims=2)),
+  identical(cv1, cv1b),
+  identical(cv2, cv2b)
+)
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>SparseArray</em> version 1.10.8 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

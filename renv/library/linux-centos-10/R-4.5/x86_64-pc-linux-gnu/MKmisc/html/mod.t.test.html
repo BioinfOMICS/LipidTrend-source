@@ -1,0 +1,126 @@
+<!DOCTYPE html><html><head><title>R: Moderated t-Test</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>mod.t.test {MKmisc}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Moderated t-Test</h2>
+
+<h3>Description</h3>
+
+<p>Performs moderated t-tests based on Bioconductor package limma.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>mod.t.test(x, group = NULL, paired = FALSE, adjust.method = "BH",
+           sort.by = "none")
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="x">x</code></td>
+<td>
+<p>a (non-empty) numeric matrix of data values.</p>
+</td></tr>
+<tr><td><code id="group">group</code></td>
+<td>
+<p>an optional factor representing the groups.</p>
+</td></tr>
+<tr><td><code id="paired">paired</code></td>
+<td>
+<p>a logical indicating whether you want a paired test.</p>
+</td></tr>
+<tr><td><code id="adjust.method">adjust.method</code></td>
+<td>
+<p>see <code><a href="../../stats/html/p.adjust.html">p.adjust</a></code></p>
+</td></tr>
+<tr><td><code id="sort.by">sort.by</code></td>
+<td>
+<p>see <code><a href="../../limma/help/toptable.html">toptable</a></code></p>
+</td></tr></table>
+<p>, where <code>"logFC"</code>
+corresponds to difference in means.
+</p>
+
+
+<h3>Details</h3>
+
+<p>The function uses Bioconductor package limma to compute moderated t-tests.
+For more details we refer to <code><a href="../../limma/help/ebayes.html">ebayes</a></code>.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A data.frame with the results.
+</p>
+
+
+<h3>References</h3>
+
+<p>B. Phipson, S. Lee, I.J. Majewski, W.S. Alexander, G.H. Smyth (2016). Robust
+hyperparameter estimation protects against hypervariable genes and improves
+power to detect differential expression. <em>Annals of Applied Statistics</em>
+10(2), 946-963.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../stats/html/t.test.html">t.test</a></code></p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>## One-sample test
+X &lt;- matrix(rnorm(10*20, mean = 1), nrow = 10, ncol = 20)
+
+mod.t.test(X)
+## corresponds to
+library(limma)
+design &lt;- matrix(1, nrow = ncol(X), ncol = 1)
+colnames(design) &lt;- "A"
+fit1 &lt;- lmFit(X, design)
+fit2 &lt;- eBayes(fit1)
+topTable(fit2, coef = 1, number = Inf, confint = TRUE, sort.by = "none")[,-4]
+
+## Two-sample test
+set.seed(123)
+X &lt;- rbind(matrix(rnorm(5*20), nrow = 5, ncol = 20),
+           matrix(rnorm(5*20, mean = 1), nrow = 5, ncol = 20))
+g2 &lt;- factor(c(rep("group 1", 10), rep("group 2", 10)))
+
+mod.t.test(X, group = g2)
+## corresponds to
+design &lt;- model.matrix(~ 0 + g2)
+colnames(design) &lt;- c("group1", "group2")
+fit1 &lt;- lmFit(X, design)
+cont.matrix &lt;- makeContrasts(group1vsgroup2="group1-group2", levels=design)
+fit2 &lt;- contrasts.fit(fit1, cont.matrix)
+fit3 &lt;- eBayes(fit2)
+topTable(fit3, coef = 1, number = Inf, confint = TRUE, sort.by = "none")[,-4]
+
+## Paired two-sample test
+mod.t.test(X, group = g2, paired = TRUE)
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>MKmisc</em> version 1.9 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

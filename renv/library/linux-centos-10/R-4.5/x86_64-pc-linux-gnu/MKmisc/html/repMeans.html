@@ -1,0 +1,132 @@
+<!DOCTYPE html><html><head><title>R: Compute mean of replicated spots</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>repMeans {MKmisc}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Compute mean of replicated spots </h2>
+
+<h3>Description</h3>
+
+<p>Compute mean of replicated spots where additionally spot flags may incorporated.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>repMeans(x, flags, use.flags = NULL, ndups, spacing, method, ...)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="x">x</code></td>
+<td>
+<p> matrix or data.frame of expression values </p>
+</td></tr>
+<tr><td><code id="flags">flags</code></td>
+<td>
+<p> matrix or data.frame of spot flags; must have same dimension as <code>x</code> </p>
+</td></tr>
+<tr><td><code id="use.flags">use.flags</code></td>
+<td>
+<p> should flags be included and in which way; cf. section details </p>
+</td></tr>
+<tr><td><code id="ndups">ndups</code></td>
+<td>
+<p> integer, number of replicates on chip. The number of rows of 
+<code>x</code> must be divisible by <code>ndups</code> </p>
+</td></tr>
+<tr><td><code id="spacing">spacing</code></td>
+<td>
+<p> the spacing between the rows of 'x' corresponding to 
+replicated spots, <code>spacing = 1</code> for consecutive spots; 
+cf. function <code><a href="../../limma/help/unwrapdups.html">unwrapdups</a></code> in package 
+<code>"limma"</code> </p>
+</td></tr>
+<tr><td><code id="method">method</code></td>
+<td>
+<p> function to aggregate the replicated spots. If missing, the mean is used. </p>
+</td></tr>
+<tr><td><code id="...">...</code></td>
+<td>
+<p> optional arguments to <code>method</code>. </p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The incorporation of spot flags is controlled via argument <code>use.flags</code>.
+</p>
+<p><code>NULL</code>: flags are not used; minimum flag value of replicated 
+spots is returned
+</p>
+<p><code>"max"</code>: only spots with flag value equal to the maximum flag value of 
+replicated spots are used
+</p>
+<p><code>"median"</code>: only spots with flag values larger or equal to median of 
+replicated spots are used
+</p>
+<p><code>"mean"</code>: only spots with flag values larger or equal to mean of replicated 
+spots are used  
+</p>
+
+
+<h3>Value</h3>
+
+<p>LIST with components
+</p>
+<table role = "presentation">
+<tr><td><code>exprs</code></td>
+<td>
+<p>mean of expression values</p>
+</td></tr>
+<tr><td><code>flags</code></td>
+<td>
+<p>flags for mean expression values</p>
+</td></tr>
+</table>
+
+
+<h3>Note</h3>
+
+<p>A first version of this function appeared in package SLmisc.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> Matthias Kohl <a href="mailto:Matthias.Kohl@stamats.de">Matthias.Kohl@stamats.de</a></p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../limma/help/unwrapdups.html">unwrapdups</a></code></p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>## only a dummy example
+M &lt;- matrix(rnorm(1000), ncol = 10)
+FL &lt;- matrix(rpois(1000, lambda = 10), ncol = 10) # only for this example
+res &lt;- repMeans(x = M, flags = FL, use.flags = "max", ndups = 5, spacing = 20)
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>MKmisc</em> version 1.9 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

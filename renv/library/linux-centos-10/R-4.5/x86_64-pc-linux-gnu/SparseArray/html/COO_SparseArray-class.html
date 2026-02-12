@@ -1,0 +1,241 @@
+<!DOCTYPE html><html><head><title>R: COO_SparseArray objects</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>COO_SparseArray-class {SparseArray}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>COO_SparseArray objects</h2>
+
+<h3>Description</h3>
+
+<p>The COO_SparseArray class is a container for efficient in-memory
+representation of multidimensional sparse arrays. It uses the
+<em>COO layout</em> to represent the nonzero data internally.
+</p>
+<p>A COO_SparseMatrix object is a COO_SparseArray object of 2 dimensions.
+</p>
+<p>IMPORTANT NOTE: COO_SparseArray and COO_SparseMatrix objects are now
+superseded by the new and more efficient <a href="../../SparseArray/help/SVT_SparseArray.html">SVT_SparseArray</a> and
+SVT_SparseMatrix objects.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>## Constructor function:
+COO_SparseArray(dim, nzcoo=NULL, nzdata=NULL, dimnames=NULL, check=TRUE)
+
+## Getters (in addition to dim(), length(), and dimnames()):
+nzcoo(x)
+nzdata(x)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="dim">dim</code></td>
+<td>
+
+<p>The dimensions (supplied as an integer vector) of the
+COO_SparseArray or COO_SparseMatrix object to construct.
+</p>
+</td></tr>
+<tr><td><code id="nzcoo">nzcoo</code></td>
+<td>
+
+<p>A matrix containing the array coordinates of the nonzero elements.
+</p>
+<p>This must be an integer matrix of array coordinates like
+one returned by <code>base::<a href="../../base/help/arrayInd.html">arrayInd</a></code> or
+<code>S4Arrays::<a href="../../S4Arrays/help/Lindex2Mindex.html">Lindex2Mindex</a></code>, that is, a matrix
+with <code>length(dim)</code> columns and where each row is an n-tuple
+representing the coordinates of an array element.
+</p>
+</td></tr>
+<tr><td><code id="nzdata">nzdata</code></td>
+<td>
+
+<p>A vector (atomic or list) of length <code>nrow(nzcoo)</code> containing
+the nonzero elements.
+</p>
+</td></tr>
+<tr><td><code id="dimnames">dimnames</code></td>
+<td>
+
+<p>The <em>dimnames</em> of the object to construct. Must be <code>NULL</code> or
+a list of length the number of dimensions. Each list element must be
+either <code>NULL</code> or a character vector along the corresponding dimension.
+</p>
+</td></tr>
+<tr><td><code id="check">check</code></td>
+<td>
+
+<p>Should the object be validated upon construction?
+</p>
+</td></tr>
+<tr><td><code id="x">x</code></td>
+<td>
+
+<p>A COO_SparseArray or COO_SparseMatrix object.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+
+<ul>
+<li><p> For <code>COO_SparseArray()</code>: A COO_SparseArray or COO_SparseMatrix
+object.
+</p>
+</li>
+<li><p> For <code>nzcoo()</code>: A matrix with one column per dimension
+containing the <em>array coordinates</em> of the nonzero elements.
+</p>
+</li>
+<li><p> For <code>nzdata()</code>: A vector <em>parallel</em> to <code>nzcoo(x)</code>
+(i.e. with one element per row in <code>nzcoo(x)</code>) containing
+the nonzero elements.
+</p>
+</li></ul>
+
+
+
+<h3>See Also</h3>
+
+
+<ul>
+<li><p> The new <a href="../../SparseArray/help/SVT_SparseArray.html">SVT_SparseArray</a> class for a replacement of
+of the COO_SparseArray class.
+</p>
+</li>
+<li><p> The <a href="../../SparseArray/help/SparseArray.html">SparseArray</a> class for the virtual parent class of
+COO_SparseArray and SVT_SparseArray.
+</p>
+</li>
+<li> <p><a href="../../Matrix/help/dgCMatrix-class.html">dgCMatrix-class</a> and <a href="../../Matrix/help/lgCMatrix-class.html">lgCMatrix-class</a>
+in the <span class="pkg">Matrix</span> package, for the de facto standard for sparse
+matrix representations in the R ecosystem.
+</p>
+</li>
+<li> <p><code>base::<a href="../../base/help/arrayInd.html">arrayInd</a></code> in the <span class="pkg">base</span> package.
+</p>
+</li>
+<li> <p><code>S4Arrays::<a href="../../S4Arrays/help/Lindex2Mindex.html">Lindex2Mindex</a></code> in the
+<span class="pkg">S4Arrays</span> package for an improved (faster) version
+of <code>base::arrayInd</code>.
+</p>
+</li>
+<li><p> Ordinary <a href="../../base/help/array.html">array</a> objects in base R.
+</p>
+</li></ul>
+
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>## ---------------------------------------------------------------------
+## EXAMPLE 1
+## ---------------------------------------------------------------------
+dim1 &lt;- 5:3
+nzcoo1 &lt;- Lindex2Mindex(sample(60, 8), 5:3)
+nzdata1 &lt;- 11.11 * seq_len(nrow(nzcoo1))
+coo1 &lt;- COO_SparseArray(dim1, nzcoo1, nzdata1)
+coo1
+
+nzcoo(coo1)
+nzdata(coo1)
+type(coo1)
+sparsity(coo1)
+
+as.array(coo1)  # back to a dense representation
+
+#as.matrix(coo1)  # error!
+
+## ---------------------------------------------------------------------
+## EXAMPLE 2
+## ---------------------------------------------------------------------
+m2 &lt;- matrix(c(5:-2, rep.int(c(0L, 99L), 11)), ncol=6)
+coo2 &lt;- as(m2, "COO_SparseArray")
+class(coo2)
+dim(coo2)
+length(coo2)
+nzcoo(coo2)
+nzdata(coo2)
+type(coo2)
+sparsity(coo2)
+
+stopifnot(identical(as.matrix(coo2), m2))
+
+t(coo2)
+stopifnot(identical(as.matrix(t(coo2)), t(as.matrix(coo2))))
+
+## ---------------------------------------------------------------------
+## COERCION FROM/TO dg[C|R]Matrix OR lg[C|R]Matrix OBJECTS
+## ---------------------------------------------------------------------
+## dg[C|R]Matrix and lg[C|R]Matrix objects are defined in the Matrix
+## package.
+
+## dgCMatrix/dgRMatrix:
+
+M2C &lt;- as(coo2, "dgCMatrix")
+stopifnot(identical(M2C, as(m2, "dgCMatrix")))
+
+coo2C &lt;- as(M2C, "COO_SparseArray")
+## 'coo2C' is the same as 'coo2' except that 'nzdata(coo2C)' has
+## type "double" instead of "integer":
+stopifnot(all.equal(coo2, coo2C))
+typeof(nzdata(coo2C))  # double
+typeof(nzdata(coo2))   # integer
+
+M2R &lt;- as(coo2, "dgRMatrix")
+stopifnot(identical(M2R, as(m2, "dgRMatrix")))
+coo2R &lt;- as(M2R, "COO_SparseArray")
+stopifnot(all.equal(as.matrix(coo2), as.matrix(coo2R)))
+
+## lgCMatrix/lgRMatrix:
+
+m3 &lt;- m2 == 99  # logical matrix
+coo3 &lt;- as(m3, "COO_SparseArray")
+class(coo3)
+type(coo3)
+
+M3C &lt;- as(coo3, "lgCMatrix")
+stopifnot(identical(M3C, as(m3, "lgCMatrix")))
+coo3C &lt;- as(M3C, "COO_SparseArray")
+identical(as.matrix(coo3), as.matrix(coo3C))
+
+M3R &lt;- as(coo3, "lgRMatrix")
+#stopifnot(identical(M3R, as(m3, "lgRMatrix")))
+coo3R &lt;- as(M3R, "COO_SparseArray")
+identical(as.matrix(coo3), as.matrix(coo3R))
+
+## ---------------------------------------------------------------------
+## A BIG COO_SparseArray OBJECT
+## ---------------------------------------------------------------------
+nzcoo4 &lt;- cbind(sample(25000, 600000, replace=TRUE),
+                sample(195000, 600000, replace=TRUE))
+nzdata4 &lt;- runif(600000)
+coo4 &lt;- COO_SparseArray(c(25000, 195000), nzcoo4, nzdata4)
+coo4
+sparsity(coo4)
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>SparseArray</em> version 1.10.8 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

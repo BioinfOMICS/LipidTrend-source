@@ -1,0 +1,26 @@
+LipidTrendSE-class      Class for storing analyzeLipidRegion analysis
+                        results
+LipidTrendSE-validity   Validate LipidTrendSE object
+abundance_2D            Example lipid abundance data for
+                        two-dimensional LipidTrend analysis
+abundance_CL            Example lipid abundance data for
+                        one-dimensional LipidTrend analysis
+analyzeLipidRegion      Conduct statistical to analyze lipid features
+                        tendencies
+char_table_2D           Example lipid characteristics table for
+                        two-dimensional LipidTrend analysis
+char_table_CL           Example lipid characteristics table for
+                        one-dimensional LipidTrend analysis
+even_chain_result       Get Even Chain Result from LipidTrendSE
+group_info              Example group information table for LipidTrend
+                        analysis
+lipid_se_2D             Example Dataset for two-dimensional data
+lipid_se_CL             Example Dataset for one-dimensional data
+odd_chain_result        Get Odd Chain Result from LipidTrendSE
+plotRegion1D            Plot region trends for one-dimensional lipid
+                        feature
+plotRegion2D            Plot region trends for two-dimensional lipid
+                        features
+result                  Get Result from LipidTrendSE
+show,LipidTrendSE-method
+                        Show method for LipidTrendSE objects

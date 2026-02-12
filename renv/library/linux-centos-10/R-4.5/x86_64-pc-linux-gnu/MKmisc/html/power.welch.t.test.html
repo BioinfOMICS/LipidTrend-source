@@ -1,0 +1,158 @@
+<!DOCTYPE html><html><head><title>R: Power calculations for two sample Welch t test</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>power.welch.t.test {MKmisc}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Power calculations for two sample Welch t test</h2>
+
+<h3>Description</h3>
+
+<p>Compute the power of the two-sample Welch t test, or determine parameters
+to obtain a target power.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>power.welch.t.test(n = NULL, delta = NULL, sd1 = 1, sd2 = 1, sig.level = 0.05,
+                   power = NULL, alternative = c("two.sided", "one.sided"),
+                   strict = FALSE, tol = .Machine$double.eps^0.25)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="n">n</code></td>
+<td>
+<p>number of observations (per group)</p>
+</td></tr>
+<tr><td><code id="delta">delta</code></td>
+<td>
+<p>(expected) true difference in means</p>
+</td></tr>
+<tr><td><code id="sd1">sd1</code></td>
+<td>
+<p>(expected) standard deviation of group 1</p>
+</td></tr>
+<tr><td><code id="sd2">sd2</code></td>
+<td>
+<p>(expected) standard deviation of group 2</p>
+</td></tr>
+<tr><td><code id="sig.level">sig.level</code></td>
+<td>
+<p>significance level (Type I error probability)</p>
+</td></tr>
+<tr><td><code id="power">power</code></td>
+<td>
+<p>power of test (1 minus Type II error probability)</p>
+</td></tr>
+<tr><td><code id="alternative">alternative</code></td>
+<td>
+<p>one- or two-sided test.  Can be abbreviated.</p>
+</td></tr>
+<tr><td><code id="strict">strict</code></td>
+<td>
+<p>use strict interpretation in two-sided case</p>
+</td></tr>
+<tr><td><code id="tol">tol</code></td>
+<td>
+<p>numerical tolerance used in root finding, the default
+providing (at least) four significant digits.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Exactly one of the parameters <code>n</code>, <code>delta</code>, <code>power</code>,
+<code>sd1</code>, <code>sd2</code> and <code>sig.level</code> must be passed as <code>NULL</code>,
+and that parameter is determined from the others. Notice that the last three
+have non-NULL defaults, so NULL must be explicitly passed if you want to
+compute them.
+</p>
+<p>If <code>strict = TRUE</code> is used, the power will include the probability of
+rejection in the opposite direction of the true effect, in the two-sided
+case. Without this the power will be half the significance level if the
+true difference is zero.
+</p>
+
+
+<h3>Value</h3>
+
+<p>Object of class <code>"power.htest"</code>, a list of the arguments
+(including the computed one) augmented with <code>method</code> and
+<code>note</code> elements.
+</p>
+
+
+<h3>Note</h3>
+
+<p>The function and its documentation was adapted from <code>power.t.test</code>
+implemented by Peter Dalgaard and based on previous work by Claus Ekstroem.
+</p>
+<p><code>uniroot</code> is used to solve the power equation for unknowns, so
+you may see errors from it, notably about inability to bracket the
+root when invalid arguments are given.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Matthias Kohl <a href="mailto:Matthias.Kohl@stamats.de">Matthias.Kohl@stamats.de</a></p>
+
+
+<h3>References</h3>
+
+<p>S.L. Jan and G. Shieh (2011). Optimal sample sizes for Welch's test under
+various allocation and cost considerations. <em>Behav Res Methods</em>, 43,
+4:1014-22.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../stats/html/power.t.test.html">power.t.test</a></code>, <code><a href="../../stats/html/t.test.html">t.test</a></code>, <code><a href="../../stats/html/uniroot.html">uniroot</a></code></p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'> ## identical results as power.t.test, since sd = sd1 = sd2 = 1
+ power.welch.t.test(n = 20, delta = 1)
+ power.welch.t.test(power = .90, delta = 1)
+ power.welch.t.test(power = .90, delta = 1, alternative = "one.sided")
+
+ ## sd1 = 0.5, sd2 = 1
+ power.welch.t.test(delta = 1, sd1 = 0.5, sd2 = 1, power = 0.9)
+
+ 
+ ## empirical check
+ M &lt;- 10000
+ ps &lt;- numeric(M)
+ for(i in seq_len(M)){
+   x &lt;- rnorm(15, mean = 0, sd = 0.5)
+   y &lt;- rnorm(15, mean = 1, sd = 1.0)
+   ps[i] &lt;- t.test(x, y)$p.value
+ }
+ ## empirical power
+ sum(ps &lt; 0.05)/M
+ 
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>MKmisc</em> version 1.9 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

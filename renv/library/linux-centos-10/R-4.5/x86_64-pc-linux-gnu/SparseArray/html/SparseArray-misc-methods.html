@@ -1,0 +1,180 @@
+<!DOCTYPE html><html><head><title>R: Miscellaneous operations on a SparseArray object</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>SparseArray-misc-methods {SparseArray}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Miscellaneous operations on a SparseArray object</h2>
+
+<h3>Description</h3>
+
+<p>This man page documents various base array operations that are
+supported by <a href="../../SparseArray/help/SparseArray.html">SparseArray</a> derivatives, and that didn't belong
+to any of the groups of operations documented in the other man pages
+of the <span class="pkg">SparseArray</span> package.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'># --- unary isometric array transformations ---
+
+## S4 method for signature 'COO_SparseArray'
+is.na(x)
+## S4 method for signature 'SVT_SparseArray'
+is.na(x)
+
+## S4 method for signature 'COO_SparseArray'
+is.nan(x)
+## S4 method for signature 'SVT_SparseArray'
+is.nan(x)
+
+## S4 method for signature 'COO_SparseArray'
+is.infinite(x)
+## S4 method for signature 'SVT_SparseArray'
+is.infinite(x)
+
+## S4 method for signature 'COO_SparseArray'
+tolower(x)
+
+## S4 method for signature 'COO_SparseArray'
+toupper(x)
+
+## S4 method for signature 'COO_SparseArray'
+nchar(x, type="chars", allowNA=FALSE, keepNA=NA)
+
+# --- N-ary isometric array transformations ---
+
+## S4 method for signature 'SparseArray'
+pmin(..., na.rm=FALSE)
+## S4 method for signature 'SparseArray'
+pmax(..., na.rm=FALSE)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="x">x</code></td>
+<td>
+
+<p>A <a href="../../SparseArray/help/SparseArray.html">SparseArray</a> derivative.
+</p>
+</td></tr>
+<tr><td><code id="type">type</code>, <code id="allowNA">allowNA</code>, <code id="keepNA">keepNA</code></td>
+<td>
+
+<p>See <code>?base::<a href="../../base/help/nchar.html">nchar</a></code> for a description of
+these arguments.
+</p>
+</td></tr>
+<tr><td><code id="...">...</code></td>
+<td>
+
+<p><a href="../../SparseArray/help/SparseArray.html">SparseArray</a> derivatives.
+</p>
+</td></tr>
+<tr><td><code id="na.rm">na.rm</code></td>
+<td>
+
+<p>See <code>?base::<a href="../../base/help/pmin.html">pmin</a></code> for a description of
+this argument.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>More operations will be added in the future.
+</p>
+
+
+<h3>Value</h3>
+
+<p>See man pages of the corresponding base functions (e.g.
+<code>?base::<a href="../../base/help/is.na.html">is.na</a></code>, <code>?base::<a href="../../base/help/nchar.html">nchar</a></code>,
+<code>?base::<a href="../../base/help/pmin.html">pmin</a></code>, etc...) for the value returned by
+these methods.
+</p>
+<p>Note that, like the base functions, the methods documented in this man page
+are <em>endomorphisms</em> i.e. they return an array-like object of the same
+class as the input.
+</p>
+
+
+<h3>See Also</h3>
+
+
+<ul>
+<li> <p><code>base::<a href="../../base/help/is.na.html">is.na</a></code> and
+<code>base::<a href="../../base/help/is.infinite.html">is.infinite</a></code> in base R.
+</p>
+</li>
+<li> <p><code>base::<a href="../../base/help/tolower.html">tolower</a></code> in base R.
+</p>
+</li>
+<li> <p><code>base::<a href="../../base/help/nchar.html">nchar</a></code> in base R.
+</p>
+</li>
+<li> <p><code>base::<a href="../../base/help/pmin.html">pmin</a></code> in base R.
+</p>
+</li>
+<li> <p><a href="../../SparseArray/help/SparseArray.html">SparseArray</a> objects.
+</p>
+</li>
+<li><p> Ordinary <a href="../../base/help/array.html">array</a> objects in base R.
+</p>
+</li></ul>
+
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>a &lt;- array(c(0, 2.77, NA, 0, NaN, -Inf), dim=5:3)
+svt &lt;- SparseArray(a)  # SVT_SparseArray object
+class(svt)
+
+is.na(svt)             # SVT_SparseArray object of type "logical"
+is.nan(svt)            # SVT_SparseArray object of type "logical"
+is.infinite(svt)       # SVT_SparseArray object of type "logical"
+
+svt1 &lt;- poissonSparseMatrix(500, 20, density=0.2)
+svt2 &lt;- poissonSparseMatrix(500, 20, density=0.25) * 0.77
+pmin(svt1, svt2)
+pmax(svt1, svt2)
+
+## Sanity checks:
+res &lt;- is.na(svt)
+stopifnot(is(res, "SVT_SparseArray"), type(res) == "logical",
+          identical(as.array(res), is.na(a)))
+res &lt;- is.nan(svt)
+stopifnot(is(res, "SVT_SparseArray"), type(res) == "logical",
+          identical(as.array(res), is.nan(a)))
+res &lt;- is.infinite(svt)
+stopifnot(is(res, "SVT_SparseArray"), type(res) == "logical",
+          identical(as.array(res), is.infinite(a)))
+res &lt;- pmin(svt1, svt2)
+stopifnot(is(res, "SVT_SparseArray"),
+          identical(as.array(res), pmin(as.array(svt1), as.array(svt2))))
+res &lt;- pmax(svt1, svt2)
+stopifnot(is(res, "SVT_SparseArray"),
+          identical(as.array(res), pmax(as.array(svt1), as.array(svt2))))
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>SparseArray</em> version 1.10.8 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

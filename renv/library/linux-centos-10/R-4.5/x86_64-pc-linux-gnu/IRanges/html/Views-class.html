@@ -1,0 +1,213 @@
+<!DOCTYPE html><html><head><title>R: Views objects</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>Views-class {IRanges}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Views objects</h2>
+
+<h3>Description</h3>
+
+<p>The Views virtual class is a general container for storing a set of
+views on an arbitrary Vector object, called the &quot;subject&quot;.
+</p>
+<p>Its primary purpose is to introduce concepts and provide some facilities
+that can be shared by the concrete classes that derive from it.
+</p>
+<p>Some direct subclasses of the Views class are: <a href="../../IRanges/help/RleViews.html">RleViews</a>,
+<a href="../../XVector/help/XIntegerViews.html">XIntegerViews</a> (defined in the XVector package),
+<a href="../../Biostrings/help/XStringViews.html">XStringViews</a> (defined in the Biostrings package),
+etc...
+</p>
+
+
+<h3>Constructor</h3>
+
+
+<dl>
+<dt><code>Views(subject, start=NULL, end=NULL, width=NULL, names=NULL)</code>:</dt><dd>
+<p>This constructor is a generic function with dispatch on argument
+<code>subject</code>. Specific methods must be defined for the subclasses
+of the Views class. For example a method for
+<a href="../../Biostrings/help/XString-class.html">XString</a> subjects is defined
+in the Biostrings package that returns an
+<a href="../../Biostrings/help/XStringViews-class.html">XStringViews</a>
+object. There is no default method.
+</p>
+<p>The treatment of the <code>start</code>, <code>end</code> and <code>width</code>
+arguments is the same as with the <code><a href="../../IRanges/help/IRanges.html">IRanges</a></code> constructor,
+except that, in addition, <code>Views</code> allows <code>start</code> to be an
+<a href="../../IRanges/help/IntegerRanges.html">IntegerRanges</a> object. With this feature,
+<code>Views(subject, IRanges(my_starts, my_ends, my_widths, my_names))</code>
+and <code>Views(subject, my_starts, my_ends, my_widths, my_names)</code>
+are equivalent (except when <code>my_starts</code> is itself a
+<a href="../../IRanges/help/IntegerRanges.html">IntegerRanges</a> object).
+</p>
+</dd>
+</dl>
+
+
+
+<h3>Coercion</h3>
+
+<p>In the code snippets below, <code>from</code> is a Views object:
+</p>
+
+<dl>
+<dt><code>as(from, "IRanges")</code>:</dt><dd>
+<p>Creates an <code>IRanges</code> object containing the view
+locations in <code>from</code>.
+</p>
+</dd>
+</dl>
+
+
+
+<h3>Accessor-like methods</h3>
+
+<p>All the accessor-like methods defined for <code>IRanges</code> objects
+work on Views objects. In addition, the following accessors are defined
+for Views objects:
+</p>
+
+<dl>
+<dt><code>subject(x)</code>:</dt><dd>
+<p>Return the subject of the views.
+</p>
+</dd>
+</dl>
+
+
+
+<h3>Subsetting</h3>
+
+
+<dl>
+<dt><code>x[i]</code>:</dt><dd>
+<p>Select the views specified by <code>i</code>.
+</p>
+</dd>
+<dt><code>x[[i]]</code>:</dt><dd>
+<p>Extracts the view selected by <code>i</code> as an object of the same class
+as <code>subject(x)</code>. Subscript <code>i</code> can be a single integer
+or a character string.
+The result is the subsequence of <code>subject(x)</code> defined by
+<code>window(subject(x), start=start(x)[i], end=end(x)[i])</code>
+or an error if the view is &quot;out of limits&quot; (i.e. <code>start(x)[i] &lt; 1</code>
+or <code>end(x)[i] &gt; length(subject(x))</code>).
+</p>
+</dd>
+</dl>
+
+
+
+<h3>Concatenation</h3>
+
+
+<dl>
+<dt><code>c(x, ..., ignore.mcols=FALSE)</code>:</dt><dd>
+<p>Concatenate <code>Views</code> objects. They must have the same subject.
+</p>
+</dd>
+</dl>
+
+
+
+<h3>Other methods</h3>
+
+
+<dl>
+<dt><code>trim(x, use.names=TRUE)</code>:</dt><dd>
+<p>Equivalent to
+<code>restrict(x, start=1L, end=length(subject(x)), keep.all.ranges=TRUE,
+                      use.names=use.names)</code>.
+</p>
+</dd>
+<dt><code>subviews(x, start=NA, end=NA, width=NA, use.names=TRUE)</code>:</dt><dd>
+<p><code>start</code>, <code>end</code>, and <code>width</code> arguments must be vectors
+of integers, eventually with NAs, that contain coordinates relative
+to the current ranges. Equivalent to
+<code>trim(narrow(x, start=start, end=end, width=width, use.names=use.names))</code>.
+</p>
+</dd>
+<dt><code>successiveViews(subject, width, gapwidth=0, from=1)</code>:</dt><dd>
+<p>Equivalent to
+</p>
+<pre>  Views(subject, successiveIRanges(width, gapwidth, from))</pre>
+<p>See <code>?successiveIRanges</code> for a description of the <code>width</code>,
+<code>gapwidth</code> and <code>from</code> arguments.
+</p>
+</dd>
+</dl>
+
+
+
+<h3>Author(s)</h3>
+
+<p>Hervé Pagès</p>
+
+
+<h3>See Also</h3>
+
+<p><a href="../../IRanges/help/IRanges-class.html">IRanges-class</a>,
+Vector-class,
+<a href="../../IRanges/help/IRanges-utils.html">IRanges-utils</a>,
+<a href="../../XVector/help/XVector.html">XVector</a>.
+</p>
+<p>Some direct subclasses of the Views class:
+<a href="../../IRanges/help/RleViews-class.html">RleViews-class</a>,
+<a href="../../XVector/help/XIntegerViews-class.html">XIntegerViews-class</a>,
+<a href="../../XVector/help/XDoubleViews-class.html">XDoubleViews-class</a>,
+<a href="../../Biostrings/help/XStringViews-class.html">XStringViews-class</a>.
+</p>
+<p><code><a href="../../IRanges/help/findOverlaps.html">findOverlaps</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>showClass("Views")  # shows (some of) the known subclasses
+
+## Create a set of 4 views on an Rle subject of length 50:
+subject &lt;- Rle(LETTERS[1:10], 5)
+v1 &lt;- Views(subject, start=9:4, end=9:14)
+v1
+
+## Extract the 4th view:
+v1[[4]]
+
+## Some views can be "out of limits":
+v2 &lt;- Views(101:110, start=4:-1, end=6)
+## Not run: 
+  v2[[5]]  # Error! view is out of limits
+
+## End(Not run)
+
+## Trimming the views so they're no longer out of limits:
+trim(v2)
+
+trim(v2)[[5]]
+
+## Note that using subviews() with no additional arguments has
+## the same effect as trimming:
+subviews(v2)
+
+## See ?`XIntegerViews-class` in the XVector package for more examples.
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>IRanges</em> version 2.44.0 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

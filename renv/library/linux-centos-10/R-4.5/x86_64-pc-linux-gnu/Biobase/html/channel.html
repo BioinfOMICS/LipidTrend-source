@@ -1,0 +1,76 @@
+<!DOCTYPE html><html><head><title>R: Create a new ExpressionSet instance by selecting a specific...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>channel {Biobase}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Create a new ExpressionSet instance by selecting a specific channel</h2>
+
+<h3>Description</h3>
+
+<p>This generic function extracts a specific element from an 
+object, returning a instance of the ExpressionSet class.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>channel(object, name, ...)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="object">object</code></td>
+<td>
+<p>An S4 object, typically derived from class
+<code><a href="../../Biobase/help/eSet.html">eSet</a></code></p>
+</td></tr>
+<tr><td><code id="name">name</code></td>
+<td>
+<p>The name of the channel, a (length one) character vector.</p>
+</td></tr>
+<tr><td><code id="...">...</code></td>
+<td>
+<p>Additional arguments.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>An instance of class <code><a href="../../Biobase/help/ExpressionSet.html">ExpressionSet</a></code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Biocore</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>obj &lt;- NChannelSet(
+           R=matrix(runif(100), 20, 5),
+           G=matrix(runif(100), 20, 5))
+## G channel as ExpressionSet
+channel(obj, "G")
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>Biobase</em> version 2.70.0 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

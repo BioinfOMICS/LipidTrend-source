@@ -1,0 +1,127 @@
+<!DOCTYPE html><html><head><title>R: Get the type of the elements of an array-like object</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>type {S4Arrays}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Get the type of the elements of an array-like object</h2>
+
+<h3>Description</h3>
+
+<p>The <span class="pkg">S4Arrays</span> package defines a couple of <code>type()</code> methods to get
+the type of the <em>elements</em> of a matrix-like or array-like object.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>## S4 method for signature 'ANY'
+type(x)
+
+## S4 method for signature 'DataFrame'
+type(x)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="x">x</code></td>
+<td>
+
+<p>For the default <code>type()</code> method: An array-like object.
+This can be an ordinary array, a <a href="../../SparseArray/help/SparseArray.html">SparseArray</a>
+object from the <span class="pkg">SparseArray</span> package, a dgCMatrix
+object from the <span class="pkg">Matrix</span> package, a <a href="../../DelayedArray/help/DelayedArray.html">DelayedArray</a>
+object from the <span class="pkg">DelayedArray</span> package, or any object with an array
+semantic (i.e. an object for which <code>dim(x)</code> is not NULL).
+</p>
+<p>For the method for <a href="../../S4Vectors/help/DataFrame.html">DataFrame</a> objects:
+A <a href="../../S4Vectors/help/DataFrame.html">DataFrame</a> derivative for which
+<code>as.data.frame(x)</code> preserves the number of columns.
+See below for more information.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Note that for an ordinary matrix or array <code>x</code>, <code>type(x)</code> is
+the same as <code>typeof(x)</code>.
+</p>
+<p>On an array-like object <code>x</code> that is not an ordinary array,
+<code>type(x)</code> is <em>semantically equivalent</em> to
+<code>typeof(as.array(x))</code>. However, the actual implementation is
+careful to avoid turning the full array-like object <code>x</code> into
+an ordinary array, as this would tend to be very inefficient in general.
+For example, doing so on a big <a href="../../DelayedArray/help/DelayedArray.html">DelayedArray</a> object
+could easily eat all the memory available on the machine.
+</p>
+<p>On a <a href="../../S4Vectors/help/DataFrame.html">DataFrame</a> object, <code>type(x)</code> only
+works if <code>as.data.frame(x)</code> preserves the number of columns,
+in which case it is <em>semantically equivalent</em> to
+<code>typeof(as.matrix(as.data.frame(x)))</code>. Here too, the actual
+implementation is careful to avoid turning the full object into a
+data frame, then into a matrix, for efficiency reasons.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A single string indicating the type of the array elements in <code>x</code>.
+</p>
+
+
+<h3>See Also</h3>
+
+
+<ul>
+<li><p> The <code><a href="../../BiocGenerics/help/type.html">type</a></code> generic function defined
+in the <span class="pkg">BiocGenerics</span> package.
+</p>
+</li>
+<li> <p><a href="../../SparseArray/help/SparseArray.html">SparseArray</a> objects implemented in the
+<span class="pkg">SparseArray</span> package.
+</p>
+</li>
+<li> <p><a href="../../DelayedArray/help/DelayedArray.html">DelayedArray</a> objects implemented in the
+<span class="pkg">DelayedArray</span> package.
+</p>
+</li>
+<li> <p><a href="../../S4Vectors/help/DataFrame.html">DataFrame</a> objects implemented in the
+<span class="pkg">S4Vectors</span> package.
+</p>
+</li></ul>
+
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>m &lt;- matrix(rpois(54e6, lambda=0.4), ncol=1200)
+type(m)   # integer
+
+x1 &lt;- as(m, "dgCMatrix")
+type(x1)  # double
+
+library(SparseArray)
+x2 &lt;- SparseArray(m)
+type(x2)  # integer
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>S4Arrays</em> version 1.10.1 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

@@ -1,0 +1,56 @@
+Package: LipidTrend
+Title: LipidTrend: Analysis and Visualization of Lipid Feature
+        Tendencies
+Version: 1.0.0
+Authors@R: c(
+    person("Wei-Chung", "Cheng", email="chenglabomics@gmail.com", 
+    role = c("aut","cre","cph"), comment = c(ORCID = "0000-0002-1229-4857")),
+    person("Chia-Hsin ", "Liu", role = c("aut", "ctb")),
+    person("Pei-Chun", "Shen", role = c("aut", "ctb")),
+    person("Wen-Jen", "Lin", role = c("aut","ctb")),
+    person("Hung-Ching", "Chang", role = c("aut","ctb")),
+    person("Meng-Hsin", "Tsai", role = c("aut","ctb"))
+    )
+Description: 
+    "LipidTrend" is an R package that implements a permutation-based statistical 
+    test to identify significant differences in lipidomic features between 
+    groups. The test incorporates Gaussian kernel smoothing of region statistics 
+    to improve stability and accuracy, particularly when dealing with small 
+    sample sizes. This package also includes two plotting functions for 
+    visualizing significant tendencies in 1D and 2D feature data, respectively.
+License: MIT + file LICENSE
+URL: https://github.com/BioinfOMICS/LipidTrend
+BugReports: https://github.com/BioinfOMICS/LipidTrend/issues
+LazyData: FALSE
+biocViews: Software, Lipidomics, StatisticalMethod,
+        DifferentialExpression, Visualization
+Depends: R (>= 4.5.0)
+Imports: dplyr, ggnewscale, ggplot2, magrittr, methods, rlang,
+        SummarizedExperiment, MKmisc, matrixTests
+Suggests: BiocStyle, devtools, knitr, roxygen2, rmarkdown, testthat (>=
+        3.0.0), S4Vectors,
+Enhances: data.table,
+VignetteBuilder: knitr
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.2
+Collate: 'allClasses.R' 'allGenerics.R' 'analyzeLipidRegion.R' 'data.R'
+        'globals.R' 'LipidTrend.R' 'plotRegion1D.R' 'plotRegion2D.R'
+        'utils.R'
+git_url: https://git.bioconductor.org/packages/LipidTrend
+git_branch: RELEASE_3_22
+git_last_commit: 85ac973
+git_last_commit_date: 2025-10-29
+Repository: Bioconductor 3.22
+Date/Publication: 2025-10-29
+NeedsCompilation: no
+Packaged: 2025-10-30 04:45:13 UTC; biocbuild
+Author: Wei-Chung Cheng [aut, cre, cph] (ORCID:
+    <https://orcid.org/0000-0002-1229-4857>),
+  Chia-Hsin Liu [aut, ctb],
+  Pei-Chun Shen [aut, ctb],
+  Wen-Jen Lin [aut, ctb],
+  Hung-Ching Chang [aut, ctb],
+  Meng-Hsin Tsai [aut, ctb]
+Maintainer: Wei-Chung Cheng <chenglabomics@gmail.com>
+Built: R 4.5.2; ; 2026-02-10 08:01:41 UTC; unix

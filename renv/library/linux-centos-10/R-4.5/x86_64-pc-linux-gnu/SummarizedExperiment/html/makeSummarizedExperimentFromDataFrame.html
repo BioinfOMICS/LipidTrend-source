@@ -1,0 +1,138 @@
+<!DOCTYPE html><html><head><title>R: Make a RangedSummarizedExperiment from a data.frame or...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>makeSummarizedExperimentFromDataFrame {SummarizedExperiment}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Make a RangedSummarizedExperiment from a data.frame or DataFrame</h2>
+
+<h3>Description</h3>
+
+<p><code>makeSummarizedExperimentFromDataFrame</code> uses <code>data.frame</code>
+or <code>DataFrame</code> column names to create a GRanges object for the
+<code>rowRanges</code> of the resulting <a href="../../SummarizedExperiment/help/SummarizedExperiment.html">SummarizedExperiment</a> object.
+It requires that non-range data columns be coercible into a <code>numeric</code>
+<code>matrix</code> for the <a href="../../SummarizedExperiment/help/SummarizedExperiment.html">SummarizedExperiment</a> constructor. All columns
+that are not part of the row ranges attribute are assumed to be experiment
+data; thus, keeping metadata columns will not be supported. Note that this
+function only returns <a href="../../SummarizedExperiment/help/SummarizedExperiment.html">SummarizedExperiment</a> objects with a single
+assay.
+</p>
+<p>If metadata columns are to be kept, one can first construct the row ranges
+attribute by using the makeGRangesFromDataFrame function and
+subsequently creating the <a href="../../SummarizedExperiment/help/SummarizedExperiment.html">SummarizedExperiment</a>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>makeSummarizedExperimentFromDataFrame(df,
+                                    ...,
+                                    seqinfo = NULL,
+                                    starts.in.df.are.0based = FALSE)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="df">df</code></td>
+<td>
+
+<p>A data.frame or <a href="../../S4Vectors/help/DataFrame.html">DataFrame</a> object. If not, then
+the function first tries to turn <code>df</code> into a data frame with
+<code>as.data.frame(df)</code>.
+</p>
+</td></tr>
+<tr><td><code id="...">...</code></td>
+<td>
+
+<p>Additional arguments passed on to makeGRangesFromDataFrame
+</p>
+</td></tr>
+<tr><td><code id="seqinfo">seqinfo</code></td>
+<td>
+
+<p>Either <code>NULL</code>, or a Seqinfo object, or a character vector
+of seqlevels, or a named numeric vector of sequence lengths.
+When not <code>NULL</code>, it must be compatible with the genomic ranges
+in <code>df</code> i.e. it must include at least the sequence levels
+represented in <code>df</code>.
+</p>
+</td></tr>
+<tr><td><code id="starts.in.df.are.0based">starts.in.df.are.0based</code></td>
+<td>
+
+<p><code>TRUE</code> or <code>FALSE</code> (the default).
+If <code>TRUE</code>, then the start positions of the genomic ranges in
+<code>df</code> are considered to be <em>0-based</em> and are converted to
+<em>1-based</em> in the returned GRanges object.
+This feature is intended to make it more convenient to handle input
+that contains data obtained from resources using the &quot;0-based
+start&quot; convention. A notorious example of such resource is the UCSC
+Table Browser (<a href="http://genome.ucsc.edu/cgi-bin/hgTables">http://genome.ucsc.edu/cgi-bin/hgTables</a>).
+</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A <a href="../../SummarizedExperiment/help/RangedSummarizedExperiment.html">RangedSummarizedExperiment</a> object with rowRanges and a single assay
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>M. Ramos
+</p>
+
+
+<h3>See Also</h3>
+
+
+<ul>
+<li> <p>makeGRangesFromDataFrame 
+</p>
+</li></ul>
+
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>## ---------------------------------------------------------------------
+## BASIC EXAMPLES
+## ---------------------------------------------------------------------
+
+# Note that rownames of the data.frame are also rownames of the result
+df &lt;- data.frame(chr="chr2", start = 11:15, end = 12:16,
+                 strand = c("+", "-", "+", "*", "."), expr0 = 3:7,
+                 expr1 = 8:12, expr2 = 12:16,
+                 row.names = paste0("GENE", letters[5:1]))
+df
+
+exRSE &lt;- makeSummarizedExperimentFromDataFrame(df)
+
+exRSE
+
+assay(exRSE)
+
+rowRanges(exRSE)
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>SummarizedExperiment</em> version 1.40.0 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

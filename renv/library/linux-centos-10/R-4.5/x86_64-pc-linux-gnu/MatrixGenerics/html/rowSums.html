@@ -1,0 +1,110 @@
+<!DOCTYPE html><html><head><title>R: Calculates the sum for each row (column) of a matrix-like...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>rowSums {MatrixGenerics}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Calculates the sum for each row (column) of a matrix-like object</h2>
+
+<h3>Description</h3>
+
+<p>Calculates the sum for each row (column) of a matrix-like object.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>rowSums(x, na.rm = FALSE, dims = 1, ...)
+
+colSums(x, na.rm = FALSE, dims = 1, ...)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="x">x</code></td>
+<td>
+<p>An NxK matrix-like object, a numeric data frame, or an array-like
+object of two or more dimensions.</p>
+</td></tr>
+<tr><td><code id="na.rm">na.rm</code></td>
+<td>
+<p>If <code><a href="../../base/help/TRUE.html">TRUE</a></code>, missing values
+(<code><a href="../../base/help/NA.html">NA</a></code> or <code><a href="../../base/help/NaN.html">NaN</a></code>) are
+omitted from the calculations.</p>
+</td></tr>
+<tr><td><code id="dims">dims</code></td>
+<td>
+<p>A single integer indicating which dimensions are regarded
+as rows or columns to sum over. For <code>rowSums</code>, the sum is over
+dimensions <code>dims+1, ...</code>; for <code>colSums</code> it is over
+dimensions <code>1:dims</code>.</p>
+</td></tr>
+<tr><td><code id="...">...</code></td>
+<td>
+<p>Additional arguments passed to specific methods.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This man page documents the <code>rowSums</code> and <code>colSums</code>
+<em>S4 generic functions</em> defined in the <span class="pkg">MatrixGenerics</span> package.
+See <code>?base::<a href="../../base/help/colSums.html">colSums</a></code> for the default methods (defined
+in the <span class="pkg">base</span> package).
+</p>
+
+
+<h3>Value</h3>
+
+<p>Returns a <code><a href="../../base/html/numeric.html">numeric</a></code> <code><a href="../../base/html/vector.html">vector</a></code> of length N (K).
+</p>
+
+
+<h3>See Also</h3>
+
+
+<ul>
+<li> <p><code>base::<a href="../../base/help/colSums.html">colSums</a></code> for the default
+<code>rowSums</code> and <code>colSums</code> methods.
+</p>
+</li>
+<li> <p><code>Matrix::<a href="../../Matrix/help/colSums.html">colSums</a></code> in the <span class="pkg">Matrix</span> package
+for <code>rowSums</code> and <code>colSums</code> methods defined for
+CsparseMatrix derivatives (e.g. dgCMatrix objects).
+</p>
+</li></ul>
+
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>mat &lt;- matrix(rnorm(15), nrow = 5, ncol = 3)
+mat[2, 1] &lt;- NA
+mat[3, 3] &lt;- Inf
+mat[4, 1] &lt;- 0
+
+print(mat)
+
+rowSums(mat)
+colSums(mat)
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>MatrixGenerics</em> version 1.22.0 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

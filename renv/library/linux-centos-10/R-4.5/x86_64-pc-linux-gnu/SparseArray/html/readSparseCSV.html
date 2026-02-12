@@ -1,0 +1,192 @@
+<!DOCTYPE html><html><head><title>R: Read/write a sparse matrix from/to a CSV file</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>readSparseCSV {SparseArray}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Read/write a sparse matrix from/to a CSV file</h2>
+
+<h3>Description</h3>
+
+<p>Read/write a sparse matrix from/to a CSV (comma-separated values) file.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>writeSparseCSV(x, filepath, sep=",", transpose=FALSE, write.zeros=FALSE,
+                  chunknrow=250)
+
+readSparseCSV(filepath, sep=",", transpose=FALSE)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="x">x</code></td>
+<td>
+
+<p>A matrix-like object, typically sparse. IMPORTANT: The object must have
+rownames and colnames! These will be written to the file.
+</p>
+<p>Another requirement is that the object must be subsettable. More
+precisely: it must support 2D-style subsetting of the kind <code>x[i, ]</code>
+and <code>x[ , j]</code> where <code>i</code> and <code>j</code> are integer vectors
+of valid row and column indices.
+</p>
+</td></tr>
+<tr><td><code id="filepath">filepath</code></td>
+<td>
+
+<p>The path (as a single string) to the file where to write the
+matrix-like object or to read it from. Compressed files are
+supported.
+</p>
+<p>If <code>""</code>, <code>writeSparseCSV()</code> will write the data to the
+standard output connection.
+</p>
+<p>Note that <code>filepath</code> can also be a connection.
+</p>
+</td></tr>
+<tr><td><code id="sep">sep</code></td>
+<td>
+
+<p>The field separator character. Values on each line of the
+file are separated by this character.
+</p>
+</td></tr>
+<tr><td><code id="transpose">transpose</code></td>
+<td>
+
+<p><code>TRUE</code> or <code>FALSE</code>. By default, rows in the matrix-like object
+correspond to lines in the CSV file. Set <code>transpose</code> to <code>TRUE</code>
+to transpose the matrix-like object on-the-fly, that is, to have its
+columns written to or read from the lines in the CSV file.
+</p>
+<p>Note that using <code>transpose=TRUE</code> is semantically equivalent to
+calling <code>t()</code> on the object before writing it or after reading
+it, but it will tend to be more efficient. Also it will work even if
+<code>x</code> does not support <code>t()</code> (not all matrix-like objects are
+guaranteed to be transposable).
+</p>
+</td></tr>
+<tr><td><code id="write.zeros">write.zeros</code></td>
+<td>
+
+<p><code>TRUE</code> or <code>FALSE</code>. By default, the zero values in <code>x</code>
+are not written to the file. Set <code>write.zeros</code> to <code>TRUE</code> to
+write them.
+</p>
+</td></tr>
+<tr><td><code id="chunknrow">chunknrow</code></td>
+<td>
+
+<p><code>writeSparseCSV()</code> uses a block-processing strategy to try to
+speed up things. By default blocks of 250 rows (or columns if
+<code>transpose=TRUE</code>) are used. In our experience trying to increase
+this (e.g. to 500 or more) will generally not produce significant
+benefits while it will increase memory usage, so use carefully.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p><code>writeSparseCSV</code> returns an invisible <code>NULL</code>.
+</p>
+<p><code>readSparseCSV</code> returns a <a href="../../SparseArray/help/SparseMatrix.html">SparseMatrix</a> object of class
+<a href="../../SparseArray/help/SVT_SparseMatrix.html">SVT_SparseMatrix</a>.
+</p>
+
+
+<h3>See Also</h3>
+
+
+<ul>
+<li> <p><a href="../../SparseArray/help/SparseArray.html">SparseArray</a> objects.
+</p>
+</li>
+<li> <p><a href="../../Matrix/help/dgCMatrix-class.html">dgCMatrix-class</a> in the <span class="pkg">Matrix</span> package.
+</p>
+</li></ul>
+
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>## ---------------------------------------------------------------------
+## writeSparseCSV()
+## ---------------------------------------------------------------------
+
+## Prepare toy matrix 'm0':
+rownames0 &lt;- LETTERS[1:6]
+colnames0 &lt;- letters[1:4]
+m0 &lt;- matrix(0L, nrow=length(rownames0), ncol=length(colnames0),
+                 dimnames=list(rownames0, colnames0))
+m0[c(1:2, 8, 10, 15:17, 24)] &lt;- (1:8)*10L
+m0
+
+## writeSparseCSV():
+writeSparseCSV(m0, filepath="", sep="\t")
+writeSparseCSV(m0, filepath="", sep="\t", write.zeros=TRUE)
+writeSparseCSV(m0, filepath="", sep="\t", transpose=TRUE)
+
+## Note that writeSparseCSV() will automatically (and silently) coerce
+## non-integer values to integer by passing them thru as.integer().
+
+## Example where type(x) is "double":
+m1 &lt;- m0 * runif(length(m0))
+m1
+type(m1)
+writeSparseCSV(m1, filepath="", sep="\t")
+
+## Example where type(x) is "logical":
+writeSparseCSV(m0 != 0, filepath="", sep="\t")
+
+## Example where type(x) is "raw":
+m2 &lt;- m0
+type(m2) &lt;- "raw"
+m2
+writeSparseCSV(m2, filepath="", sep="\t")
+
+## ---------------------------------------------------------------------
+## readSparseCSV()
+## ---------------------------------------------------------------------
+
+csv_file &lt;- tempfile()
+writeSparseCSV(m0, csv_file)
+
+svt1 &lt;- readSparseCSV(csv_file)
+svt1
+
+svt2 &lt;- readSparseCSV(csv_file, transpose=TRUE)
+svt2
+
+## If you need the sparse data as a dgCMatrix object, just coerce the
+## returned object:
+as(svt1, "dgCMatrix")
+as(svt2, "dgCMatrix")
+
+## Sanity checks:
+stopifnot(identical(m0, as.matrix(svt1)))
+stopifnot(identical(t(m0), as.matrix(svt2)))
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>SparseArray</em> version 1.10.8 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

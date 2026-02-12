@@ -1,0 +1,71 @@
+<!DOCTYPE html><html><head><title>R: Extract Log-Expression Matrix from MAList</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>exprs.MA {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Extract Log-Expression Matrix from MAList</h2>
+
+<h3>Description</h3>
+
+<p>Extract the matrix of log-expression values from an <code>MAList</code> object.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>exprs.MA(MA)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="MA">MA</code></td>
+<td>
+<p>an <code>MAList</code> object.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Converts M and A-values to log-expression values.
+The output matrix will have two columns for each array, in the order green, red for each array.
+</p>
+<p>This contrasts with <code>as.matrix.MAList</code> which extracts the M-values only, or <code>RG.MA</code> which converts to expression values in <code>RGList</code> form.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A numeric matrix with twice the columns of the input.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth</p>
+
+
+<h3>See Also</h3>
+
+<p><a href="../../limma/help/02.Classes.html">02.Classes</a> gives an overview of data classes used in LIMMA.
+</p>
+
+<hr><div style="text-align: center;">[Package <em>limma</em> version 3.66.0 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

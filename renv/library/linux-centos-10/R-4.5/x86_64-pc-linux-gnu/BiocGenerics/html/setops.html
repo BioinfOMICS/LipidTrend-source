@@ -1,0 +1,209 @@
+<!DOCTYPE html><html><head><title>R: Set operations</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>setops {BiocGenerics}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Set operations</h2>
+
+<h3>Description</h3>
+
+<p>Performs <em>set</em> union, intersection, (asymmetric!) difference, and
+equality on two or more vector-like objects.
+</p>
+<p>NOTE: This man page is for the <code>union</code>, <code>intersect</code>,
+<code>setdiff</code>, and <code>setequal</code> <em>S4 generic functions</em> defined
+in the <span class="pkg">BiocGenerics</span> package.
+See <code>?generics::<a href="../../generics/help/union.html">union</a></code> for the default methods
+(defined in CRAN package <span class="pkg">generics</span>).
+Bioconductor packages can define specific methods for objects
+(typically vector-like) not supported by the default methods.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>union(x, y, ...)
+intersect(x, y, ...)
+setdiff(x, y, ...)
+setequal(x, y, ...)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="x">x</code>, <code id="y">y</code></td>
+<td>
+
+<p>Vector-like objects (typically of the same class, but not necessarily).
+</p>
+</td></tr>
+<tr><td><code id="...">...</code></td>
+<td>
+
+<p>Additional arguments, for use in specific methods.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>See <code>?generics::<a href="../../generics/help/union.html">union</a></code> in CRAN package <span class="pkg">generics</span>
+for the value returned by the default methods.
+</p>
+<p>Specific methods defined in Bioconductor packages will typically act as
+<em>endomorphisms</em>, that is, they'll return an object of the same class
+as the input objects.
+</p>
+
+
+<h3>Note</h3>
+
+<p>The default S4 methods for these S4 generics are the
+<code><a href="../../generics/help/union.html">union</a></code>, <code><a href="../../generics/help/intersect.html">intersect</a></code>,
+<code><a href="../../generics/help/setdiff.html">setdiff</a></code>, and <code><a href="../../generics/help/setequal.html">setequal</a></code>
+functions defined in CRAN package <span class="pkg">generics</span>, which are themselves
+<em>S3 generic functions</em>.
+These S3 generics in turn have default methods that simply call
+the corresponding base R function i.e. the <code><a href="../../base/help/union.html">union</a></code>,
+<code><a href="../../base/help/intersect.html">intersect</a></code>, <code><a href="../../base/help/setdiff.html">setdiff</a></code>, or
+<code><a href="../../base/help/setequal.html">setequal</a></code> function defined in the <span class="pkg">base</span> package.
+See for example <code>generics:::union.default</code>.
+</p>
+<p>Note that the base R functions only take 2 arguments. However, the S3
+generics in CRAN package <span class="pkg">generics</span>, and the S4 generics in
+<span class="pkg">BiocGenerics</span>, add <code>...</code> (a.k.a. ellipsis) to the argument list.
+This allow these generics to be called with an arbitrary number of
+effective arguments.
+</p>
+<p>For <code>union</code> or <code>intersect</code>, this means that Bioconductor
+packages can implement <em>N-ary</em> union or intersection operations,
+that is, methods that compute the union or intersection of more
+than 2 objects.
+</p>
+<p>However, for <code>setdiff</code> and <code>setequal</code>, which are conceptually
+binary-only operation, the presence of the ellipsis typically allows methods
+to support extra arguments to control/alter the behavior of the operation.
+Like for example the <code>ignore.strand</code> argument supported by the
+<code>setdiff</code> method for <a href="../../GenomicRanges/help/GenomicRanges.html">GenomicRanges</a> objects
+(defined in the <span class="pkg">GenomicRanges</span> package). (Note that the <code>union</code>
+and <code>intersect</code> methods for those objects also support the
+<code>ignore.strand</code> argument.)
+</p>
+
+
+<h3>See Also</h3>
+
+
+<ul>
+<li> <p><code>generics::<a href="../../generics/help/union.html">union</a></code> for the default <code>union</code>,
+<code>intersect</code>, <code>setdiff</code>, and <code>setequal</code> S4 methods
+defined in CRAN package <span class="pkg">generics</span>.
+</p>
+</li>
+<li> <p><code><a href="../../methods/help/showMethods.html">showMethods</a></code> for displaying a summary of the
+methods defined for a given generic function.
+</p>
+</li>
+<li> <p><code><a href="../../methods/help/selectMethod.html">selectMethod</a></code> for getting the definition of
+a specific method.
+</p>
+</li>
+<li> <p><a href="../../GenomicRanges/help/union+2CGenomicRanges+2CGenomicRanges-method.html">union,GenomicRanges,GenomicRanges-method</a> in
+the <span class="pkg">GenomicRanges</span> package for examples of specific
+<code>union</code>, <code>intersect</code>, and <code>setdiff</code> methods (defined
+for <a href="../../GenomicRanges/help/GenomicRanges.html">GenomicRanges</a> objects).
+</p>
+</li>
+<li> <p><a href="../../BiocGenerics/help/BiocGenerics.html">BiocGenerics</a> for a summary of all the generics defined
+in the <span class="pkg">BiocGenerics</span> package.
+</p>
+</li></ul>
+
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>## ---------------------------------------------------------------------
+## union()
+## ---------------------------------------------------------------------
+
+## S4 generic:
+union  # note the dispath on 'x' and 'y'
+
+showMethods("union")
+
+## The default S4 method is an S3 generic function defined in
+## CRAN package generics:
+selectMethod("union", c("ANY", "ANY"))
+
+## The default S3 method just calls base::union():
+generics:::union.default
+
+## ---------------------------------------------------------------------
+## intersect()
+## ---------------------------------------------------------------------
+
+## S4 generic:
+intersect  # note the dispath on 'x' and 'y'
+
+showMethods("intersect")
+
+## The default S4 method is an S3 generic function defined in
+## CRAN package generics:
+selectMethod("intersect", c("ANY", "ANY"))
+
+## The default S3 method just calls base::intersect():
+generics:::intersect.default
+
+## ---------------------------------------------------------------------
+## setdiff()
+## ---------------------------------------------------------------------
+
+## S4 generic:
+setdiff  # note the dispath on 'x' and 'y'
+
+showMethods("setdiff")
+
+## The default S4 method is an S3 generic function defined in
+## CRAN package generics:
+selectMethod("setdiff", c("ANY", "ANY"))
+
+## The default S3 method just calls base::setdiff():
+generics:::setdiff.default
+
+## ---------------------------------------------------------------------
+## setequal()
+## ---------------------------------------------------------------------
+
+## S4 generic:
+setequal  # note the dispath on 'x' and 'y'
+
+showMethods("setequal")
+
+## The default S4 method is an S3 generic function defined in
+## CRAN package generics:
+selectMethod("setequal", c("ANY", "ANY"))
+
+## The default S3 method just calls base::setequal():
+generics:::setequal.default
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>BiocGenerics</em> version 0.56.0 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

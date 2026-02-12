@@ -1,0 +1,115 @@
+<!DOCTYPE html><html><head><title>R: Remove Columns (or Rows) From a Matrix to Make It Full Rank</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>fullRank {robustbase}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Remove Columns (or Rows) From a Matrix to Make It Full Rank</h2>
+
+<h3>Description</h3>
+
+<p>From the QR decomposition with pivoting, (<code><a href="../../base/html/qr.html">qr</a>(x, tol)</code> if
+<code class="reqn">n \ge p</code>), if
+the matrix is not of full rank, the corresponding columns (<code class="reqn">n \ge
+    p</code>) or rows (<code class="reqn">n &lt; p</code>) are omitted to form a full rank matrix.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>
+fullRank(x, tol = 1e-7, qrx = qr(x, tol=tol))
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="x">x</code></td>
+<td>
+<p>a numeric matrix of dimension <code class="reqn">n \times p</code>, or a
+similar object for which <code><a href="../../base/html/qr.html">qr</a>()</code> works.</p>
+</td></tr>
+<tr><td><code id="tol">tol</code></td>
+<td>
+<p>tolerance for determining rank (deficiency).  Currently is
+simply passed to <code><a href="../../base/html/qr.html">qr</a></code>.</p>
+</td></tr>
+<tr><td><code id="qrx">qrx</code></td>
+<td>
+<p>optionally may be used to pass a <code><a href="../../base/html/qr.html">qr</a>(x, ..)</code>;
+only used when <code>p &lt;= n</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>a version of the matrix <code>x</code>, with less columns or rows if
+<code>x</code>'s rank was smaller than <code>min(n,p)</code>.
+</p>
+<p>If <code>x</code> is of full rank, it is returned unchanged.
+</p>
+
+
+<h3>Note</h3>
+
+<p>This is useful for robustness algorithms that rely on <code class="reqn">X</code> matrices
+of full rank, e.g., <code><a href="../../robustbase/help/adjOutlyingness.html">adjOutlyingness</a></code>.
+</p>
+<p>This also works for numeric data frames and whenever <code>qr()</code> works correctly.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Martin Maechler</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../base/html/qr.html">qr</a></code>; for more sophisticated rank determination,
+<code><a href="../../Matrix/help/rankMatrix.html">rankMatrix</a></code> from package <a href="https://CRAN.R-project.org/package=Matrix"><span class="pkg">Matrix</span></a>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>stopifnot(identical(fullRank(wood), wood))
+
+## More sophisticated and delicate
+dim(T &lt;- tcrossprod(data.matrix(toxicity))) # 38 x 38
+dim(T. &lt;- fullRank(T)) # 38 x 10
+if(requireNamespace("Matrix")) {
+  rMmeths &lt;- eval(formals(Matrix::rankMatrix)$method)
+  rT. &lt;- sapply(rMmeths, function(.m.) Matrix::rankMatrix(T., method = .m.))
+  print(rT.) # "qr" (= "qrLinpack"): 13,  others rather 10
+}
+dim(T.2 &lt;- fullRank(T, tol = 1e-15))# 38 x 18
+dim(T.3 &lt;- fullRank(T, tol = 1e-12))# 38 x 13
+dim(T.3 &lt;- fullRank(T, tol = 1e-10))# 38 x 13
+dim(T.3 &lt;- fullRank(T, tol = 1e-8 ))# 38 x 12
+dim(T.) # default from above          38 x 10
+dim(T.3 &lt;- fullRank(T, tol = 1e-5 ))# 38 x 10 -- still
+
+plot(svd(T, 0,0)$d, log="y", main = "singular values of T", yaxt="n")
+axis(2, at=10^(-14:5), las=1)
+## pretty clearly indicates that  rank 10  is "correct" here.
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>robustbase</em> version 0.99-7 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

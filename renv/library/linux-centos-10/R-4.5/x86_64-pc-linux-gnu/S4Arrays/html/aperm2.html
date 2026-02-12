@@ -1,0 +1,277 @@
+<!DOCTYPE html><html><head><title>R: Generalized permutation of the dimensions of an array</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>aperm2 {S4Arrays}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Generalized permutation of the dimensions of an array</h2>
+
+<h3>Description</h3>
+
+<p><code>aperm2()</code> extends the functionality of
+<code>base::<a href="../../base/help/aperm.html">aperm</a>()</code> by allowing dropping and/or
+adding <em>ineffective dimensions</em> (i.e. dimensions with an extent of 1)
+from/to the input array, in addition to permuting its dimensions.
+</p>
+<p>Note that, like <code>base::<a href="../../base/help/aperm.html">aperm</a>()</code>, <code>aperm2()</code>
+always preserves the length of the input array. However, unlike with
+<code>base::<a href="../../base/help/aperm.html">aperm</a>()</code>, the array returned by <code>aperm2()</code>
+doesn't necessarily have the same number of dimensions as the input array.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>aperm2(a, perm)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="a">a</code></td>
+<td>
+
+<p>An ordinary array.
+</p>
+</td></tr>
+<tr><td><code id="perm">perm</code></td>
+<td>
+
+<p>An integer vector, possibly containing <code>NA</code>s, indicating how
+the dimensions of the returned array should be mapped to those of
+the input array.
+</p>
+<p>More precisely, <code>perm</code> can be one of the following:
+</p>
+
+<ul>
+<li><p> A permutation of the <code>seq_along(dim(a))</code> vector,
+like for <code>base::<a href="../../base/help/aperm.html">aperm</a>()</code>.
+Note that if the identity permutation is used (i.e.
+<code>perm=seq_along(dim(a))</code>), then <code>aperm2()</code>
+is a no-op (like with <code>base::<a href="../../base/help/aperm.html">aperm</a>()</code>).
+</p>
+</li>
+<li><p> A permutation of a <em>subset</em> of the <code>seq_along(dim(a))</code>
+vector. In this case the dimensions that are excluded
+must be <em>ineffective dimensions</em> i.e. each of them
+must have an extent of 1. In other words, only integers
+that belong to <code>which(dim(a) == 1)</code> can be missing
+from <code>perm</code>.
+</p>
+<p>In this case, the ineffective dimensions that are excluded
+will be dropped i.e. they won't be carried over to the
+returned array.
+</p>
+</li>
+<li><p> Additionally, any number of <code>NA</code>s can be inserted
+anywhere in a <code>perm</code> vector like one described above.
+</p>
+<p>In this case, ineffective dimensions will be added to the
+returned array. These added dimensions will materialize
+as additional <code>1</code>'s in the <code>dim()</code> vector of the
+returned array, at positions that match the positions of
+the <code>NA</code>s in <code>perm</code>.
+</p>
+</li></ul>
+
+<p>Note that if <code>perm</code> is missing, then <code>aperm2(a)</code> reverses
+the order of <code>a</code>'s dimensions (i.e. <code>perm</code> gets set to
+<code>rev(seq_along(dim(a)))</code>), like <code>base::<a href="../../base/help/aperm.html">aperm</a>(a)</code>
+does.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>An array with one dimension per element in the <code>perm</code> argument.
+The length of the returned array will always be the same as the length
+of the input array. (Note that for an array <code>a</code>, <code>length(a)</code>
+is <code>prod(dim(a))</code>.)
+</p>
+
+
+<h3>Note</h3>
+
+<p>The <code>aperm()</code> method for <a href="../../DelayedArray/help/DelayedArray.html">DelayedArray</a> objects
+defined in the <span class="pkg">DelayedArray</span> package implements the &quot;<code>aperm2</code>
+semantic&quot;, that is, it allows dropping and/or adding <em>ineffective
+dimensions</em> from/to the input <a href="../../DelayedArray/help/DelayedArray.html">DelayedArray</a> object.
+</p>
+
+
+<h3>See Also</h3>
+
+
+<ul>
+<li> <p><code><a href="../../base/help/aperm.html">aperm</a></code> in the <span class="pkg">base</span> package for
+the function that <code>aperm2</code> is based on.
+</p>
+</li>
+<li> <p><code><a href="../../BiocGenerics/help/aperm.html">aperm</a></code> in the <span class="pkg">BiocGenerics</span>
+package for the <code>aperm</code> <em>S4 generic function</em>.
+</p>
+</li>
+<li> <p><a href="../../SparseArray/help/aperm+2CSVT_SparseArray-method.html">aperm,SVT_SparseArray-method</a> in the
+<span class="pkg">SparseArray</span> package and
+<a href="../../DelayedArray/help/aperm+2CDelayedArray-method.html">aperm,DelayedArray-method</a> in the
+<span class="pkg">DelayedArray</span> package for <code>aperm()</code> methods
+that implements the &quot;<code>aperm2</code> semantic&quot;.
+</p>
+</li></ul>
+
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>## ---------------------------------------------------------------------
+## SOME EXAMPLES WITH A 4D ARRAY
+## ---------------------------------------------------------------------
+
+a &lt;- array(1:72, c(3, 6, 1, 4),
+           dimnames=list(NULL, letters[1:6], NULL, LETTERS[1:4]))
+a
+
+## Permute first two dimensions:
+aperm2(a, perm=c(2,1,3,4))
+
+## Permute first and last dimensions:
+aperm2(a, perm=c(4,2,3,1))
+
+## Drop 3rd dimension:
+aperm2(a, perm=c(1,2,4))
+
+## Drop 3rd dimension and permute 2nd and last:
+aperm2(a, perm=c(1,4,2))
+
+## Drop 3rd dimension and cycle the order of the remaining ones:
+aperm2(a, perm=c(2,4,1))
+
+## Add one ineffective dimension:
+aperm2(a, perm=c(NA,1,2,3,4))
+aperm2(a, perm=c(1,NA,2,3,4))
+aperm2(a, perm=c(1,2,NA,3,4))
+aperm2(a, perm=c(1,2,3,NA,4))
+aperm2(a, perm=c(1,2,3,4,NA))
+
+## Add four ineffective dimensions:
+aperm2(a, perm=c(NA,1,2,3,NA,NA,4,NA))
+
+## Permute first and last dimensions and add one ineffective dimension:
+aperm2(a, perm=c(4,2,3,NA,1))
+
+## Drop 3rd dimension, cycle the order of the remaining ones, and add
+## two ineffective dimensions:
+aperm2(a, perm=c(2,4,NA,1,NA))
+
+## No-op:
+aperm2(a, perm=seq_along(dim(a)))
+
+## Reverse the order of the dimensions (multidimensional transposition):
+aperm2(a)  # same as 'aperm2(a, perm=rev(seq_along(dim(a))))'
+
+## ---------------------------------------------------------------------
+## COMPOSING aperm2() TRANSFORMATIONS
+## ---------------------------------------------------------------------
+
+## Applying two successive aperm() transformations, first with 'perm'
+## set to 'perm1' then set to 'perm2', is equivalent to applying a
+## single aperm() transformation with 'perm' set to 'perm1[perm2]'.
+##
+## More formally:
+##     aperm(aperm(a, perm=perm1), perm=perm2)
+## is equivalent to:
+##     aperm(a, perm=perm1[perm2])
+##
+## Note that this also applies to aperm2()!
+
+## Examples with aperm():
+
+perm1 &lt;- c(2,4,3,1)
+perm2 &lt;- c(4,3,2,1)
+perm3 &lt;- c(2,1,4,3)
+
+a12 &lt;- aperm(aperm(a, perm=perm1), perm=perm2)
+stopifnot(identical(a12, aperm(a, perm=perm1[perm2])))
+
+a13 &lt;- aperm(aperm(a, perm=perm1), perm=perm3)
+stopifnot(identical(a13, aperm(a, perm=perm1[perm3])))
+
+a23 &lt;- aperm(aperm(a, perm=perm2), perm=perm3)
+stopifnot(identical(a23, aperm(a, perm=perm2[perm3])))
+
+a123 &lt;- aperm(aperm(aperm(a, perm=perm1), perm=perm2), perm=perm3)
+stopifnot(identical(a123, aperm(a, perm=perm1[perm2][perm3])))
+stopifnot(identical(a123, aperm(a, perm=perm1[perm2[perm3]])))
+
+## Examples with aperm2():
+
+perm1 &lt;- c(2,4,1)
+perm2 &lt;- c(1,3,NA,2,NA)
+perm3 &lt;- c(5,4,2,1)
+
+a12 &lt;- aperm2(aperm2(a, perm=perm1), perm=perm2)
+stopifnot(identical(a12, aperm2(a, perm=perm1[perm2])))
+
+a123 &lt;- aperm2(aperm2(aperm2(a, perm=perm1), perm=perm2), perm=perm3)
+stopifnot(identical(a123, aperm2(a, perm=perm1[perm2][perm3])))
+stopifnot(identical(a123, aperm2(a, perm=perm1[perm2[perm3]])))
+
+## ---------------------------------------------------------------------
+## REVERSIBILITY OF THE aperm2() TRANSFORMATION
+## ---------------------------------------------------------------------
+
+## An aperm() or aperm2() transformation is always reversible.
+## The 'perm' vector to use to achieve the reverse transformation
+## can be inferred from the initial 'perm' vector using the following
+## helper function ('n' must be the number of dimensions of
+## the original array):
+build_rev_perm &lt;- function(perm, n=length(perm)) {
+    rev_perm &lt;- rep.int(NA_integer_, n)
+    na_idx &lt;- which(!is.na(perm))
+    rev_perm[perm[na_idx]] &lt;- na_idx
+    rev_perm
+}
+
+## Examples:
+
+perm &lt;- c(2,4,NA,1,NA)
+rev_perm &lt;- build_rev_perm(perm, n=length(dim(a)))
+stopifnot(identical(aperm2(aperm2(a, perm=perm), perm=rev_perm), a))
+
+## The "composed" 'perm' vector achieves identity:
+perm[rev_perm]
+
+## Sanity checks:
+
+perm &lt;- seq_len(10)
+stopifnot(identical(build_rev_perm(perm), perm))
+
+perm &lt;- c(2:5,1L)
+rev_perm &lt;- build_rev_perm(perm)
+stopifnot(identical(perm[rev_perm], seq_along(perm)))
+
+perm &lt;- c(5L,NA,2:4,NA,NA,1L)
+rev_perm &lt;- build_rev_perm(perm, n=6)
+stopifnot(identical(perm[rev_perm], c(1:5,NA)))
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>S4Arrays</em> version 1.10.1 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

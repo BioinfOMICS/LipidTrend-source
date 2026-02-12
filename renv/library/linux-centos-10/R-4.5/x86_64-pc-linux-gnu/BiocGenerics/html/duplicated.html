@@ -1,0 +1,136 @@
+<!DOCTYPE html><html><head><title>R: Determine duplicate elements</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>duplicated {BiocGenerics}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Determine duplicate elements</h2>
+
+<h3>Description</h3>
+
+<p>Determines which elements of a vector-like or data-frame-like object
+are duplicates of elements with smaller subscripts, and returns a
+logical vector indicating which elements (rows) are duplicates.
+</p>
+<p>NOTE: This man page is for the <code>duplicated</code> and <code>anyDuplicated</code>
+<em>S4 generic functions</em> defined in the <span class="pkg">BiocGenerics</span> package.
+See <code>?base::<a href="../../base/help/duplicated.html">duplicated</a></code> for the default methods
+(defined in the <span class="pkg">base</span> package).
+Bioconductor packages can define specific methods for objects
+(typically vector-like or data-frame-like) not supported by the
+default method.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>duplicated(x, incomparables=FALSE, ...)
+anyDuplicated(x, incomparables=FALSE, ...)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="x">x</code></td>
+<td>
+
+<p>A vector-like or data-frame-like object.
+</p>
+</td></tr>
+<tr><td><code id="incomparables">incomparables</code>, <code id="...">...</code></td>
+<td>
+
+<p>See <code>?base::<a href="../../base/help/duplicated.html">duplicated</a></code> for a description of
+these arguments.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>The default <code>duplicated</code> method (see
+<code>?base::<a href="../../base/help/duplicated.html">duplicated</a></code>) returns a logical vector
+of length N where N is:
+</p>
+
+<ul>
+<li> <p><code>length(x)</code> when <code>x</code> is a vector;
+</p>
+</li>
+<li> <p><code>nrow(x)</code> when <code>x</code> is a data frame.
+</p>
+</li></ul>
+
+<p>Specific <code>duplicated</code> methods defined in Bioconductor
+packages must also return a logical vector of the same length
+as <code>x</code> when <code>x</code> is a vector-like object, and a logical
+vector with one element for each row when <code>x</code> is a
+data-frame-like object.
+</p>
+<p>The default <code>anyDuplicated</code> method (see
+<code>?base::<a href="../../base/help/duplicated.html">duplicated</a></code>) returns a single
+non-negative integer and so must the specific <code>anyDuplicated</code>
+methods defined in Bioconductor packages.
+</p>
+<p><code>anyDuplicated</code> should always behave consistently with
+<code>duplicated</code>.
+</p>
+
+
+<h3>See Also</h3>
+
+
+<ul>
+<li> <p><code>base::<a href="../../base/help/duplicated.html">duplicated</a></code> for the default
+<code>duplicated</code> and <code>anyDuplicated</code> methods.
+</p>
+</li>
+<li> <p><code><a href="../../methods/help/showMethods.html">showMethods</a></code> for displaying a summary of the
+methods defined for a given generic function.
+</p>
+</li>
+<li> <p><code><a href="../../methods/help/selectMethod.html">selectMethod</a></code> for getting the definition of
+a specific method.
+</p>
+</li>
+<li> <p><a href="../../S4Vectors/help/duplicated+2CRle-method.html">duplicated,Rle-method</a> in the <span class="pkg">S4Vectors</span>
+package for an example of a specific <code>duplicated</code> method
+(defined for <a href="../../S4Vectors/help/Rle.html">Rle</a> objects).
+</p>
+</li>
+<li> <p><a href="../../BiocGenerics/help/BiocGenerics.html">BiocGenerics</a> for a summary of all the generics defined
+in the <span class="pkg">BiocGenerics</span> package.
+</p>
+</li></ul>
+
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>duplicated
+showMethods("duplicated")
+selectMethod("duplicated", "ANY")  # the default method
+
+anyDuplicated
+showMethods("anyDuplicated")
+selectMethod("anyDuplicated", "ANY")  # the default method
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>BiocGenerics</em> version 0.56.0 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

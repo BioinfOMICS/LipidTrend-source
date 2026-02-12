@@ -1,0 +1,148 @@
+<!DOCTYPE html><html><head><title>R: DataFrameFactor objects</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>DataFrameFactor-class {S4Vectors}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>DataFrameFactor objects</h2>
+
+<h3>Description</h3>
+
+<p>The DataFrameFactor class is a subclass of the <a href="../../S4Vectors/help/Factor.html">Factor</a> class where the
+levels are the rows of a <a href="../../S4Vectors/help/DataFrame.html">DataFrame</a>. It provides a few methods to mimic
+the behavior of an actual <a href="../../S4Vectors/help/DataFrame.html">DataFrame</a> while retaining the memory
+efficiency of the <a href="../../S4Vectors/help/Factor.html">Factor</a> structure.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>DataFrameFactor(x, levels, index=NULL, ...)  # constructor function
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="x">x</code>, <code id="levels">levels</code></td>
+<td>
+
+<p><a href="../../S4Vectors/help/DataFrame.html">DataFrame</a> objects. At least one of <code>x</code> and <code>levels</code> must
+be specified. If <code>index</code> is <code>NULL</code>, both can be specified.
+</p>
+<p>When <code>levels</code> is specified, it must be a <a href="../../S4Vectors/help/DataFrame.html">DataFrame</a> with no
+duplicate rows (i.e. <code>anyDuplicated(levels)</code> must return 0).
+</p>
+<p>See <code>?<a href="../../S4Vectors/help/Factor.html">Factor</a></code> for more details.
+</p>
+</td></tr>
+<tr><td><code id="index">index</code></td>
+<td>
+
+<p><code>NULL</code> or an integer (or numeric) vector of valid positive indices
+(no <code>NA</code>s) into <code>levels</code>. See <code>?<a href="../../S4Vectors/help/Factor.html">Factor</a></code> for details.
+</p>
+</td></tr>
+<tr><td><code id="...">...</code></td>
+<td>
+
+<p>Optional metadata columns.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A DataFrameFactor object.
+</p>
+
+
+<h3>Accessors</h3>
+
+<p>DataFrameFactor objects support the same set of accessors as <a href="../../S4Vectors/help/Factor.html">Factor</a>
+objects.  In addition, it mimics some aspects of the <a href="../../S4Vectors/help/DataFrame.html">DataFrame</a>
+interface. The general principle is that, for these methods, a
+DataFrameFactor <code>x</code> behaves like the expanded DataFrame
+<code><a href="../../S4Vectors/help/unfactor.html">unfactor</a>(x)</code>.
+</p>
+
+<ul>
+<li> <p><code>x$name</code> will return column <code>name</code> from
+<code><a href="../../S4Vectors/help/levels.html">levels</a>(x)</code> and expand it according to the indices in <code>x</code>.
+</p>
+</li>
+<li> <p><code>x[i, j, ..., drop=TRUE]</code> will return a new DataFrameFactor
+subsetted to entries <code>i</code>, where the levels are subsetted by column to
+contain only columns <code>j</code>. If the resulting levels only have one column
+and <code>drop=TRUE</code>, the expanded values of the column are returned
+directly.
+</p>
+</li>
+<li> <p><code>dim(x)</code> will return the length of the DataFrameFactor and the
+number of columns in its levels.
+</p>
+</li>
+<li> <p><code>dimnames(x)</code> will return the names of the DataFrameFactor and
+the column names in its levels.
+</p>
+</li></ul>
+
+
+
+<h3>Caution</h3>
+
+<p>The <a href="../../S4Vectors/help/DataFrame.html">DataFrame</a>-like methods implemented here are for convenience only.
+Users should not assume that the DataFrameFactor complies with other aspects of
+the DataFrame interface, due to fundamental differences between a DataFrame and
+the <a href="../../S4Vectors/help/Factor.html">Factor</a> parent class, e.g., in the interpretation of their
+&ldquo;length&rdquo;. Outside of the methods listed above, the DataFrameFactor is
+not guaranteed to work as a drop-in replacement for a DataFrame - use
+<code>unfactor(x)</code> instead.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Aaron Lun</p>
+
+
+<h3>See Also</h3>
+
+<p><a href="../../S4Vectors/help/Factor.html">Factor</a> objects for the parent class.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>df &lt;- DataFrame(X=sample(5, 100, replace=TRUE), Y=sample(c("A", "B"), 100, replace=TRUE))
+dffac &lt;- DataFrameFactor(df)
+dffac
+
+dffac$X
+dffac[,c("Y", "X")]
+dffac[1:10,"X"]
+colnames(dffac)
+
+# The usual Factor methods may also be used:
+unfactor(dffac)
+levels(dffac)
+as.integer(dffac)
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>S4Vectors</em> version 0.48.0 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html><html><head><title>R: Compute h, the subsample size for MCD and LTS</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>h.alpha.n {robustbase}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Compute h, the subsample size for MCD and LTS</h2>
+
+<h3>Description</h3>
+
+<p>Compute h(alpha) which is the size of the subsamples to be used
+for MCD and LTS.  Given <code class="reqn">\alpha = alpha</code>, <code class="reqn">n</code> and
+<code class="reqn">p</code>, <code class="reqn">h</code> is an <em>integer</em>, <code class="reqn">h \approx \alpha n</code>, where the exact formula also depends on <code class="reqn">p</code>.
+</p>
+<p>For <code class="reqn">\alpha = 1/2</code>, <code>h == floor(n+p+1)/2</code>; for the general
+case, it's simply
+<code>n2 &lt;- (n+p+1) %/% 2; floor(2*n2 - n + 2*(n-n2)*alpha)</code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>h.alpha.n(alpha, n, p)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="alpha">alpha</code></td>
+<td>
+<p>fraction, numeric (vector) in [0.5, 1], see, e.g.,
+<code><a href="../../robustbase/help/covMcd.html">covMcd</a></code>.</p>
+</td></tr>
+<tr><td><code id="n">n</code></td>
+<td>
+<p>integer (valued vector), the sample size.</p>
+</td></tr>
+<tr><td><code id="p">p</code></td>
+<td>
+<p>integer (valued vector), the dimension.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>numeric vector of <code class="reqn">h(\alpha, n,p)</code>; when any of the arguments of
+length greater than one, the usual <span class="rlang"><b>R</b></span> arithmetic (recycling) rules are
+used.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../robustbase/help/covMcd.html">covMcd</a></code> and <code><a href="../../robustbase/help/ltsReg.html">ltsReg</a></code> which are
+<em>defined</em> by <code class="reqn">h = h(\alpha,n,p)</code> and hence both use
+<code>h.alpha.n</code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>n &lt;- c(10:20,50,100)
+p &lt;- 5
+## show the simple "alpha = 1/2" case:
+cbind(n=n, h= h.alpha.n(1/2, n, p), n2p = floor((n+p+1)/2))
+
+## alpha = 3/4 is recommended by some authors :
+n &lt;- c(15, 20, 25, 30, 50, 100)
+cbind(n=n, h= h.alpha.n(3/4, n, p = 6))
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>robustbase</em> version 0.99-7 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

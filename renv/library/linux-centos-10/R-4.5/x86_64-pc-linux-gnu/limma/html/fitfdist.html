@@ -1,0 +1,190 @@
+<!DOCTYPE html><html><head><title>R: Moment Estimation of Scaled F-Distribution</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>fitFDist {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Moment Estimation of Scaled F-Distribution</h2>
+
+<h3>Description</h3>
+
+<p>Moment estimation of the parameters of a scaled F-distribution given one of the degrees of freedom.
+These functions are called internally by <code>eBayes</code> and <code>squeezeVar</code> and is not usually called directly by a user.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>fitFDist(x, df1, covariate = NULL)
+fitFDistRobustly(x, df1, covariate = NULL,
+                 winsor.tail.p = c(0.05,0.1), trace = FALSE)
+fitFDistUnequalDF1(x, df1, covariate = NULL, span = NULL,
+                   robust = FALSE, prior.weights = NULL)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="x">x</code></td>
+<td>
+<p>numeric vector or array of positive values representing a sample from a scaled F-distribution.</p>
+</td></tr>
+<tr><td><code id="df1">df1</code></td>
+<td>
+<p>the first degrees of freedom of the F-distribution. Can be a single value, or else a vector of the same length as <code>x</code>.</p>
+</td></tr>
+<tr><td><code id="covariate">covariate</code></td>
+<td>
+<p>if non-<code>NULL</code>, the estimated scale value will depend on this numeric covariate.</p>
+</td></tr>
+<tr><td><code id="winsor.tail.p">winsor.tail.p</code></td>
+<td>
+<p>numeric vector of length 1 or 2, giving left and right tail proportions of <code>x</code> to Winsorize.</p>
+</td></tr>
+<tr><td><code id="trace">trace</code></td>
+<td>
+<p>logical value indicating whether a trace of the iteration progress should be printed.</p>
+</td></tr>
+<tr><td><code id="span">span</code></td>
+<td>
+<p>lowess span parameter. Defaults to <code>chooseLowessSpan(length(x),small.n=500)</code>.</p>
+</td></tr>
+<tr><td><code id="robust">robust</code></td>
+<td>
+<p>logical. Should outlier values of <code>x</code> be down-weighted with results similar to <code>fitFDistRobustly</code>?</p>
+</td></tr>
+<tr><td><code id="prior.weights">prior.weights</code></td>
+<td>
+<p>numeric vector of (non-negative) prior weights.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p><code>fitFDist()</code> implements an algorithm proposed by Smyth (2004) and Phipson et al (2016).
+It estimates <code>scale</code> and <code>df2</code> under the assumption that <code>x</code> is distributed as <code>scale</code> times an F-distributed random variable on <code>df1</code> and <code>df2</code> degrees of freedom.
+The parameters are estimated using the method of moments, specifically from the mean and variance of the <code>x</code> values on the log-scale.
+</p>
+<p>When <code>covariate</code> is supplied, a spline curve trend will be estimated for the <code>x</code> values and the estimation will be adjusted for this trend (Phipson et al, 2016).
+</p>
+<p><code>fitFDistRobustly</code> is similar to <code>fitFDist</code> except that it computes the moments of the Winsorized values of <code>x</code>, making it robust against left and right outliers.
+Larger values for <code>winsor.tail.p</code> produce more robustness but less efficiency.
+When <code>covariate</code> is supplied, a loess trend is estimated for the <code>x</code> values.
+The robust method is described by Phipson et al (2016).
+</p>
+<p>As well as estimating the F-distribution for the bulk of the cases, i.e., with outliers discounted, <code>fitFDistRobustly</code> also returns an estimated F-distribution with reduced df2 that might be appropriate for each outlier case.
+</p>
+<p><code>fitFDistUnequalDF1</code> was introduced in limma 3.61.8 and gives special attention to the possibility that the degrees of freedom <code>df1</code> might be unequal and might include non-integer values.
+The most important innovation of <code>fitFDistUnequalDF1</code> is downweighting of observations with lower degrees of freedom, to give more precise estimation overall.
+It also allows the possibility of prior weights, which can be used to downweight unreliable <code>x</code> values for reasons other than small <code>df1</code>.
+<code>fitFDistUnequalDF1</code> implements a different robust estimation strategy to <code>fitFDistRobustly</code>.
+Instead of Winsorizing the <code>x</code> values, potential outliers are instead downweighted using the prior weights.
+Whereas <code>fitFDist</code> and <code>fitFDistRobustly</code> use unweighted moment estimation for both <code>scale</code> and <code>df2</code>,
+<code>fitFDistUnequalDF1</code> uses weighted moment estimation for <code>scale</code> and profile maximum likelihood for <code>df2</code>.
+</p>
+<p><code>fitFDistUnequalDF1</code> gives improved performance over <code>fitFDist</code> and <code>fitFDistRobustly</code>, especially when the degrees of freedom are unequal but also to a lesser extent when the degrees of freedom are equal.
+Unequal residual degrees of freedom arise in limma pipelines when the expression matrix includes missing values, or from <code>edgeR::voomLmFit</code> or from the quasi-likelihood pipeline in edgeR v4 (Chen et al 2024).
+The edgeR v4 pipeline produces fractional degrees of freedom including, potentially, degrees of freedom less than 1.
+</p>
+
+
+<h3>Value</h3>
+
+<p><code>fitFDist</code> or <code>fitFDistUnequalDF1</code> with <code>robust=FALSE</code> produces a list with the following components:
+</p>
+<table role = "presentation">
+<tr><td><code>scale</code></td>
+<td>
+<p>scale factor for F-distribution. A vector if <code>covariate</code> is non-<code>NULL</code>, otherwise a scalar.</p>
+</td></tr>
+<tr><td><code>df2</code></td>
+<td>
+<p>the second degrees of freedom of the fitted F-distribution.</p>
+</td></tr>
+</table>
+<p><code>fitFDistRobustly</code> returns the following components as well:
+</p>
+<table role = "presentation">
+<tr><td><code>tail.p.value</code></td>
+<td>
+<p>right tail probability of the scaled F-distribution for each <code>x</code> value.</p>
+</td></tr>
+<tr><td><code>prob.outlier</code></td>
+<td>
+<p>posterior probability that each case is an outlier relative to the scaled F-distribution with degrees of freedom <code>df1</code> and <code>df2</code>.</p>
+</td></tr>
+<tr><td><code>df2.outlier</code></td>
+<td>
+<p>the second degrees of freedom associated with extreme outlier cases.</p>
+</td></tr>
+<tr><td><code>df2.shrunk</code></td>
+<td>
+<p>numeric vector of values for the second degrees of freedom, with shrunk values for outliers. Most values are equal to <code>df2</code>, but outliers have reduced values depending on how extreme each case is. All values lie between <code>df2.outlier</code> and <code>df2</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Note</h3>
+
+<p>The algorithm used by <code>fitFDistRobustly</code> was revised slightly in limma 3.27.6.
+The <code>prob.outlier</code> value, which is the lower bound for <code>df2.shrunk</code>, may be slightly smaller than previously.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth, Belinda Phipson (<code>fitFDistRobustly</code>) and Lizhong Chen (<code>fitFDistUnequalDF1</code>).</p>
+
+
+<h3>References</h3>
+
+<p>Smyth GK (2004).
+Linear models and empirical Bayes methods for assessing differential expression in microarray experiments.
+<em>Statistical Applications in Genetics and Molecular Biology</em> Volume 3, Issue 1, Article 3.
+<a href="https://doi.org/10.2202/1544-6115.1027">doi:10.2202/1544-6115.1027</a>
+<a href="https://gksmyth.github.io/pubs/ebayes.pdf">https://gksmyth.github.io/pubs/ebayes.pdf</a>
+</p>
+<p>Phipson B, Lee S, Majewski IJ, Alexander WS, Smyth GK (2016).
+Robust hyperparameter estimation protects against hypervariable genes and improves power to detect differential expression.
+<em>Annals of Applied Statistics</em> 10, 946-963.
+<a href="https://doi.org/10.1214/16-AOAS920">doi:10.1214/16-AOAS920</a>
+</p>
+<p>Chen Y, Chen L, Lun ATL, Baldoni PL, Smyth GK (2024).
+edgeR 4.0: powerful differential analysis of sequencing data with expanded functionality and improved support for small counts and larger datasets.
+<em>bioRxiv</em> 2024.01.21.576131.
+<a href="https://doi.org/10.1101/2024.01.21.576131">doi:10.1101/2024.01.21.576131</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p>This function is called by <code><a href="../../limma/help/squeezeVar.html">squeezeVar</a></code>, which in turn is called by <code><a href="../../limma/help/eBayes.html">eBayes</a></code> and <code><a href="../../limma/help/treat.html">treat</a></code>.
+</p>
+<p>This function calls <code><a href="../../limma/help/trigammaInverse.html">trigammaInverse</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>x &lt;- rf(100,df1=8,df2=16)
+fitFDist(x,df1=8)
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>limma</em> version 3.66.0 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

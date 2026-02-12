@@ -1,0 +1,87 @@
+<!DOCTYPE html><html><head><title>R: Estimate Scale Factor in Mixture of t-Distributions</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>tmixture {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Estimate Scale Factor in Mixture of t-Distributions</h2>
+
+<h3>Description</h3>
+
+<p>These functions estimate the unscaled standard deviation of the true (unobserved) log fold changes for differentially expressed genes.
+They are used internally by the <code>eBayes</code> function and are not intended to be called directly by users.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>tmixture.vector(tstat, stdev.unscaled, df, proportion, v0.lim = NULL)
+tmixture.matrix(tstat, stdev.unscaled, df, proportion, v0.lim = NULL)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="tstat">tstat</code></td>
+<td>
+<p>numeric vector or matrix of t-statistics.  <code>tmixture.vector</code> assumes a vector while <code>tmixture.matrix</code> assumes a matrix.</p>
+</td></tr>
+<tr><td><code id="stdev.unscaled">stdev.unscaled</code></td>
+<td>
+<p>numeric vector or matrix, conformal with <code>tstat</code>, containing the unscaled standard deviations of the coefficients used to compute the t-statistics.</p>
+</td></tr>
+<tr><td><code id="df">df</code></td>
+<td>
+<p>numeric vector giving the degrees of freedom associated with <code>tstat</code>.</p>
+</td></tr>
+<tr><td><code id="proportion">proportion</code></td>
+<td>
+<p>assumed proportion of genes that are differentially expressed.</p>
+</td></tr>
+<tr><td><code id="v0.lim">v0.lim</code></td>
+<td>
+<p>numeric vector of length 2 giving the lower and upper limits for the estimated unscaled standard deviations.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The values in each column of <code>tstat</code> are assumed to follow a mixture of an ordinary t-distribution, with mixing proportion <code>1-proportion</code>, and <code>(v0+v1)/v1</code> times a t-distribution, with mixing proportion <code>proportion</code>.
+Here <code>v1</code> is <code>stdev.unscaled^2</code> and <code>v0</code> is the value to be estimated.
+</p>
+
+
+<h3>Value</h3>
+
+<p>Numeric vector, of length equal to the number of columns of <code>tstat</code>, containing estimated <code>v0</code> values.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../limma/help/eBayes.html">eBayes</a></code>
+</p>
+
+<hr><div style="text-align: center;">[Package <em>limma</em> version 3.66.0 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

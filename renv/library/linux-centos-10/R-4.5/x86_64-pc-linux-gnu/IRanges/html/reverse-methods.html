@@ -1,0 +1,116 @@
+<!DOCTYPE html><html><head><title>R: reverse</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>reverse {IRanges}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>reverse</h2>
+
+<h3>Description</h3>
+
+<p>A generic function for reversing vector-like or list-like objects.
+This man page describes methods for reversing a character vector,
+a <a href="../../IRanges/help/Views.html">Views</a> object, or a <a href="../../IRanges/help/MaskCollection.html">MaskCollection</a> object.
+Note that <code>reverse</code> is similar to but not the same as
+<code><a href="../../base/help/rev.html">rev</a></code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>reverse(x, ...)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="x">x</code></td>
+<td>
+
+<p>A vector-like or list-like object.
+</p>
+</td></tr>
+<tr><td><code id="...">...</code></td>
+<td>
+
+<p>Additional arguments to be passed to or from methods.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>On a character vector or a <a href="../../IRanges/help/Views.html">Views</a> object, <code>reverse</code> reverses
+each element individually, without modifying the top-level order of the
+elements. More precisely, each individual string of a character vector
+is reversed.
+</p>
+
+
+<h3>Value</h3>
+
+<p>An object of the same class and length as the original object.
+</p>
+
+
+<h3>See Also</h3>
+
+
+<ul>
+<li> <p><code><a href="../../base/help/rev.html">rev</a></code> in base R.
+</p>
+</li>
+<li> <p><code>revElements</code> in the <span class="pkg">S4Vectors</span> package to
+reverse all or some of the list elements of a list-like object.
+</p>
+</li>
+<li> <p><a href="../../IRanges/help/Views.html">Views</a> objects.
+</p>
+</li>
+<li> <p><a href="../../IRanges/help/MaskCollection.html">MaskCollection</a> objects.
+</p>
+</li>
+<li> <p><a href="../../XVector/help/reverse-methods.html">reverse-methods</a> in the <span class="pkg">XVector</span> package.
+</p>
+</li></ul>
+
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>## On a character vector:
+reverse(c("Hi!", "How are you?"))
+rev(c("Hi!", "How are you?"))
+
+## On a Views object:
+v &lt;- successiveViews(Rle(c(-0.5, 12.3, 4.88), 4:2), 1:4)
+v
+reverse(v)
+rev(v)
+
+## On a MaskCollection object:
+mask1 &lt;- Mask(mask.width=29, start=c(11, 25, 28), width=c(5, 2, 2))
+mask2 &lt;- Mask(mask.width=29, start=c(3, 10, 27), width=c(5, 8, 1))
+mask3 &lt;- Mask(mask.width=29, start=c(7, 12), width=c(2, 4))
+mymasks &lt;- append(append(mask1, mask2), mask3)
+reverse(mymasks)
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>IRanges</em> version 2.44.0 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

@@ -1,0 +1,166 @@
+<!DOCTYPE html><html><head><title>R: Summary Method for LTS objects</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>summary.lts {robustbase}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Summary Method for LTS objects</h2>
+
+<h3>Description</h3>
+
+<p><code>summary</code> method for class <code>"lts"</code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>## S3 method for class 'lts'
+summary(object, correlation = FALSE, ...)
+
+## S3 method for class 'summary.lts'
+print(x, digits = max(3, getOption("digits") - 3),
+     signif.stars = getOption("show.signif.stars"), ...)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="object">object</code></td>
+<td>
+<p>an object of class <code>"lts"</code>, usually, a result of a call to <code><a href="../../robustbase/help/ltsReg.html">ltsReg</a></code>.</p>
+</td></tr>
+<tr><td><code id="correlation">correlation</code></td>
+<td>
+<p>logical; if <code>TRUE</code>, the correlation matrix of the estimated parameters is returned and printed.</p>
+</td></tr>
+<tr><td><code id="x">x</code></td>
+<td>
+<p>an object of class <code>"summary.lts"</code>, usually, a result of a call to <code>summary.lts</code>.</p>
+</td></tr>
+<tr><td><code id="digits">digits</code></td>
+<td>
+<p>the number of significant digits to use when printing.</p>
+</td></tr>
+<tr><td><code id="signif.stars">signif.stars</code></td>
+<td>
+<p>logical indicating if &ldquo;significance stars&rdquo;
+should be printer, see <code><a href="../../stats/html/printCoefmat.html">printCoefmat</a></code>.</p>
+</td></tr>
+<tr><td><code id="...">...</code></td>
+<td>
+<p>further arguments passed to or from other methods.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>These functions compute and print summary statistics for weighted
+least square estimates with weights based on LTS estimates.  Therefore
+the statistics are similar to those for LS but all terms are
+multiplied by the corresponding weight.
+</p>
+<p>Correlations are printed to two decimal places: to see the actual correlations
+print <code>summary(object)$correlation</code> directly.
+</p>
+
+
+<h3>Value</h3>
+
+<p>The function <code>summary.lts</code> computes and returns a list of summary
+statistics of the fitted linear model given in <code>object</code>, using
+the components of this object (list elements).
+</p>
+<table role = "presentation">
+<tr><td><code>residuals</code></td>
+<td>
+<p>the residuals - a vector like the response <code>y</code>
+containing the residuals from the weighted least squares regression.</p>
+</td></tr>
+<tr><td><code>coefficients</code></td>
+<td>
+<p>a <code class="reqn">p \times 4</code> matrix with columns for
+the estimated coefficient, its standard error, t-statistic and
+corresponding (two-sided) p-value. </p>
+</td></tr>
+<tr><td><code>sigma</code></td>
+<td>
+<p>the estimated scale of the reweighted residuals
+</p>
+<p style="text-align: center;"><code class="reqn">\hat\sigma^2 = \frac{1}{n-p}\sum_i{R_i^2},</code>
+</p>
+
+<p>where <code class="reqn">R_i</code> is the <code class="reqn">i</code>-th residual, <code>residuals[i]</code>.</p>
+</td></tr>
+<tr><td><code>df</code></td>
+<td>
+<p>degrees of freedom, a 3-vector <code class="reqn">(p, n-p, p*)</code>, the last
+being the number of non-aliased coefficients.</p>
+</td></tr>
+<tr><td><code>fstatistic</code></td>
+<td>
+<p>(for models including non-intercept terms)
+a 3-vector with the value of the F-statistic with
+its numerator and denominator degrees of freedom.</p>
+</td></tr>
+<tr><td><code>r.squared</code></td>
+<td>
+<p><code class="reqn">R^2</code>, the &ldquo;fraction of variance explained by
+the model&rdquo;,
+</p>
+<p style="text-align: center;"><code class="reqn">R^2 = 1 - \frac{\sum_i{R_i^2}}{\sum_i(y_i- y^*)^2},</code>
+</p>
+
+<p>where <code class="reqn">y^*</code> is the mean of <code class="reqn">y_i</code> if there is an
+intercept and zero otherwise.</p>
+</td></tr>
+<tr><td><code>adj.r.squared</code></td>
+<td>
+<p>the above <code class="reqn">R^2</code> statistic
+&ldquo;<em>adjusted</em>&rdquo;, penalizing for higher <code class="reqn">p</code>.</p>
+</td></tr>
+<tr><td><code>cov.unscaled</code></td>
+<td>
+<p>a <code class="reqn">p \times p</code> matrix of (unscaled)
+covariances of the <code class="reqn">\hat\beta_j</code>, <code class="reqn">j=1, \dots, p</code>.</p>
+</td></tr>
+<tr><td><code>correlation</code></td>
+<td>
+<p>the correlation matrix corresponding to the above
+<code>cov.unscaled</code>, if <code>correlation = TRUE</code> is specified.</p>
+</td></tr>
+</table>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../robustbase/help/ltsReg.html">ltsReg</a></code>; the generic <code><a href="../../base/html/summary.html">summary</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>data(Animals2)
+ltsA &lt;- ltsReg(log(brain) ~ log(body), data = Animals2)
+(slts &lt;- summary(ltsA))
+## non-default options for printing the summary:
+print(slts, digits = 5, signif.stars = FALSE)
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>robustbase</em> version 0.99-7 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

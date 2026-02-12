@@ -1,0 +1,96 @@
+<!DOCTYPE html><html><head><title>R: Accessing SQLite DB information</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>dbconn {BiocGenerics}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Accessing SQLite DB information</h2>
+
+<h3>Description</h3>
+
+<p>Get a connection object or file path for a SQLite DB
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>dbconn(x)
+dbfile(x)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="x">x</code></td>
+<td>
+
+<p>An object with a SQLite connection.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p><code>dbconn</code> returns a connection object to the SQLite DB containing
+<code>x</code>'s data.
+</p>
+<p><code>dbfile</code> returns a path (character string) to the SQLite DB (file)
+containing <code>x</code>'s data.
+</p>
+
+
+<h3>See Also</h3>
+
+
+<ul>
+<li> <p><code><a href="../../methods/help/showMethods.html">showMethods</a></code> for displaying a summary of the
+methods defined for a given generic function.
+</p>
+</li>
+<li> <p><code><a href="../../methods/help/selectMethod.html">selectMethod</a></code> for getting the definition of
+a specific method.
+</p>
+</li>
+<li> <p><a href="../../AnnotationDbi/help/dbconn+2CAnnotationDb-method.html">dbconn,AnnotationDb-method</a> in the
+<span class="pkg">AnnotationDbi</span> package for an example of a specific
+<code>dbconn</code> method (defined for <a href="../../AnnotationDbi/help/dbconn.html">dbconn</a>
+objects).
+</p>
+</li>
+<li> <p><a href="../../BiocGenerics/help/BiocGenerics.html">BiocGenerics</a> for a summary of all the generics defined
+in the <span class="pkg">BiocGenerics</span> package.
+</p>
+</li></ul>
+
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>dbconn
+showMethods("dbconn")
+dbfile
+showMethods("dbfile")
+
+library(AnnotationDbi)
+showMethods("dbconn")
+selectMethod("dbconn", "AnnotationDb")
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>BiocGenerics</em> version 0.56.0 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

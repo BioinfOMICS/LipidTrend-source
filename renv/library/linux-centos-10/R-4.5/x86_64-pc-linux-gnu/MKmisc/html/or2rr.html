@@ -1,0 +1,133 @@
+<!DOCTYPE html><html><head><title>R: Transform OR to RR</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>or2rr {MKmisc}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Transform OR to RR </h2>
+
+<h3>Description</h3>
+
+<p>The function transforms a given odds-ratio (OR) to the respective
+relative risk (RR).
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>or2rr(or, p0, p1)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="or">or</code></td>
+<td>
+<p> numeric vector: OR (odds-ratio). </p>
+</td></tr>
+<tr><td><code id="p0">p0</code></td>
+<td>
+<p> numeric vector of length 1: incidence of the outcome of interest in the
+nonexposed group.</p>
+</td></tr>
+<tr><td><code id="p1">p1</code></td>
+<td>
+<p> numeric vector of length 1: incidence of the outcome of interest in the
+exposed group.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The function transforms a given odds-ratio (OR) to the respective
+relative risk (RR). It can also be used to transform the limits
+of confidence intervals.
+</p>
+<p>The formulas can be derived by combining the formulas for RR and OR; see
+also Zhang and Yu (1998).
+</p>
+
+
+<h3>Value</h3>
+
+<p>relative risk.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> Matthias Kohl <a href="mailto:Matthias.Kohl@stamats.de">Matthias.Kohl@stamats.de</a></p>
+
+
+<h3>References</h3>
+
+<p>Zhang, J. and Yu, K. F. (1998). What's the relative risk? A method of correcting the odds ratio in cohort
+studies of common outcomes. <em>JAMA</em>, <b>280</b>(19):1690-1691.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>## We use data from Zhang and Yu (1998)
+
+## OR to RR using OR and p0
+or2rr(14.1, 0.05)
+
+## compute p1
+or2rr(14.1, 0.05)*0.05
+
+## OR to RR using OR and p1
+or2rr(14.1, p1 = 0.426)
+
+## OR and 95% confidence interval
+or2rr(c(14.1, 7.8, 27.5), 0.05)
+
+## Logistic OR and 95% confidence interval
+logisticOR &lt;- rbind(c(14.1, 7.8, 27.5),
+                    c(8.7, 5.5, 14.3),
+                    c(27.4, 17.2, 45.8),
+                    c(4.5, 2.7, 7.8),
+                    c(0.25, 0.17, 0.37),
+                    c(0.09, 0.05, 0.14))
+colnames(logisticOR) &lt;- c("OR", "2.5%", "97.5%")
+rownames(logisticOR) &lt;- c("7.4", "4.2", "3.0", "2.0", "0.37", "0.14")
+logisticOR
+
+## p0
+p0 &lt;- c(0.05, 0.12, 0.32, 0.27, 0.40, 0.40)
+
+## Compute corrected RR
+## helper function
+or2rr.mat &lt;- function(or, p0){
+  res &lt;- matrix(NA, nrow = nrow(or), ncol = ncol(or))
+  for(i in seq_len(nrow(or)))
+    res[i,] &lt;- or2rr(or[i,], p0[i])
+  dimnames(res) &lt;- dimnames(or)
+  res
+}
+RR &lt;- or2rr.mat(logisticOR, p0)
+round(RR, 2)
+
+## Results are not completely identical to Zhang and Yu (1998)
+## what probably is caused by the fact that the logistic OR values
+## provided in the table are rounded and are not exact values.
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>MKmisc</em> version 1.9 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

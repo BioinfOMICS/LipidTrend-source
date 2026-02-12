@@ -1,0 +1,123 @@
+<!DOCTYPE html><html><head><title>R: Run RUnit package unit tests</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>testPackage {BiocGenerics}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Run RUnit package unit tests</h2>
+
+<h3>Description</h3>
+
+<p><code>testPackage</code> helps developers implement unit tests using the
+<span class="pkg">RUnit</span> testing conventions.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>testPackage(pkgname=NULL, subdir="unitTests", pattern="^test_.*\\.R$",
+    path=getwd())
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="pkgname">pkgname</code></td>
+<td>
+
+<p>The name of the package whose installed unit tests are to be run. A
+missing or NULL value implies that the <code>testPackage</code> command
+will look for tests within the package source directory indicated by
+<code>path</code>.
+</p>
+</td></tr>
+<tr><td><code id="subdir">subdir</code></td>
+<td>
+
+<p>A character(1) vector providing the subdirectory in which unit tests
+are located. The directory is searched first in the (installed or
+source) package root, or in a subdirectory <code>inst/</code> below the
+root.
+</p>
+</td></tr>
+<tr><td><code id="pattern">pattern</code></td>
+<td>
+
+<p>A character(1) regular expression describing the file names to be
+evaluated; typically used to restrict tests to a subset of all test
+files.
+</p>
+</td></tr>
+<tr><td><code id="path">path</code></td>
+<td>
+
+<p>A character(1) directory path indicating, when <code>pkgname</code> is
+missing or NULL, where unit tests will be searched. <code>path</code> can
+be any location at or below the package root.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This function is not exported from the package namespace, and must be
+invoked using triple colons, <code>BiocGenerics:::testPackage()</code>; it
+is provided primarily for the convenience of developers.
+</p>
+<p>When invoked with missing or NULL <code>pkgname</code> argument, the
+function assumes that it has been invoked from within the package
+source tree (or that the source tree is located above <code>path</code>),
+and finds unit tests in <code>subdir="unitTests"</code> in either the base
+or <code>inst/</code> directories at the root of the package source
+tree. This mode is useful when developing unit tests, since the
+package does not have to be re-installed to run an updated test.
+</p>
+<p>When invoked with <code>pkgname</code> set to the name of an installed
+package, unit tests are searched for in the installed package
+directory.
+</p>
+
+
+<h3>Value</h3>
+
+<p>The function returns the result of <code>RUnit::runTestSuite</code> invoked
+on the unit tests specified in the function call.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><a href="http://bioconductor.org/developers/how-to/unitTesting-guidelines/">http://bioconductor.org/developers/how-to/unitTesting-guidelines/</a>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>## Run unit tests found in the library location where
+## BiocGenerics is installed
+BiocGenerics:::testPackage("BiocGenerics")
+## Not run: ## Run unit tests for the package whose source tree implied
+## by getwd()
+BiocGenerics:::testPackage()
+
+## End(Not run)
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>BiocGenerics</em> version 0.56.0 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

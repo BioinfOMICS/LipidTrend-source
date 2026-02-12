@@ -1,0 +1,144 @@
+<!DOCTYPE html><html><head><title>R: New Transformations for Use with ggplot2 Package</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>transformations {MKmisc}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> New Transformations for Use with ggplot2 Package</h2>
+
+<h3>Description</h3>
+
+<p>The functions generate new transformations for the generalized logarithm and
+the negative logarithm that can be used for transforming the axes in ggplot2
+plots.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>glog_trans(base = exp(1))
+glog10_trans()
+glog2_trans()
+scale_y_glog(...)
+scale_x_glog(...)
+scale_y_glog10(...)
+scale_x_glog10(...)
+scale_y_glog2(...)
+scale_x_glog2(...)
+neglog_breaks(n = 5, base = 10)
+neglog_trans(base = exp(1))
+neglog10_trans()
+neglog2_trans()
+scale_y_neglog(...)
+scale_x_neglog(...)
+scale_y_neglog10(...)
+scale_x_neglog10(...)
+scale_y_neglog2(...)
+scale_x_neglog2(...)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="base">base</code></td>
+<td>
+<p> a positive or a positive or complex number: the base with
+respect to which generalized and negative logarithms are computed.
+Defaults to e=exp(1).</p>
+</td></tr>
+<tr><td><code id="...">...</code></td>
+<td>
+<p> Arguments passed on to scale_(x|y)_continuous.</p>
+</td></tr>
+<tr><td><code id="n">n</code></td>
+<td>
+<p> desired number of breaks.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The functions can be used to transform axes in ggplot2 plots. The implementation
+is analogous to e.g. <code>scale_y_log10</code>.
+</p>
+<p>The negative logarithm is for instance of use in case of p values (e.g.
+volcano plots),
+</p>
+<p>The functions were adapted from packages scales and ggplot2.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A transformation.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> Matthias Kohl <a href="mailto:Matthias.Kohl@stamats.de">Matthias.Kohl@stamats.de</a></p>
+
+
+<h3>References</h3>
+
+<p>H. Wickham. ggplot2: Elegant Graphics for Data Analysis. Springer-Verlag New York, 2016.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../ggplot2/help/scale_continuous.html">scale_continuous</a></code>, <code><a href="../../scales/help/log_trans.html">log_trans</a></code></p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>library(ggplot2)
+data(mpg)
+p1 &lt;- ggplot(mpg, aes(displ, hwy)) + geom_point()
+p1
+p1 + scale_x_log10()
+p1 + scale_x_glog10()
+p1 + scale_y_log10()
+p1 + scale_y_glog10()
+
+## A volcano plot
+x &lt;- matrix(rnorm(1000, mean = 10), nrow = 10)
+g1 &lt;- rep("control", 10)
+y1 &lt;- matrix(rnorm(500, mean = 11.25), nrow = 10)
+y2 &lt;- matrix(rnorm(500, mean = 9.75), nrow = 10)
+g2 &lt;- rep("treatment", 10)
+group &lt;- factor(c(g1, g2))
+Data &lt;- rbind(x, cbind(y1, y2))
+pvals &lt;- apply(Data, 2, function(x, group) t.test(x ~ group)$p.value,
+               group = group)
+## compute log-fold change
+logfc &lt;- function(x, group){
+  res &lt;- tapply(x, group, mean)
+  log2(res[1]/res[2])
+}
+lfcs &lt;- apply(Data, 2, logfc, group = group)
+ps &lt;- data.frame(pvals = pvals, logfc = lfcs)
+ggplot(ps, aes(x = logfc, y = pvals)) + geom_point() +
+    geom_hline(yintercept = 0.05) + scale_y_neglog10() +
+    geom_vline(xintercept = c(-0.1, 0.1)) + xlab("log-fold change") +
+    ylab("-log10(p value)") + ggtitle("A Volcano Plot")
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>MKmisc</em> version 1.9 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

@@ -1,0 +1,92 @@
+<!DOCTYPE html><html><head><title>R: 'Logic' operations on SparseArray objects</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>SparseArray-Logic-methods {SparseArray}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>'Logic' operations on SparseArray objects</h2>
+
+<h3>Description</h3>
+
+<p><a href="../../SparseArray/help/SparseArray.html">SparseArray</a> derivatives support operations from the <code>Logic</code>
+group (i.e. <code>&amp;</code> and <code>|</code>), with some restrictions.
+See <code>?<a href="../../methods/help/S4groupGeneric.html">S4groupGeneric</a></code> in the <span class="pkg">methods</span> package
+for more information about the <code>Logic</code> group generic.
+</p>
+<p>IMPORTANT NOTES:
+</p>
+
+<ul>
+<li><p> Only <a href="../../SparseArray/help/SVT_SparseArray.html">SVT_SparseArray</a> objects are supported at the moment.
+Support for <a href="../../SparseArray/help/COO_SparseArray.html">COO_SparseArray</a> objects might be added in the
+future.
+</p>
+</li>
+<li><p> In base R, <code>Logic</code> operations support input of <code>type()</code>
+<code>"logical"</code>, <code>"integer"</code>, <code>"double"</code>, or
+<code>"complex"</code>. However, the corresponding methods for
+<a href="../../SparseArray/help/SVT_SparseArray.html">SVT_SparseArray</a> objects only support objects of
+<code>type()</code> <code>"logical"</code> for now.
+</p>
+</li></ul>
+
+
+
+<h3>Value</h3>
+
+<p>A <a href="../../SparseArray/help/SparseArray.html">SparseArray</a> derivative of <code>type()</code> <code>"logical"</code> and
+same dimensions as the input object(s).
+</p>
+
+
+<h3>See Also</h3>
+
+
+<ul>
+<li> <p><code><a href="../../methods/help/S4groupGeneric.html">S4groupGeneric</a></code> in the <span class="pkg">methods</span> package.
+</p>
+</li>
+<li> <p><a href="../../SparseArray/help/SparseArray.html">SparseArray</a> objects.
+</p>
+</li>
+<li><p> Ordinary <a href="../../base/help/array.html">array</a> objects in base R.
+</p>
+</li></ul>
+
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>svt1 &lt;- svt2 &lt;- SVT_SparseArray(dim=c(15, 6))
+svt1[cbind(1:15, 2)] &lt;- c(TRUE, FALSE, NA)
+svt1[cbind(1:15, 5)] &lt;- c(TRUE, NA, NA, FALSE, TRUE)
+svt2[c(2, 6, 12:17, 22:33, 55, 59:62, 90)] &lt;- c(TRUE, NA)
+
+svt1 &amp; svt2
+svt1 | svt2
+
+## Sanity checks:
+m1 &lt;- as.matrix(svt1)
+m2 &lt;- as.matrix(svt2)
+stopifnot(
+  identical(as.matrix(svt1 &amp; svt2), m1 &amp; m2),
+  identical(as.matrix(svt1 | svt2), m1 | m2)
+)
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>SparseArray</em> version 1.10.8 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

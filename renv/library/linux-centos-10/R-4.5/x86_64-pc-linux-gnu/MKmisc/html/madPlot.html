@@ -1,0 +1,139 @@
+<!DOCTYPE html><html><head><title>R: Plot of similarity matrix based on MAD</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>madPlot {MKmisc}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Plot of similarity matrix based on MAD </h2>
+
+<h3>Description</h3>
+
+<p>Plot of similarity matrix based on MAD between microarrays.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>madPlot(x, new = FALSE, col, maxMAD = 3, labels = FALSE, 
+        labcols = "black", title = "", protocol = FALSE, ...)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="x">x</code></td>
+<td>
+<p> data or correlation matrix, respectively </p>
+</td></tr>
+<tr><td><code id="new">new</code></td>
+<td>
+<p> If <code>new=FALSE</code>, <code>x</code> must already be a matrix with MAD
+values. If <code>new=TRUE</code>, the MAD matrix for the columns of 
+<code>x</code> is computed and displayed in the image. </p>
+</td></tr>
+<tr><td><code id="col">col</code></td>
+<td>
+<p> colors palette for image. If missing, the <code>RdYlGn</code> palette
+of <code>RColorBrewer</code> is used. </p>
+</td></tr>
+<tr><td><code id="maxMAD">maxMAD</code></td>
+<td>
+<p> maximum MAD value displayed  </p>
+</td></tr>
+<tr><td><code id="labels">labels</code></td>
+<td>
+<p> vector of character strings to be placed at the tickpoints,
+labels for the columns of <code>x</code>. </p>
+</td></tr>
+<tr><td><code id="labcols">labcols</code></td>
+<td>
+<p> colors to be used for the labels of the columns of <code>x</code>.
+<code>labcols</code> can have either length 1, in which case all 
+the labels are displayed using the same color, or the same 
+length as <code>labels</code>, in which case a color is specified 
+for the label of each column of <code>x</code>. </p>
+</td></tr>
+<tr><td><code id="title">title</code></td>
+<td>
+<p> character string, overall title for the plot. </p>
+</td></tr>
+<tr><td><code id="protocol">protocol</code></td>
+<td>
+<p> logical, display color bar without numbers </p>
+</td></tr>
+<tr><td><code id="...">...</code></td>
+<td>
+<p> graphical parameters may also be supplied as arguments to the
+function (see <code><a href="../../graphics/help/par.html">par</a></code>). For comparison purposes, 
+it is good to set <code>zlim=c(-1,1)</code>. </p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This functions generates the so called similarity matrix (based on MAD) for 
+a microarray experiment; cf. Buness et. al. (2004). The function is similar
+to <code><a href="../../MKmisc/help/corPlot.html">corPlot</a></code>.
+</p>
+
+
+<h3>Note</h3>
+
+<p>A first version of this function appeared in package SLmisc.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> Matthias Kohl <a href="mailto:Matthias.Kohl@stamats.de">Matthias.Kohl@stamats.de</a></p>
+
+
+<h3>References</h3>
+
+ 
+<p>Sandrine Dudoit, Yee Hwa (Jean) Yang, Benjamin Milo Bolstad and with 
+contributions from Natalie Thorne, Ingrid Loennstedt and Jessica Mar.
+sma: Statistical Microarray Analysis.<br>
+http://www.stat.berkeley.edu/users/terry/zarray/Software/smacode.html
+</p>
+<p>Andreas Buness, Wolfgang Huber, Klaus Steiner, Holger Sueltmann, and
+Annemarie Poustka. arrayMagic: two-colour cDNA microarray quality
+control and preprocessing. Bioinformatics Advance Access published on
+September 28, 2004. doi:10.1093/bioinformatics/bti052
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code>corPlot</code></p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>## only a dummy example
+set.seed(13)
+x &lt;- matrix(rnorm(1000), ncol = 10)
+x[1:20,5] &lt;- x[1:20,5] + 10
+madPlot(x, new = TRUE, maxMAD = 2.5)
+## in contrast
+corPlot(x, new = TRUE, minCor = -0.5)
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>MKmisc</em> version 1.9 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

@@ -1,0 +1,116 @@
+<!DOCTYPE html><html><head><title>R: Append elements to a vector-like object</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>append {BiocGenerics}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Append elements to a vector-like object</h2>
+
+<h3>Description</h3>
+
+<p>Append (or insert) elements to (in) a vector-like object.
+</p>
+<p>NOTE: This man page is for the <code>append</code> <em>S4 generic function</em>
+defined in the <span class="pkg">BiocGenerics</span> package.
+See <code>?base::<a href="../../base/help/append.html">append</a></code> for the default method
+(defined in the <span class="pkg">base</span> package).
+Bioconductor packages can define specific methods for objects
+(typically vector-like or data-frame-like) not supported by the
+default method.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>append(x, values, after=length(x))
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="x">x</code></td>
+<td>
+
+<p>The vector-like object to be modified.
+</p>
+</td></tr>
+<tr><td><code id="values">values</code></td>
+<td>
+
+<p>The vector-like object containing the values to be appended to <code>x</code>.
+<code>values</code> would typically be of the same class as <code>x</code>, but not
+necessarily.
+</p>
+</td></tr>
+<tr><td><code id="after">after</code></td>
+<td>
+
+<p>A subscript, after which the values are to be appended.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>See <code>?base::<a href="../../base/help/append.html">append</a></code> for the value returned by the
+default method.
+</p>
+<p>Specific methods defined in Bioconductor packages will typically
+return an object of the same class as <code>x</code> and of length
+<code>length(x) + length(values)</code>.
+</p>
+
+
+<h3>See Also</h3>
+
+
+<ul>
+<li> <p><code>base::<a href="../../base/help/append.html">append</a></code> for the default <code>append</code>
+method.
+</p>
+</li>
+<li> <p><code><a href="../../methods/help/showMethods.html">showMethods</a></code> for displaying a summary of the
+methods defined for a given generic function.
+</p>
+</li>
+<li> <p><code><a href="../../methods/help/selectMethod.html">selectMethod</a></code> for getting the definition of
+a specific method.
+</p>
+</li>
+<li> <p><a href="../../S4Vectors/help/append+2CVector+2CVector-method.html">append,Vector,Vector-method</a> in the <span class="pkg">S4Vectors</span>
+package for an example of a specific <code>append</code> method (defined
+for <a href="../../S4Vectors/help/Vector.html">Vector</a> objects).
+</p>
+</li>
+<li> <p><a href="../../BiocGenerics/help/BiocGenerics.html">BiocGenerics</a> for a summary of all the generics defined
+in the <span class="pkg">BiocGenerics</span> package.
+</p>
+</li></ul>
+
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>append  # note the dispatch on the 'x' and 'values' args only
+showMethods("append")
+selectMethod("append", c("ANY", "ANY"))  # the default method
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>BiocGenerics</em> version 0.56.0 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

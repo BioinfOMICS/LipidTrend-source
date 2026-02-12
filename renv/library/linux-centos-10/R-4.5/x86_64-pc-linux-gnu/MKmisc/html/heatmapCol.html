@@ -1,0 +1,102 @@
+<!DOCTYPE html><html><head><title>R: Generate colors for heatmaps</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>heatmapCol {MKmisc}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Generate colors for heatmaps </h2>
+
+<h3>Description</h3>
+
+<p>This function modifies a given color vector as used for heatmaps.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>heatmapCol(data, col, lim, na.rm = TRUE)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="data">data</code></td>
+<td>
+<p> matrix or data.frame; data which shall be displayed in a heatmap; ranging from negative to positive numbers. </p>
+</td></tr>
+<tr><td><code id="col">col</code></td>
+<td>
+<p> vector of colors used for heatmap. </p>
+</td></tr>
+<tr><td><code id="lim">lim</code></td>
+<td>
+<p> constant colors are used for data below <code>-lim</code> resp. above <code>lim</code>. </p>
+</td></tr>
+<tr><td><code id="na.rm">na.rm</code></td>
+<td>
+<p> logical; remove <code>NA</code> values. </p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Colors below and above a specified value are kept constant. In addition, the colors
+are symmetrizised.
+</p>
+
+
+<h3>Value</h3>
+
+<p>vector of colors
+</p>
+
+
+<h3>Note</h3>
+
+<p>A first version of this function appeared in package SLmisc.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> Matthias Kohl <a href="mailto:Matthias.Kohl@stamats.de">Matthias.Kohl@stamats.de</a></p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>data.plot &lt;- matrix(rnorm(100*50, sd = 1), ncol = 50)
+colnames(data.plot) &lt;- paste("patient", 1:50)
+rownames(data.plot) &lt;- paste("gene", 1:100)
+data.plot[1:70, 1:30] &lt;- data.plot[1:70, 1:30] + 3
+data.plot[71:100, 31:50] &lt;- data.plot[71:100, 31:50] - 1.4
+data.plot[1:70, 31:50] &lt;- rnorm(1400, sd = 1.2)
+data.plot[71:100, 1:30] &lt;- rnorm(900, sd = 1.2)
+nrcol &lt;- 128
+
+require(gplots)
+require(RColorBrewer)
+myCol &lt;- rev(colorRampPalette(brewer.pal(10, "RdBu"))(nrcol))
+heatmap.2(data.plot, col =  myCol, trace = "none", tracecol = "black")
+farbe &lt;- heatmapCol(data = data.plot, col = myCol, 
+                    lim = min(abs(range(data.plot)))-1)
+heatmap.2(data.plot, col = farbe, trace = "none", tracecol = "black")
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>MKmisc</em> version 1.9 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

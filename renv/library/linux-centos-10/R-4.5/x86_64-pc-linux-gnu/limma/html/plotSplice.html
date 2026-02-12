@@ -1,0 +1,116 @@
+<!DOCTYPE html><html><head><title>R: Differential usage plot</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>plotSplice {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Differential usage plot</h2>
+
+<h3>Description</h3>
+
+<p>Plot relative log-fold changes by exons (or transcripts) for the specified gene and highlight differentially used exons (or transcripts).
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>plotSplice(fit, coef = ncol(fit), geneid = NULL, genecolname = NULL,
+           rank = 1L, FDR = 0.05, xlab = "Exon")
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="fit">fit</code></td>
+<td>
+<p><code>MArrayLM</code> fit object produced by <code>diffSplice</code>.</p>
+</td></tr>
+<tr><td><code id="coef">coef</code></td>
+<td>
+<p>the coefficient (column) of fit for which differentially splicing is assessed.</p>
+</td></tr>
+<tr><td><code id="geneid">geneid</code></td>
+<td>
+<p>character string, ID of the gene to plot.</p>
+</td></tr>
+<tr><td><code id="genecolname">genecolname</code></td>
+<td>
+<p>column name of <code>fit$genes</code> containing gene IDs. Defaults to <code>fit$genecolname</code>.</p>
+</td></tr>
+<tr><td><code id="rank">rank</code></td>
+<td>
+<p>integer, if <code>geneid=NULL</code> then this ranked gene will be plotted.</p>
+</td></tr>
+<tr><td><code id="FDR">FDR</code></td>
+<td>
+<p>numeric, highlight exons as red dots with false discovery rate less than this cutoff. The FDR of the individual exon is calculated based on the exon-level t-statistics test for differences between each exon and all other exons for the same gene.</p>
+</td></tr>
+<tr><td><code id="xlab">xlab</code></td>
+<td>
+<p>x-axis lab for the plot. Typical choices are <code>"Exon"</code> for DEU analyses or <code>"Transcript"</code> for DTU analyses.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Plot relative log2-fold-changes by exon (or transcript) for the specified gene.
+The relative logFC is the difference between that exon (or transcript)'s logFC and the overall logFC for the gene, as computed by <code>diffSplice</code>.
+Individual exons (or transcripts) that are significantly differentially used are highlighted as red dots.
+The size of the red dots increases with the statistical significance of the exon (or transcript).
+</p>
+
+
+<h3>Value</h3>
+
+<p>A plot is created on the current graphics device.</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth and Yifang Hu</p>
+
+
+<h3>References</h3>
+
+<p>Baldoni PL, Chen L, Li M, Chen Y, Smyth GK (2025).
+Dividing out quantification uncertainty enables assessment of differential transcript usage with limma and edgeR.
+<em>bioRxiv</em>
+<a href="https://doi.org/10.1101/2025.04.07.647659">doi:10.1101/2025.04.07.647659</a>.
+</p>
+<p>Ritchie ME, Phipson B, Wu D, Hu Y, Law CW, Shi W, Smyth GK (2015).
+limma powers differential expression analyses for RNA-sequencing and microarray studies.
+<em>Nucleic Acids Research</em> 43, e47.
+<a href="https://doi.org/10.1093/nar/gkv007">doi:10.1093/nar/gkv007</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../limma/help/diffSplice.html">diffSplice</a></code>, <code><a href="../../limma/help/topSplice.html">topSplice</a></code>
+</p>
+<p>A summary of functions available in LIMMA for RNA-seq analysis is given in <a href="../../limma/help/11.RNAseq.html">11.RNAseq</a>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'># See diffSplice</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>limma</em> version 3.66.0 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

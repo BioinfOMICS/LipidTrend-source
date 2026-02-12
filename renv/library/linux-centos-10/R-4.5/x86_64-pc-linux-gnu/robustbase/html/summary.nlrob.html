@@ -1,0 +1,99 @@
+<!DOCTYPE html><html><head><title>R: Summarizing Robust Fits of Nonlinear Regression Models</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>summary.nlrob {robustbase}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Summarizing Robust Fits of Nonlinear Regression Models </h2>
+
+<h3>Description</h3>
+
+<p><code>summary</code> method for objects of class <code>"nlrob"</code>, i.e.,
+<code><a href="../../robustbase/help/nlrob.html">nlrob</a>()</code> results.  Currently it only works for
+<code>nlrob(*, method="M")</code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>## S3 method for class 'nlrob'
+summary(object, correlation = FALSE, symbolic.cor = FALSE, ...)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="object">object</code></td>
+<td>
+<p>an object of class <code>"nlrob"</code>, usually, a result of
+a call to <code><a href="../../robustbase/help/nlrob.html">nlrob</a></code>.</p>
+</td></tr>
+<tr><td><code id="correlation">correlation</code></td>
+<td>
+<p>logical variable indicating whether
+to compute the correlation matrix of the estimated coefficients.</p>
+</td></tr>
+<tr><td><code id="symbolic.cor">symbolic.cor</code></td>
+<td>
+<p>logical indicating whether
+to use symbols to display the above correlation matrix.</p>
+</td></tr>
+<tr><td><code id="...">...</code></td>
+<td>
+<p>further arguments passed to or from other methods.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>The function <code><a href="../../robustbase/help/summary.nlrob.html">summary.nlrob</a></code> computes and returns an
+object of class <code>"summary.nlrob"</code> of summary statistics of the
+robustly fitted linear model given in <code>object</code>.
+There is a print method, <code>print.summary.lmrob()</code>, which nicely
+formats the output.
+</p>
+<p>The result keeps a large part of <code>object</code>'s components such as
+<code>residuals</code>, <code>cov</code> or <code>w</code>, and additionally contains
+</p>
+<table role = "presentation">
+<tr><td><code>coefficients</code></td>
+<td>
+<p>the matrix of coefficients, standard errors and
+p-values.</p>
+</td></tr>
+<tr><td><code>correlation</code></td>
+<td>
+<p>if the <code>correlation</code> argument was true, the
+correlation matrix of the parameters.</p>
+</td></tr>
+</table>
+
+
+<h3>Author(s)</h3>
+
+<p>Andreas Ruckstuhl</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../robustbase/help/nlrob.html">nlrob</a>()</code>, also for examples.
+</p>
+
+<hr><div style="text-align: center;">[Package <em>robustbase</em> version 0.99-7 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

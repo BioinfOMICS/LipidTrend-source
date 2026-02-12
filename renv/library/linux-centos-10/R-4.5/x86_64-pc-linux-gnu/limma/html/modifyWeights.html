@@ -1,0 +1,89 @@
+<!DOCTYPE html><html><head><title>R: Modify Matrix of Weights By Control Status of Rows</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>modifyWeights {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Modify Matrix of Weights By Control Status of Rows</h2>
+
+<h3>Description</h3>
+
+<p>Modify weights matrix for given gene status values.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>modifyWeights(weights=rep(1,length(status)), status, values, multipliers)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="weights">weights</code></td>
+<td>
+<p>numeric matrix of relative weights, rows corresponding to genes and columns to arrays</p>
+</td></tr>
+<tr><td><code id="status">status</code></td>
+<td>
+<p>character vector giving the control status of each spot on the array, of same length as the number of rows of <code>weights</code></p>
+</td></tr>
+<tr><td><code id="values">values</code></td>
+<td>
+<p>character vector giving subset of the unique values of <code>status</code></p>
+</td></tr>
+<tr><td><code id="multipliers">multipliers</code></td>
+<td>
+<p>numeric vector of same length as <code>values</code> giving factor by which weights will be modified</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The function is usually used to temporarily modify the weights matrix during normalization of data.
+The function can be used for example to give zero weight to spike-in ratio control spots during normalization.
+</p>
+
+
+<h3>Value</h3>
+
+<p>Numeric matrix of same dimensions as <code>weights</code> with rows corresponding to <code>values</code> in <code>status</code> modified by the specified multipliers.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth</p>
+
+
+<h3>See Also</h3>
+
+<p>An overview of normalization functions available in LIMMA is given in <a href="../../limma/help/05.Normalization.html">05.Normalization</a>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>w &lt;- matrix(runif(6*3),6,3)
+status &lt;- c("Gene","Gene","Ratio_Control","Ratio_Control","Gene","Gene")
+modifyWeights(w,status,values="Ratio_Control",multipliers=0)
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>limma</em> version 3.66.0 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

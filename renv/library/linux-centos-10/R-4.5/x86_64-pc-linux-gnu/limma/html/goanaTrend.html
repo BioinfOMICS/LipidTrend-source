@@ -1,0 +1,124 @@
+<!DOCTYPE html><html><head><title>R: Estimate DE Trend for Gene Ontology or KEGG Pathway Analysis</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>goanaTrend {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Estimate DE Trend for Gene Ontology or KEGG Pathway Analysis</h2>
+
+<h3>Description</h3>
+
+<p>Given a list of differentially expressed (DE) genes and a covariate, estimate the probability of a gene being called significant as a function of the covariate.
+This function is typically used to estimate the gene length or gene abundance bias for a pathway analysis.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>goanaTrend(index.de, covariate, n.prior = 10, plot = FALSE,
+           xlab = "Covariate Rank", ylab = "Probability gene is DE",
+           main="DE status vs covariate")
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="index.de">index.de</code></td>
+<td>
+<p>an index vector specifying which genes are significantly DE.
+Can be a vector of integer indices, or a logical vector of length <code>nrow(covariate)</code>, or any vector such as <code>covariate[index]</code> selects the DE genes.</p>
+</td></tr>
+<tr><td><code id="covariate">covariate</code></td>
+<td>
+<p>numeric vector, length equal to the number of genes in the analysis.
+Usually equal to gene length or average log-expression but can be any meaningful genewise covariate.</p>
+</td></tr>
+<tr><td><code id="n.prior">n.prior</code></td>
+<td>
+<p>prior number of genes using for moderating the trend towards constancy, for stability when the number of DE genes is small.</p>
+</td></tr>
+<tr><td><code id="plot">plot</code></td>
+<td>
+<p>if <code>TRUE</code>, plot the estimated tend.</p>
+</td></tr>
+<tr><td><code id="xlab">xlab</code></td>
+<td>
+<p>label for x-axis of plot.</p>
+</td></tr>
+<tr><td><code id="ylab">ylab</code></td>
+<td>
+<p>label for y-axis of plot.</p>
+</td></tr>
+<tr><td><code id="main">main</code></td>
+<td>
+<p>main title for the plot.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p><code>goanaTrend</code> is called by <code>goana</code> and <code>kegga</code> when the <code>trend</code> argument is used
+to correct for unwanted trends in the differential expression analysis associated with gene length, gene abundance or any other covariate (Young et al, 2010).
+</p>
+<p>This function is analogous to the <code>nullp</code> function of the goseq package but the
+trend is estimated using <code><a href="../../limma/help/tricubeMovingAverage.html">tricubeMovingAverage</a></code> instead of by monotonic regression.
+While <code><a href="../../limma/help/tricubeMovingAverage.html">tricubeMovingAverage</a></code> does not enforce strict monotonicity, it has the advantage of numerical stability and statistical robustness when there are only a small number of DE genes.
+</p>
+<p>This function also moderates the estimated trend slightly towards constancy to provide more stability.
+The degree of moderation is determined by the <code>n.prior</code> argument relative to the number of DE genes.
+</p>
+
+
+<h3>Value</h3>
+
+<p>Numeric vector of same length as <code>covariate</code> giving estimated probabilities.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth and Yifang Hu</p>
+
+
+<h3>References</h3>
+
+<p>Young MD, Wakefield MJ, Smyth GK, Oshlack A (2010).
+Gene ontology analysis for RNA-seq: accounting for selection bias.
+<em>Genome Biology</em> 11, R14.
+<a href="https://doi.org/10.1186/gb-2010-11-2-r14">doi:10.1186/gb-2010-11-2-r14</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../limma/help/goana.html">goana</a></code>, <code><a href="../../limma/help/kegga.html">kegga</a></code>
+</p>
+<p>See <a href="../../limma/help/10.GeneSetTests.html">10.GeneSetTests</a> for a description of other functions used for gene set testing.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>x &lt;- runif(100)
+i &lt;- 1:10
+goanaTrend(i, x, plot=TRUE)
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>limma</em> version 3.66.0 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

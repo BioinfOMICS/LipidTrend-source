@@ -1,0 +1,120 @@
+<!DOCTYPE html><html><head><title>R: Evaluate an expression if its value is not already cached.</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>cache {Biobase}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Evaluate an expression if its value is not already cached.</h2>
+
+<h3>Description</h3>
+
+<p>Cache the evaluation of an expression in the file system.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>    cache(expr, dir=".", prefix="tmp_R_cache_")
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="expr">expr</code></td>
+<td>
+<p>An expression of the form <code>LHS &lt;- RHS</code>, Where
+<code>LHS</code> is a variable name, <code>RHS</code> is any valid expression,
+and <code>&lt;-</code> must be used (<code>=</code> will not work).</p>
+</td></tr>
+<tr><td><code id="dir">dir</code></td>
+<td>
+<p>A string specifying the directory into which cache files
+should be written (also where to go searching for an appropriate
+cache file).</p>
+</td></tr>
+<tr><td><code id="prefix">prefix</code></td>
+<td>
+<p>A string giving the prefix to use when naming and
+searching for cache files.  The default is <code>"tmp_R_cache_"</code></p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This function can be useful during the development of computationally
+intensive workflows, for example in vignettes or scripts.  The
+function uses a cache file in <code>dir</code> which defaults to the current
+working directory whose name is obtained by <code>paste(prefix, name,
+  ".RData", sep="")</code>.
+</p>
+<p>When <code>cache</code> is called and the cache file exists, it is loaded
+and the object whose name is given on the left of <code>&lt;-</code> in
+<code>expr</code> is returned.  In this case, <code>expr</code> is <em>not</em>
+evaluted.
+</p>
+<p>When <code>cache</code> is called and the cache file does not exist,
+<code>expr</code> is evaluted, its value is saved into a cache file, and
+then its value is returned.
+</p>
+<p>The <code>expr</code> argument must be of the form of <code>someVar &lt;-
+    {expressions}</code>.  That is, the left hand side must be a single symbol
+name and the next syntactic token must be <code>&lt;-</code>.
+</p>
+<p>To flush the cache and force recomputation, simply remove the cache
+files.  You can use <code><a href="../../base/html/files.html">file.remove</a></code> to do this.
+</p>
+
+
+<h3>Value</h3>
+
+<p>The (cached) value of <code>expr</code>.
+</p>
+
+
+<h3>Note</h3>
+
+<p>The first version of this function had a slightly different interface
+which is no longer functional.  The old version has arguments
+<code>name</code> and <code>expr</code> and the intended usage is: <code>foo &lt;-
+  cache("foo", expr)</code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Wolfgang Huber, <a href="mailto:huber@ebi.ac.uk">huber@ebi.ac.uk</a>
+Seth Falcon, <a href="mailto:sfalcon@fhcrc.org">sfalcon@fhcrc.org</a>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>    bigCalc &lt;- function() runif(10)
+    cache(myComplicatedObject &lt;- bigCalc())
+    aCopy &lt;- myComplicatedObject
+    remove(myComplicatedObject)
+    cache(myComplicatedObject &lt;- bigCalc())
+    stopifnot(all.equal(myComplicatedObject, aCopy))
+    allCacheFiles &lt;-
+       list.files(".", pattern="^tmp_R_cache_.*\\.RData$", full.name=TRUE)
+    file.remove(allCacheFiles)
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>Biobase</em> version 2.70.0 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

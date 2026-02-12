@@ -1,0 +1,104 @@
+<!DOCTYPE html><html><head><title>R: 'Compare' operations on SparseArray objects</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>SparseArray-Compare-methods {SparseArray}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>'Compare' operations on SparseArray objects</h2>
+
+<h3>Description</h3>
+
+<p><a href="../../SparseArray/help/SparseArray.html">SparseArray</a> derivatives support operations from the <code>Compare</code>
+group, with some restrictions.
+See <code>?<a href="../../methods/help/S4groupGeneric.html">S4groupGeneric</a></code> in the <span class="pkg">methods</span> package
+for more information about the <code>Compare</code> group generic.
+</p>
+<p>IMPORTANT NOTE: Only <a href="../../SparseArray/help/SVT_SparseArray.html">SVT_SparseArray</a> objects are supported at the
+moment. Support for <a href="../../SparseArray/help/COO_SparseArray.html">COO_SparseArray</a> objects might be added in the
+future.
+</p>
+
+
+<h3>Details</h3>
+
+<p>Two forms of 'Compare' operations are supported:
+</p>
+
+<ol>
+<li><p> Between an <a href="../../SparseArray/help/SVT_SparseArray.html">SVT_SparseArray</a> object <code>svt</code> and a single
+value <code>y</code>: </p>
+<pre>    svt op y
+    y op svt</pre>
+<p>All operations from the <code>Compare</code> group support this form,
+with single value <code>y</code> either on the left or the right.
+However, there are some operation-dependent restrictions on the
+value of <code>y</code>.
+</p>
+</li>
+<li><p> Between two <a href="../../SparseArray/help/SVT_SparseArray.html">SVT_SparseArray</a> objects <code>svt1</code> and
+<code>svt2</code> of same dimensions (a.k.a. <em>conformable arrays</em>):
+</p>
+<pre>    svt1 op svt2</pre>
+<p>The <code>Compare</code> operations that support this form are:
+<code>!=</code>, <code>&lt;</code>, <code>&gt;</code>.
+</p>
+</li></ol>
+
+
+
+<h3>Value</h3>
+
+<p>A <a href="../../SparseArray/help/SparseArray.html">SparseArray</a> derivative of <code>type()</code> <code>"logical"</code> and
+same dimensions as the input object(s).
+</p>
+
+
+<h3>See Also</h3>
+
+
+<ul>
+<li> <p><code><a href="../../methods/help/S4groupGeneric.html">S4groupGeneric</a></code> in the <span class="pkg">methods</span> package.
+</p>
+</li>
+<li> <p><a href="../../SparseArray/help/SparseArray.html">SparseArray</a> objects.
+</p>
+</li>
+<li><p> Ordinary <a href="../../base/help/array.html">array</a> objects in base R.
+</p>
+</li></ul>
+
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>svt1 &lt;- SVT_SparseArray(dim=c(15, 6), type="double")
+svt1[c(2, 6, 12:17, 22:33, 55, 59:62, 90)] &lt;- runif(26)
+svt1
+
+svt1 &gt;= 0.2
+svt1 != 0
+
+## Sanity checks:
+m1 &lt;- as.matrix(svt1)
+stopifnot(
+  identical(as.matrix(svt1 &gt;= 0.2), m1 &gt;= 0.2),
+  identical(as.matrix(svt1 != 0), m1 != 0)
+)
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>SparseArray</em> version 1.10.8 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

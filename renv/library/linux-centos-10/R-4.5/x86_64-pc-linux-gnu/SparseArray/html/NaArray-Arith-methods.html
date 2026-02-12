@@ -1,0 +1,144 @@
+<!DOCTYPE html><html><head><title>R: 'Arith' operations on NaArray objects</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>NaArray-Arith-methods {SparseArray}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>'Arith' operations on NaArray objects</h2>
+
+<h3>Description</h3>
+
+<p>EXPERIMENTAL!!!
+</p>
+<p><a href="../../SparseArray/help/NaArray.html">NaArray</a> objects support all operations from the <code>Arith</code> group.
+See <code>?<a href="../../methods/help/S4groupGeneric.html">S4groupGeneric</a></code> in the <span class="pkg">methods</span> package
+for more information about the <code>Arith</code> group generic.
+</p>
+<p>Note that <a href="../../SparseArray/help/NaArray.html">NaArray</a> of <code>type()</code> <code>"complex"</code> don't support
+<code>Arith</code> operations at the moment.
+</p>
+
+
+<h3>Details</h3>
+
+<p>Three forms of 'Arith' operations involving <a href="../../SparseArray/help/NaArray.html">NaArray</a> objects are
+supported:
+</p>
+
+<ol>
+<li><p> Between an <a href="../../SparseArray/help/NaArray.html">NaArray</a> object <code>naa</code> and an atomic
+vector <code>y</code>: </p>
+<pre>    naa op y
+    y op naa</pre>
+</li>
+<li><p> Between two <a href="../../SparseArray/help/NaArray.html">NaArray</a> objects <code>naa1</code> and <code>naa2</code>
+of same dimensions (a.k.a. <em>conformable arrays</em>):
+</p>
+<pre>    naa1 op naa2</pre>
+</li>
+<li><p> Between an <a href="../../SparseArray/help/NaArray.html">NaArray</a> object <code>naa</code> and an
+<a href="../../SparseArray/help/SVT_SparseArray.html">SVT_SparseArray</a> object <code>svt</code> of same dimensions
+(a.k.a. <em>conformable arrays</em>):
+</p>
+<pre>    naa op svt
+    svt op naa</pre>
+</li></ol>
+
+
+
+<h3>Value</h3>
+
+<p>An <a href="../../SparseArray/help/NaArray.html">NaArray</a> object of the same dimensions as the input object(s).
+</p>
+
+
+<h3>See Also</h3>
+
+
+<ul>
+<li> <p><code><a href="../../methods/help/S4groupGeneric.html">S4groupGeneric</a></code> in the <span class="pkg">methods</span> package.
+</p>
+</li>
+<li> <p><a href="../../SparseArray/help/NaArray.html">NaArray</a> objects.
+</p>
+</li>
+<li> <p><a href="../../SparseArray/help/SVT_SparseArray.html">SVT_SparseArray</a> objects.
+</p>
+</li>
+<li><p> Ordinary <a href="../../base/help/array.html">array</a> objects in base R.
+</p>
+</li></ul>
+
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>nam1 &lt;- NaArray(dim=c(15, 6), type="integer")
+nam1[cbind(1:15, 2)] &lt;- 100:114
+nam1[cbind(1:15, 5)] &lt;- -(114:100)
+nam1
+
+nam1 * -0.01
+
+nam1 * 10   # result is of type "double"
+nam1 * 10L  # result is of type "integer"
+
+nam1 * c(10, 5, 0.1)  # right vector recycled along 1st dimension
+
+nam1 / 10L
+
+nam1 ^ 2
+nam1 ^ (2:6)
+
+nam1 %% 5L
+nam1 %/% 5L
+
+nam2 &lt;- NaArray(dim=dim(nam1), type="double")
+nam2[c(2, 6, 12:17, 22:33, 55, 59:62, 90)] &lt;- runif(26)
+nam2
+
+nam2 + nam1
+nam2 - nam1
+nam2 * nam1
+nam2 / nam1
+nam2 ^ nam1
+nam2 %% nam1
+nam2 %/% nam1
+
+## Sanity checks:
+m1 &lt;- as.matrix(nam1)
+m2 &lt;- as.matrix(nam2)
+stopifnot(
+  identical(as.matrix(nam1 * -0.01), m1 * -0.01),
+  identical(as.matrix(nam1 * 10), m1 * 10),
+  identical(as.matrix(nam1 * 10L), m1 * 10L),
+  identical(as.matrix(nam1 / 10L), m1 / 10L),
+  identical(as.matrix(nam1 ^ 3.5), m1 ^ 3.5),
+  identical(as.matrix(nam1 %% 5L), m1 %% 5L),
+  identical(as.matrix(nam1 %/% 5L), m1 %/% 5L),
+  identical(as.matrix(nam2 + nam1), m2 + m1),
+  identical(as.matrix(nam2 - nam1), m2 - m1),
+  identical(as.matrix(nam2 * nam1), m2 * m1),
+  identical(as.matrix(nam2 / nam1), m2 / m1),
+  all.equal(as.matrix(nam2 ^ nam1), m2 ^ m1),
+  identical(as.matrix(nam2 %% nam1), m2 %% m1),
+  identical(as.matrix(nam2 %/% nam1), m2 %/% m1)
+)
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>SparseArray</em> version 1.10.8 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

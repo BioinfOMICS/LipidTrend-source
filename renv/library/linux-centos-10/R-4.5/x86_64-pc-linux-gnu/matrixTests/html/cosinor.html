@@ -1,0 +1,100 @@
+<!DOCTYPE html><html><head><title>R: Cosinor</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>cosinor {matrixTests}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Cosinor</h2>
+
+<h3>Description</h3>
+
+<p>Performs a Cosinor test for periodicity on each row/column of the input matrix.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>row_cosinor(x, t, period = 24)
+
+col_cosinor(x, t, period = 24)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="x">x</code></td>
+<td>
+<p>numeric matrix.</p>
+</td></tr>
+<tr><td><code id="t">t</code></td>
+<td>
+<p>a vector specifying time variable for each observation of x.</p>
+</td></tr>
+<tr><td><code id="period">period</code></td>
+<td>
+<p>oscillation period in the units of <code>t</code> (default = 24, suitable when inspecting diurnal rhythms with hourly data).</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p><code>row_cosinor</code> - cosinor test on rows.
+<code>col_cosinor</code> - cosinor test on columns.
+</p>
+
+
+<h3>Value</h3>
+
+<p>a data.frame where each row contains the results of a cosinor test
+performed on the corresponding row/column of x.<br><br>
+Each row contains the following information (in order):<br>
+1. obs - total number of observations<br>
+2. mesor - &quot;Midline Estimating Statistic Of Rhythm&quot; - the average value around which the variable oscillates<br>
+3. amplitude - difference between mesor and the peak of the rhythm<br>
+4. acrophase - time when rhythm reaches its peak<br>
+5. rsquared - R-squared<br>
+6. df.model - model terms degrees of freedom<br>
+7. df.residual - residual degrees of freedom<br>
+8. statistic - F statistic for the omnibus test against intercept-only model<br>
+9. pvalue - p-value<br>
+10. period - the period used within the model<br>
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Karolis Koncevičius
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../cosinor/help/cosinor.lm.html">cosinor.lm</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>wave &lt;- sin(2*pi*1:24/24) + rnorm(24)
+row_cosinor(wave, 1:24, 24)
+
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>matrixTests</em> version 0.2.3.1 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

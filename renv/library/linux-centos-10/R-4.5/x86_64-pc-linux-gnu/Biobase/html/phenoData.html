@@ -1,0 +1,82 @@
+<!DOCTYPE html><html><head><title>R: Retrieve information on experimental phenotypes recorded in...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>phenoData {Biobase}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Retrieve information on experimental phenotypes recorded in
+eSet and ExpressionSet-derived classes.</h2>
+
+<h3>Description</h3>
+
+<p>These generic functions access the phenotypic data (e.g., covariates)
+and meta-data (e.g., descriptions of covariates) associated with an
+experiment. 
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>phenoData(object)
+phenoData(object) &lt;- value
+varLabels(object)
+varLabels(object) &lt;- value
+varMetadata(object)
+varMetadata(object) &lt;- value
+pData(object)
+pData(object) &lt;- value
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="object">object</code></td>
+<td>
+<p>Object, possibly derived from <code><a href="../../Biobase/help/eSet-class.html">eSet-class</a></code>
+or <code><a href="../../Biobase/help/AnnotatedDataFrame-class.html">AnnotatedDataFrame</a></code>.</p>
+</td></tr>
+<tr><td><code id="value">value</code></td>
+<td>
+<p>Value to be assigned to corresponding object.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p><code>phenoData</code> returns an object containing information on both
+variable values and variable meta-data.  <code>varLabels</code> returns a
+character vector of measured variables. <code>pData</code> returns a data
+frame with samples as rows, variables as columns. <code>varMetadata</code>
+returns a data frame with variable names as rows, description tags
+(e.g., unit of measurement) as columns.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Biocore</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../Biobase/help/eSet-class.html">eSet-class</a></code>, <code><a href="../../Biobase/help/ExpressionSet-class.html">ExpressionSet-class</a></code>, 
+<code><a href="../../Biobase/help/SnpSet-class.html">SnpSet-class</a></code></p>
+
+<hr><div style="text-align: center;">[Package <em>Biobase</em> version 2.70.0 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

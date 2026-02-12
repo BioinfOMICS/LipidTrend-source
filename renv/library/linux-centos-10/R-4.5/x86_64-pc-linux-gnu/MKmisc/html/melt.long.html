@@ -1,0 +1,90 @@
+<!DOCTYPE html><html><head><title>R: Transform data.frame to Long Form</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>melt.long {MKmisc}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Transform data.frame to Long Form </h2>
+
+<h3>Description</h3>
+
+<p>The function transforms a given data.frame form wide to long form.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>melt.long(data, select, group)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="data">data</code></td>
+<td>
+<p> data.frame that shall be transformed.</p>
+</td></tr>
+<tr><td><code id="select">select</code></td>
+<td>
+<p> optional integer vector to select a subset of the columns of <code>data</code>.</p>
+</td></tr>
+<tr><td><code id="group">group</code></td>
+<td>
+<p> optional vector to include an additional grouping in the output;
+for more details see examples below.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The function transforms a given data.frame form wide to long form. This is
+for example useful for plotting with ggplot2.
+</p>
+
+
+<h3>Value</h3>
+
+<p>data.frame in long form.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> Matthias Kohl <a href="mailto:Matthias.Kohl@stamats.de">Matthias.Kohl@stamats.de</a> </p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>library(ggplot2)
+## some random data
+test &lt;- data.frame(x = rnorm(10), y = rnorm(10), z = rnorm(10))
+test.long &lt;- melt.long(test)
+test.long
+ggplot(test.long, aes(x = variable, y = value)) +
+  geom_boxplot(aes(fill = variable))
+## introducing an additional grouping variable
+group &lt;- factor(rep(c("a","b"), each = 5))
+test.long.gr &lt;- melt.long(test, select = 1:2, group = group)
+test.long.gr
+ggplot(test.long.gr, aes(x = variable, y = value, fill = group)) +
+  geom_boxplot()
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>MKmisc</em> version 1.9 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

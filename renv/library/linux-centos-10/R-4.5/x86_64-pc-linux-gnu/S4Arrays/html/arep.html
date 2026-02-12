@@ -1,0 +1,94 @@
+<!DOCTYPE html><html><head><title>R: Replicate array elements</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>arep {S4Arrays}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Replicate array elements</h2>
+
+<h3>Description</h3>
+
+<p><code>arep_times()</code> and <code>arep_each()</code> are multidimensional
+versions of <code>base::rep( , times=)</code> and <code>base::rep( , each=)</code>,
+respectively.
+</p>
+<p>They're both generic functions with default methods that work on any
+array-like object that supports <code>[</code> (single-bracket subsetting).
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>arep_times(x, times)
+arep_each(x, each)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="x">x</code></td>
+<td>
+
+<p>An array-like object, that is, an ordinary array or any object with
+dimensions.
+</p>
+</td></tr>
+<tr><td><code id="times">times</code>, <code id="each">each</code></td>
+<td>
+
+<p>An integer vector <em>parallel</em> to <code>dim(x)</code> i.e. with one element
+per dimension in <code>x</code>.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>An array-like object of the same class as <code>x</code> and with dimensions
+<code>dim(x) * times</code> for <code>arep_times</code> or <code>dim(x) * each</code>
+for <code>arep_each</code>.
+The dimnames on <code>x</code> are propagated, if any.
+</p>
+
+
+<h3>See Also</h3>
+
+
+<ul>
+<li> <p><code>base::<a href="../../base/html/rep.html">rep</a></code> in the <span class="pkg">base</span> package.
+</p>
+</li>
+<li> <p><a href="../../base/help/array.html">array</a> and <a href="../../base/help/matrix.html">matrix</a> objects in base R.
+</p>
+</li></ul>
+
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>m &lt;- matrix(1:10, nrow=2)
+arep_times(m, c(4, 2))
+arep_each(m, c(4, 2))
+
+## Note that the output array is 'prod(times)' (or 'prod(each)') times
+## bigger than the input array!
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>S4Arrays</em> version 1.10.1 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

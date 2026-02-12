@@ -1,0 +1,126 @@
+<!DOCTYPE html><html><head><title>R: Select Appropriate Linear Model</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>selectModel {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Select Appropriate Linear Model</h2>
+
+<h3>Description</h3>
+
+<p>Select the best fitting linear model for each gene by minimizing an information criterion.</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>selectModel(y, designlist, criterion="aic", df.prior=0, s2.prior=NULL, s2.true=NULL, ...)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="y">y</code></td>
+<td>
+<p>a matrix-like data object, containing log-ratios or log-values of expression for a series of microarrays.
+Any object class which can be coerced to matrix is acceptable including <code>numeric</code>, <code>matrix</code>, <code>MAList</code>, <code>marrayNorm</code>, <code>ExpressionSet</code> or <code>PLMset</code>.</p>
+</td></tr>
+<tr><td><code id="designlist">designlist</code></td>
+<td>
+<p>list of design matrices</p>
+</td></tr> 
+<tr><td><code id="criterion">criterion</code></td>
+<td>
+<p>information criterion to be used for model selection, <code>"aic"</code>, <code>"bic"</code> or <code>"mallowscp"</code>.</p>
+</td></tr>
+<tr><td><code id="df.prior">df.prior</code></td>
+<td>
+<p>prior degrees of freedom for residual variances. See <code><a href="../../limma/help/squeezeVar.html">squeezeVar</a></code></p>
+</td></tr>
+<tr><td><code id="s2.prior">s2.prior</code></td>
+<td>
+<p>prior value for residual variances, to be used if <code>df.prior</code>&gt;0.</p>
+</td></tr>
+<tr><td><code id="s2.true">s2.true</code></td>
+<td>
+<p>numeric vector of true variances, to be used if <code>criterion="mallowscp"</code>.</p>
+</td></tr>
+<tr><td><code id="...">...</code></td>
+<td>
+<p>other optional arguments to be passed to <code>lmFit</code></p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This function chooses, for each probe, the best fitting model out of a set of alternative models represented by a list of design matrices.
+Selection is by Akaike's Information Criterion (AIC), Bayesian Information Criterion (BIC) or by Mallow's Cp.
+</p>
+<p>The criteria have been generalized slightly to accommodate an information prior on the variances represented by <code>s2.prior</code> and <code>df.prior</code> or by <code>s2.post</code>.
+Suitable values for these parameters can be estimated using <code><a href="../../limma/help/squeezeVar.html">squeezeVar</a></code>.
+</p>
+
+
+<h3>Value</h3>
+
+<p>List with components
+</p>
+<table role = "presentation">
+<tr><td><code>IC</code></td>
+<td>
+<p>matrix of information criterion scores, rows for probes and columns for models</p>
+</td></tr>
+<tr><td><code>pref</code></td>
+<td>
+<p>factor indicating the model with best (lowest) information criterion score</p>
+</td></tr>
+</table>
+
+
+<h3>Author(s)</h3>
+
+<p>Alicia Oshlack and Gordon Smyth</p>
+
+
+<h3>See Also</h3>
+
+<p>An overview of linear model functions in limma is given by <a href="../../limma/help/06.LinearModels.html">06.LinearModels</a>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>nprobes &lt;- 100
+narrays &lt;- 5
+y &lt;- matrix(rnorm(nprobes*narrays),nprobes,narrays)
+A &lt;- c(0,0,1,1,1)
+B &lt;- c(0,1,0,1,1)
+designlist &lt;- list(
+  None=cbind(Int=c(1,1,1,1,1)),
+  A=cbind(Int=1,A=A),
+  B=cbind(Int=1,B=B),
+  Both=cbind(Int=1,AB=A*B),
+  Add=cbind(Int=1,A=A,B=B),
+  Full=cbind(Int=1,A=A,B=B,AB=A*B)
+)
+out &lt;- selectModel(y,designlist)
+table(out$pref)
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>limma</em> version 3.66.0 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

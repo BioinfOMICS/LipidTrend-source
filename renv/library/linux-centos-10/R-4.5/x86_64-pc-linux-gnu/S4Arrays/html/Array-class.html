@@ -1,0 +1,67 @@
+<!DOCTYPE html><html><head><title>R: Array objects</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>Array-class {S4Arrays}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Array objects</h2>
+
+<h3>Description</h3>
+
+<p>Array is a virtual class with no slots intended to be extended by
+concrete subclasses with an array-like semantic.
+</p>
+
+
+<h3>Details</h3>
+
+<p>Some examples of Array derivatives:
+</p>
+
+<ul>
+<li> <p><a href="../../SparseArray/help/SparseArray.html">SparseArray</a> objects implemented
+in the <span class="pkg">SparseArray</span> package.
+</p>
+</li>
+<li> <p><a href="../../DelayedArray/help/DelayedArray.html">DelayedArray</a> objects implemented
+in the <span class="pkg">DelayedArray</span> package.
+</p>
+</li>
+<li> <p><a href="../../S4Arrays/help/ArrayGrid.html">ArrayGrid</a> and <a href="../../S4Arrays/help/ArrayViewport.html">ArrayViewport</a> objects implemented
+in this package (the <span class="pkg">S4Arrays</span> package).
+</p>
+</li></ul>
+
+
+
+<h3>See Also</h3>
+
+
+<ul>
+<li> <p><a href="../../base/help/array.html">array</a> and <a href="../../base/help/matrix.html">matrix</a> objects in base R.
+</p>
+</li></ul>
+
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>showClass("Array")  # virtual class with no slots
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>S4Arrays</em> version 1.10.1 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

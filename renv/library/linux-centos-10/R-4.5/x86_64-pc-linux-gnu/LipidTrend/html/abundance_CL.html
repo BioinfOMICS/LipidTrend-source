@@ -1,0 +1,62 @@
+<!DOCTYPE html><html><head><title>R: Example lipid abundance data for one-dimensional LipidTrend...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>abundance_CL {LipidTrend}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Example lipid abundance data for one-dimensional LipidTrend analysis</h2>
+
+<h3>Description</h3>
+
+<p>Example lipid abundance data for one-dimensional LipidTrend analysis
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>data(abundance_CL)
+</code></pre>
+
+
+<h3>Format</h3>
+
+<p>An object of class <code>matrix</code> (inherits from <code>array</code>) with 29 rows and 6 columns.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A <code>matrix</code> object of lipid abundance with 29 lipids over 6 samples
+</p>
+
+
+<h3>Source</h3>
+
+<p>Tomoyuki Shiota et al. ,Hepatoviruses promote very-long-chain fatty
+acid and sphingolipid synthesis for viral RNA replication and quasi-enveloped
+virus release. Sci Adv. 9(42):eadj4198
+<a href="https://www.science.org/doi/10.1126/sciadv.adj4198">https://www.science.org/doi/10.1126/sciadv.adj4198</a>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>data(abundance_CL)
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>LipidTrend</em> version 1.0.0 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

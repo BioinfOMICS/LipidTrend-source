@@ -1,0 +1,192 @@
+<!DOCTYPE html><html><head><title>R: Random SparseArray object</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>randomSparseArray {SparseArray}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Random SparseArray object</h2>
+
+<h3>Description</h3>
+
+<p><code>randomSparseArray()</code> and <code>poissonSparseArray()</code> can be used
+to generate a random <a href="../../SparseArray/help/SparseArray.html">SparseArray</a> object efficiently.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>randomSparseArray(dim, density=0.05, dimnames=NULL)
+poissonSparseArray(dim, lambda=-log(0.95), density=NA, dimnames=NULL)
+
+## Convenience wrappers for the 2D case:
+randomSparseMatrix(nrow, ncol, density=0.05, dimnames=NULL)
+poissonSparseMatrix(nrow, ncol, lambda=-log(0.95), density=NA,
+                    dimnames=NULL)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="dim">dim</code></td>
+<td>
+
+<p>The dimensions (specified as an integer vector) of the <a href="../../SparseArray/help/SparseArray.html">SparseArray</a>
+object to generate.
+</p>
+</td></tr>
+<tr><td><code id="density">density</code></td>
+<td>
+
+<p>The desired density (specified as a number &gt;= 0 and &lt;= 1) of the
+<a href="../../SparseArray/help/SparseArray.html">SparseArray</a> object to generate, that is, the ratio between its
+number of nonzero elements and its total number of elements.
+This is <code>nzcount(x)/length(x)</code> or <code>1 - sparsity(x)</code>.
+</p>
+<p>Note that for <code>poissonSparseArray()</code> and <code>poissonSparseMatrix()</code>
+<code>density</code> must be &lt; 1 and the <em>actual</em> density of the returned
+object won't be exactly as requested but will typically be very close.
+</p>
+</td></tr>
+<tr><td><code id="dimnames">dimnames</code></td>
+<td>
+
+<p>The <em>dimnames</em> to put on the object to generate. Must be <code>NULL</code>
+or a list of length the number of dimensions. Each list element must be
+either <code>NULL</code> or a character vector along the corresponding dimension.
+</p>
+</td></tr>
+<tr><td><code id="lambda">lambda</code></td>
+<td>
+
+<p>The mean of the Poisson distribution. Passed internally to the calls
+to <code><a href="../../stats/help/rpois.html">rpois</a>()</code>.
+</p>
+<p>Only one of <code>lambda</code> and <code>density</code> can be specified.
+</p>
+<p>When <code>density</code> is requested, <code>rpois()</code> is called internally
+with <code>lambda</code> set to <code>-log(1 - density)</code>. This is expected
+to generate Poisson data with the requested density.
+</p>
+<p>Finally note that the default value for <code>lambda</code> corresponds to
+a requested density of 0.05.
+</p>
+</td></tr>
+<tr><td><code id="nrow">nrow</code>, <code id="ncol">ncol</code></td>
+<td>
+
+<p>Number of rows and columns of the <a href="../../SparseArray/help/SparseMatrix.html">SparseMatrix</a> object to generate.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p><code>randomSparseArray()</code> mimics the <code><a href="../../Matrix/help/rsparsematrix.html">rsparsematrix</a>()</code>
+function from the <span class="pkg">Matrix</span> package but returns a <a href="../../SparseArray/help/SparseArray.html">SparseArray</a>
+object instead of a dgCMatrix object.
+</p>
+<p><code>poissonSparseArray()</code> populates a <a href="../../SparseArray/help/SparseArray.html">SparseArray</a> object with
+Poisson data i.e. it's equivalent to:
+</p>
+<pre>    a &lt;- array(rpois(prod(dim), lambda), dim)
+    as(a, "SparseArray")</pre>
+<p>but is faster and more memory efficient because intermediate dense array
+<code>a</code> is never generated.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A <a href="../../SparseArray/help/SparseArray.html">SparseArray</a> derivative (of class <a href="../../SparseArray/help/SVT_SparseArray.html">SVT_SparseArray</a> or
+<a href="../../SparseArray/help/SVT_SparseMatrix.html">SVT_SparseMatrix</a>) with the requested dimensions and density.
+</p>
+<p>The type of the returned object is <code>"double"</code> for
+<code>randomSparseArray()</code> and <code>randomSparseMatrix()</code>,
+and <code>"integer"</code> for <code>poissonSparseArray()</code> and
+<code>poissonSparseMatrix()</code>.
+</p>
+
+
+<h3>Note</h3>
+
+<p>Unlike with <code>Matrix::<a href="../../Matrix/help/rsparsematrix.html">rsparsematrix</a>()</code> there's no
+limit on the number of nonzero elements that can be contained in the
+returned <a href="../../SparseArray/help/SparseArray.html">SparseArray</a> object.
+</p>
+<p>For example <code>Matrix::rsparsematrix(3e5, 2e4, density=0.5)</code> will fail
+with an error but <code>randomSparseMatrix(3e5, 2e4, density=0.5)</code> should
+work (even though it will take some time and the memory footprint of the
+resulting object will be about 18 Gb).
+</p>
+
+
+<h3>See Also</h3>
+
+
+<ul>
+<li><p> The <code>Matrix::<a href="../../Matrix/help/rsparsematrix.html">rsparsematrix</a></code> function in
+the <span class="pkg">Matrix</span> package.
+</p>
+</li>
+<li><p> The <code>stats::<a href="../../stats/help/rpois.html">rpois</a></code> function in the
+<span class="pkg">stats</span> package.
+</p>
+</li>
+<li> <p><a href="../../SparseArray/help/SVT_SparseArray.html">SVT_SparseArray</a> objects.
+</p>
+</li></ul>
+
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>## ---------------------------------------------------------------------
+## randomSparseArray() / randomSparseMatrix()
+## ---------------------------------------------------------------------
+set.seed(123)
+dgcm1 &lt;- rsparsematrix(2500, 950, density=0.1)
+set.seed(123)
+svt1 &lt;- randomSparseMatrix(2500, 950, density=0.1)
+svt1
+type(svt1)  # "double"
+
+stopifnot(identical(as(svt1, "dgCMatrix"), dgcm1))
+
+## ---------------------------------------------------------------------
+## poissonSparseArray() / poissonSparseMatrix()
+## ---------------------------------------------------------------------
+svt2 &lt;- poissonSparseMatrix(2500, 950, density=0.1)
+svt2
+type(svt2)  # "integer"
+1 - sparsity(svt2)  # very close to the requested density
+
+set.seed(123)
+svt3 &lt;- poissonSparseArray(c(600, 1700, 80), lambda=0.01)
+set.seed(123)
+a3 &lt;- array(rpois(length(svt3), lambda=0.01), dim(svt3))
+stopifnot(identical(svt3, SparseArray(a3)))
+
+## The memory footprint of 'svt3' is 10x smaller than that of 'a3':
+object.size(svt3)
+object.size(a3)
+as.double(object.size(a3) / object.size(svt3))
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>SparseArray</em> version 1.10.8 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

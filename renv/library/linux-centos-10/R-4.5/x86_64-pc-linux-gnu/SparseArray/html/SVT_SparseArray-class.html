@@ -1,0 +1,317 @@
+<!DOCTYPE html><html><head><title>R: SVT_SparseArray objects</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>SVT_SparseArray-class {SparseArray}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>SVT_SparseArray objects</h2>
+
+<h3>Description</h3>
+
+<p>The SVT_SparseArray class is a new container for efficient in-memory
+representation of multidimensional sparse arrays. It uses the
+<em>SVT layout</em> to represent the nonzero multidimensional data
+internally.
+</p>
+<p>An SVT_SparseMatrix object is an SVT_SparseArray object of 2 dimensions.
+</p>
+<p>Note that SVT_SparseArray and SVT_SparseMatrix objects replace the older
+and less efficient <a href="../../SparseArray/help/COO_SparseArray.html">COO_SparseArray</a> and COO_SparseMatrix objects.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>## Constructor function:
+SVT_SparseArray(x, dim=NULL, dimnames=NULL, type=NA)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="x">x</code></td>
+<td>
+
+<p>If <code>dim</code> is <code>NULL</code> (the default) then <code>x</code> must be an
+ordinary matrix or array, or a dgCMatrix/lgCMatrix object, or any
+matrix-like or array-like object that supports coercion to SVT_SparseArray.
+</p>
+<p>If <code>dim</code> is provided then <code>x</code> can either be missing, a
+vector (atomic or list), or an array-like object. If missing, then an
+allzero SVT_SparseArray object will be constructed. Otherwise <code>x</code>
+will be used to fill the returned object (<code>length(x)</code> must be
+<code>&lt;= prod(dim)</code>). Note that if <code>x</code> is an array-like object
+then its dimensions are ignored i.e. it's treated as a vector.
+</p>
+</td></tr>
+<tr><td><code id="dim">dim</code></td>
+<td>
+
+<p><code>NULL</code> or the dimensions (supplied as an integer vector) of
+the SVT_SparseArray or SVT_SparseMatrix object to construct.
+If <code>NULL</code> (the default) then the returned object will have
+the dimensions of matrix-like or array-like object <code>x</code>.
+</p>
+</td></tr>
+<tr><td><code id="dimnames">dimnames</code></td>
+<td>
+
+<p>The <em>dimnames</em> of the object to construct. Must be <code>NULL</code> or
+a list of length the number of dimensions. Each list element must be
+either <code>NULL</code> or a character vector along the corresponding dimension.
+If both <code>dim</code> and <code>dimnames</code> are <code>NULL</code> (the default) then
+the returned object will have the <em>dimnames</em> of matrix-like or
+array-like object <code>x</code>.
+</p>
+</td></tr>
+<tr><td><code id="type">type</code></td>
+<td>
+
+<p>A single string specifying the requested type of the object.
+</p>
+<p>Normally, the SVT_SparseArray object returned by the constructor
+function has the same <code>type()</code> as <code>x</code> but the user can use
+the <code>type</code> argument to request a different type. Note that doing:
+</p>
+<pre>    svt &lt;- SVT_SparseArray(x, type=type)</pre>
+<p>is equivalent to doing:
+</p>
+<pre>    svt &lt;- SVT_SparseArray(x)
+    type(svt) &lt;- type</pre>
+<p>but the former is more convenient and will generally be more efficient.
+</p>
+<p>Supported types are all R atomic types plus <code>"list"</code>.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>SVT_SparseArray is a concrete subclass of the <a href="../../SparseArray/help/SparseArray.html">SparseArray</a>
+virtual class. This makes SVT_SparseArray objects SparseArray derivatives.
+</p>
+<p>The nonzero data in a SVT_SparseArray object is stored in a <em>Sparse
+Vector Tree</em>. We'll refer to this internal data representation as
+the <em>SVT layout</em>. See the &quot;SVT layout&quot; section below for more
+information.
+</p>
+<p>The SVT layout is similar to the CSC layout (compressed, sparse,
+column-oriented format) used by CsparseMatrix derivatives from
+the <span class="pkg">Matrix</span> package, like dgCMatrix or lgCMatrix objects,
+but with the following improvements:
+</p>
+
+<ul>
+<li><p> The SVT layout supports sparse arrays of arbitrary dimensions.
+</p>
+</li>
+<li><p> With the SVT layout, the sparse data can be of any type.
+Whereas CsparseMatrix derivatives only support sparse data
+of type <code>"double"</code> or <code>"logical"</code> at the moment.
+</p>
+</li>
+<li><p> The SVT layout imposes no limit on the number of nonzero elements
+that can be stored. With dgCMatrix/lgCMatrix objects, this number
+must be &lt; 2^31.
+</p>
+</li>
+<li><p> Overall, the SVT layout allows more efficient operations on
+SVT_SparseArray objects.
+</p>
+</li></ul>
+
+
+
+<h3>Value</h3>
+
+<p>An SVT_SparseArray or SVT_SparseMatrix object.
+</p>
+
+
+<h3>SVT layout</h3>
+
+<p>An SVT (Sparse Vector Tree) is a tree of depth N - 1 where N is the number
+of dimensions of the sparse array.
+</p>
+<p>The leaves in the tree can only be of two kinds: NULL or <em>leaf vector</em>.
+Leaves that are leaf vectors can only be found at the deepest level in the
+tree (i.e. at depth N - 1). All leaves found at a lower depth must be NULLs.
+</p>
+<p>A leaf vector represents a sparse vector along the first dimension (a.k.a.
+innermost or fastest moving dimension) of the sparse array. It contains a
+collection of offset/value pairs sorted by strictly ascending offset.
+More precisely, a leaf vector is represented by an ordinary list of 2
+parallel dense vectors:
+</p>
+
+<ol>
+<li><p> nzvals: a vector (atomic or list) of nonzero values (zeros are
+not allowed);
+</p>
+</li>
+<li><p> nzoffs: an integer vector of offsets (i.e. 0-based positions).
+</p>
+</li></ol>
+
+<p>The 1st vector determines the type of the leaf vector i.e. <code>"double"</code>,
+<code>"integer"</code>, <code>"logical"</code>, etc...
+All the leaf vectors in the SVT must have the same type as the sparse array.
+</p>
+<p>It's useful to realize that a leaf vector simply represents a 1D SVT.
+</p>
+<p>In <span class="pkg">SparseArray</span> 1.5.4 a new type of leaf vector was introduced called
+<em>lacunar leaf</em>. A lacunar leaf is a non-empty leaf vector where the
+nzvals component is set to <code>NULL</code>. In this case the nonzero values are
+implicit: they're all considered to be equal to one.
+</p>
+<p>Examples:
+</p>
+
+<ul>
+<li><p> An SVT_SparseArray object with 1 dimension has its nonzero data
+stored in an SVT of depth 0. Such SVT is represented by a
+single <em>leaf vector</em>.
+</p>
+</li>
+<li><p> An SVT_SparseArray object with 2 dimensions has its nonzero data
+stored in an SVT of depth 1. Such SVT is represented by a list of
+length the extend of the 2nd dimension (number of columns). Each
+list element is an SVT of depth 0 (as described above), or a NULL
+if the corresponding column is empty (i.e. has no nonzero data).
+</p>
+<p>For example, the nonzero data of an 8-column sparse matrix will be
+stored in an SVT that looks like this:
+</p>
+<pre>
+    .------------------list-of-length-8-----------------.
+   /       /       /      |       |      \       \       \
+  |       |       |       |       |       |       |       |
+ leaf    leaf    NULL    leaf    leaf    leaf    leaf    NULL
+vector  vector          vector  vector  vector  vector</pre>
+<p>The NULL leaves represent the empty columns (i.e. the columns
+with no nonzero elements).
+</p>
+</li>
+<li><p> An SVT_SparseArray object with 3 dimensions has its nonzero data
+stored in an SVT of depth 2. Such SVT is represented by a list of
+length the extend of the 3rd dimension. Each list element must be
+an SVT of depth 1 (as described above) that stores the nonzero data
+of the corresponding 2D slice, or a NULL if the 2D slice is empty
+(i.e. has no nonzero data).
+</p>
+</li>
+<li><p> And so on...
+</p>
+</li></ul>
+
+
+
+<h3>See Also</h3>
+
+
+<ul>
+<li><p> The <a href="../../SparseArray/help/SparseArray.html">SparseArray</a> class for the virtual parent class of
+COO_SparseArray and SVT_SparseArray.
+</p>
+</li>
+<li> <p><a href="../../Matrix/help/dgCMatrix-class.html">dgCMatrix-class</a> and <a href="../../Matrix/help/lgCMatrix-class.html">lgCMatrix-class</a>
+in the <span class="pkg">Matrix</span> package, for the de facto standard for sparse
+matrix representations in the R ecosystem.
+</p>
+</li>
+<li> <p><a href="../../Matrix/help/CsparseMatrix-class.html">CsparseMatrix-class</a> for the parent class of all
+the classes in the <span class="pkg">Matrix</span> package that use the &quot;CSC layout&quot;
+(dgCMatrix, lgCMatrix, etc...)
+</p>
+</li>
+<li><p> The <code>Matrix::<a href="../../Matrix/help/rsparsematrix.html">rsparsematrix</a></code> function in
+the <span class="pkg">Matrix</span> package.
+</p>
+</li>
+<li><p> Ordinary <a href="../../base/help/array.html">array</a> objects in base R.
+</p>
+</li></ul>
+
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>## ---------------------------------------------------------------------
+## BASIC CONSTRUCTION
+## ---------------------------------------------------------------------
+SVT_SparseArray(dim=5:3)  # allzero object
+
+SVT_SparseArray(dim=c(35000, 2e6), type="raw")  # allzero object
+
+## Use a dgCMatrix object to fill the SVT_SparseArray object to construct:
+x &lt;- rsparsematrix(10, 16, density=0.1)  # random dgCMatrix object
+SVT_SparseArray(x, dim=c(8, 5, 4))
+
+svt1 &lt;- SVT_SparseArray(dim=c(12, 5, 2))  # allzero object
+svt1[cbind(11, 2:5, 2)] &lt;- 22:25
+svt1
+
+svt2 &lt;- SVT_SparseArray(dim=c(6, 4), type="integer",
+                        dimnames=list(letters[1:6], LETTERS[1:4]))
+svt2[c(1:2, 8, 10, 15:17, 24)] &lt;- (1:8)*10L
+svt2
+
+## ---------------------------------------------------------------------
+## CSC (Compressed Sparse Column) LAYOUT VS SVT LAYOUT
+## ---------------------------------------------------------------------
+
+## dgCMatrix objects from the Matrix package use the CSC layout:
+dgcm2 &lt;- as(svt2, "dgCMatrix")
+dgcm2@x  # nonzero values
+dgcm2@i  # row indices of the nonzero values
+dgcm2@p  # breakpoints (0 followed by one breakpoint per column)
+
+str(svt2)
+
+m3 &lt;- matrix(rpois(54e6, lambda=0.4), ncol=1200)
+
+## Note that 'SparseArray(m3)' can also be used for this:
+svt3 &lt;- SVT_SparseArray(m3)
+svt3
+
+dgcm3 &lt;- as(m3, "dgCMatrix")
+
+## Compare type and memory footprint:
+type(svt3)
+object.size(svt3)
+type(dgcm3)
+object.size(dgcm3)
+
+## Transpose:
+system.time(svt &lt;- t(t(svt3)))
+system.time(dgcm &lt;- t(t(dgcm3)))
+identical(svt, svt3)
+identical(dgcm, dgcm3)
+
+## rbind():
+m4 &lt;- matrix(rpois(45e6, lambda=0.4), ncol=1200)
+svt4 &lt;- SVT_SparseArray(m4)
+dgcm4 &lt;- as(m4, "dgCMatrix")
+
+system.time(rbind(svt3, svt4))
+system.time(rbind(dgcm3, dgcm4))
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>SparseArray</em> version 1.10.8 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

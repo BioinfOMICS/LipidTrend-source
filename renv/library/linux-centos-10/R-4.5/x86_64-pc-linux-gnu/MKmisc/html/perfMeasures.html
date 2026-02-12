@@ -1,0 +1,199 @@
+<!DOCTYPE html><html><head><title>R: Compute Performance Measures and Scores for Binary...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>perfMeasures {MKmisc}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Compute Performance Measures and Scores for Binary Classification </h2>
+
+<h3>Description</h3>
+
+<p>The function computes various performance weasures and scores for binary classification.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>perfMeasures(pred, pred.group, truth, namePos, cutoff = 0.5,
+             weight = 0.5, wACC = weight, wPV = weight)
+perfScores(pred, truth, namePos, weight = 0.5, wBS = weight)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="pred">pred</code></td>
+<td>
+<p> numeric values that shall be used for classification; e.g. probabilities
+to belong to the positive group. </p>
+</td></tr>
+<tr><td><code id="pred.group">pred.group</code></td>
+<td>
+<p> vector or factor including the predicted group. If missing,
+<code>pred.group</code> is computed from <code>pred</code>, where <code>pred &gt;= cutoff</code> is
+classified as positive.</p>
+</td></tr>
+<tr><td><code id="truth">truth</code></td>
+<td>
+<p> true grouping vector or factor. </p>
+</td></tr>
+<tr><td><code id="namePos">namePos</code></td>
+<td>
+<p> value representing the positive group.</p>
+</td></tr>
+<tr><td><code id="cutoff">cutoff</code></td>
+<td>
+<p> cutoff value used for classification.</p>
+</td></tr>
+<tr><td><code id="weight">weight</code></td>
+<td>
+<p> weight used for computing weighted values. Must be in [0,1].</p>
+</td></tr>
+<tr><td><code id="wACC">wACC</code></td>
+<td>
+<p> weight used for computing the weighted accuracy. Must be in [0,1].</p>
+</td></tr>
+<tr><td><code id="wPV">wPV</code></td>
+<td>
+<p> weight used for computing the weighted predictive value. Must be in [0,1].</p>
+</td></tr>
+<tr><td><code id="wBS">wBS</code></td>
+<td>
+<p> weight used for computing the weighted Brier score. Must be in [0,1].</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The function <code>perfMeasures</code> computes various performance measures.
+The measures are:
+accuracy (ACC), probabiliy of correct classification (PCC), probability of
+missclassification (PMC), error rate, sensitivity, specificity, prevalence,
+no information rate, weighted accuracy (wACC), balanced accuracy (BACC),
+informedness, Youden's J statistic, positive likelihood ratio (PLR),
+negative likelihood ratio (NLR), positive predictive value (PPV),
+negative predictive value (NPV), markedness, weighted predictive value,
+balanced predictive value, F1 score, Matthews' correlation
+coefficient (MCC), proportion of positive predictions, expected accuracy,
+Cohen's kappa coefficient, and detection rate.
+</p>
+<p>These performance measures have in common that they require a dichotomization
+(discretization) of a computed continuous classification function.
+</p>
+<p>The function <code>perfScores</code> computes various performance Scores.
+The scores are:
+area under the ROC curve (AUC), Gini index, Brier score, positive Brier score,
+negative Brier score, weighted Brier score, and balanced Brier score.
+</p>
+<p>If the predictions (<code>pred</code>) are not in the interval [0,1] the standard
+logistic function is applied to transform the values of <code>pred - cutoff</code>
+to [0,1].
+</p>
+
+
+<h3>Value</h3>
+
+<p><code>data.frame</code> with names of the performance measures, respectivey scores
+and their respective values.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> Matthias Kohl <a href="mailto:Matthias.Kohl@stamats.de">Matthias.Kohl@stamats.de</a></p>
+
+
+<h3>References</h3>
+
+<p>G.W. Brier (1950). Verification of forecasts expressed in terms of probability.
+<em>Mon. Wea. Rev.</em> <b>78</b>, 1-3.
+</p>
+<p>K.H. Brodersen, C.S. Ong, K.E. Stephan, J.M. Buhmann (2010). The balanced
+accuracy and its posterior distribution. In <em>Pattern Recognition</em> (ICPR),
+20th International Conference on, 3121-3124 (IEEE, 2010).
+</p>
+<p>J.A. Cohen (1960). A coefficient of agreement for nominal scales.
+<em>Educational and Psychological Measurement</em> <b>20</b>, 3746.
+</p>
+<p>T. Fawcett (2006). An introduction to ROC analysis.
+<em>Pattern Recognition Letters</em> <b>27</b>, 861-874.
+</p>
+<p>T.A. Gerds, T. Cai, M. Schumacher (2008). The performance of risk prediction
+models. <em>Biom J</em> <b>50</b>, 457-479.
+</p>
+<p>D. Hand, R. Till (2001). A simple generalisation of the area under the ROC
+curve for multiple class classification problems.
+<em>Machine Learning</em> <b>45</b>, 171-186.
+</p>
+<p>J. Hernandez-Orallo, P.A. Flach, C. Ferri (2011). Brier curves: a new cost-
+based visualisation of classifier performance. In L. Getoor and T. Scheffer (eds.)
+<em>Proceedings of the 28th International Conference on Machine Learning</em> (ICML-11),
+585???592 (ACM, New York, NY, USA).
+</p>
+<p>J. Hernandez-Orallo, P.A. Flach, C. Ferri (2012). A unified view of performance
+metrics: Translating threshold choice into expected classification loss.
+<em>J. Mach. Learn. Res.</em> <b>13</b>, 2813-2869.
+</p>
+<p>B.W. Matthews (1975). Comparison of the predicted and observed secondary
+structure of t4 phage lysozyme. <em>Biochimica et Biophysica Acta</em> (BBA) -
+Protein Structure <b>405</b>, 442-451.
+</p>
+<p>D.M. Powers (2011). Evaluation: From Precision, Recall and F-Factor to ROC,
+Informedness, Markedness and Correlation. <em>Journal of Machine Learning
+Technologies</em> <b>1</b>, 37-63.
+</p>
+<p>N.A. Smits (2010). A note on Youden's J and its cost ratio.
+<em>BMC Medical Research Methodology</em> <b>10</b>, 89.
+</p>
+<p>B. Wallace, I. Dahabreh (2012). Class probability estimates are unreliable for
+imbalanced data (and how to fix them). In <em>Data Mining</em> (ICDM), IEEE 12th
+International Conference on, 695-04.
+</p>
+<p>J.W. Youden (1950). Index for rating diagnostic tests.
+<em>Cancer</em> <b>3</b>, 32-35.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>## example from dataset infert
+fit &lt;- glm(case ~ spontaneous+induced, data = infert, family = binomial())
+pred &lt;- predict(fit, type = "response")
+
+## with group numbers
+perfMeasures(pred, truth = infert$case, namePos = 1)
+perfScores(pred, truth = infert$case, namePos = 1)
+
+## with group names
+my.case &lt;- factor(infert$case, labels = c("control", "case"))
+perfMeasures(pred, truth = my.case, namePos = "case")
+perfScores(pred, truth = my.case, namePos = "case")
+
+## on the scale of the linear predictors
+pred2 &lt;- predict(fit)
+perfMeasures(pred2, truth = infert$case, namePos = 1, cutoff = 0)
+perfScores(pred2, truth = infert$case, namePos = 1)
+
+## using weights
+perfMeasures(pred, truth = infert$case, namePos = 1, weight = 0.3)
+perfScores(pred, truth = infert$case, namePos = 1, weight = 0.3)
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>MKmisc</em> version 1.9 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

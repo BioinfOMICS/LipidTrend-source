@@ -1,0 +1,87 @@
+<!DOCTYPE html><html><head><title>R: Five-Number Summaries</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>fiveNS {MKmisc}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Five-Number Summaries </h2>
+
+<h3>Description</h3>
+
+<p>Function to compute five-number summaries (minimum, 1st quartile,
+median, 3rd quartile, maximum)
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>fiveNS(x, na.rm = TRUE, type = 7)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="x">x</code></td>
+<td>
+<p> numeric vector </p>
+</td></tr>
+<tr><td><code id="na.rm">na.rm</code></td>
+<td>
+<p> logical; remove <code>NA</code> before the computations. </p>
+</td></tr>
+<tr><td><code id="type">type</code></td>
+<td>
+<p> an integer between 1 and 9 selecting one of nine quantile
+algorithms; for more details see <code><a href="../../stats/help/quantile.html">quantile</a></code>. </p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>In contrast to <code><a href="../../stats/help/fivenum.html">fivenum</a></code> the functions computes the
+first and third quartile using function <code><a href="../../stats/help/quantile.html">quantile</a></code>.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A numeric vector of length 5 containing the summary information.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> Matthias Kohl <a href="mailto:Matthias.Kohl@stamats.de">Matthias.Kohl@stamats.de</a></p>
+
+
+<h3>See Also</h3>
+
+ <p><code><a href="../../stats/help/fivenum.html">fivenum</a></code>, <code><a href="../../stats/help/quantile.html">quantile</a></code>  </p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>x &lt;- rnorm(100)
+fiveNS(x)
+fiveNS(x, type = 2)
+fivenum(x)
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>MKmisc</em> version 1.9 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

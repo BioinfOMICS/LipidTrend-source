@@ -1,0 +1,102 @@
+<!DOCTYPE html><html><head><title>R: SparseArray summarization methods</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>SparseArray-summarization {SparseArray}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>SparseArray summarization methods</h2>
+
+<h3>Description</h3>
+
+<p>The <span class="pkg">SparseArray</span> package provides memory-efficient summarization
+methods for <a href="../../SparseArray/help/SparseArray.html">SparseArray</a> objects. The following methods are
+supported at the moment: <code>anyNA()</code>, <code>any()</code>, <code>all()</code>,
+<code>min()</code>, <code>max()</code>, <code>range()</code>, <code>sum()</code>, <code>prod()</code>,
+<code>mean()</code>, <code>var()</code>, <code>sd()</code>.
+</p>
+<p>More might be added in the future.
+</p>
+<p>Note that these are <em>S4 generic functions</em> defined in base R
+and in the <span class="pkg">BiocGenerics</span> package, with default methods defined
+in base R. This man page documents the methods defined for
+<a href="../../SparseArray/help/SparseArray.html">SparseArray</a> objects.
+</p>
+
+
+<h3>Details</h3>
+
+<p>All these methods operate <em>natively</em> on the <a href="../../SparseArray/help/COO_SparseArray.html">COO_SparseArray</a>
+or <a href="../../SparseArray/help/SVT_SparseArray.html">SVT_SparseArray</a> representation, for maximum efficiency.
+</p>
+
+
+<h3>Value</h3>
+
+<p>See man pages of the corresponding default methods in the
+<span class="pkg">base</span> package (e.g. <code>?base::<a href="../../base/help/range.html">range</a></code>,
+<code>?base::<a href="../../base/help/mean.html">mean</a></code>, etc...) for the value returned
+by these methods.
+</p>
+
+
+<h3>See Also</h3>
+
+
+<ul>
+<li> <p><a href="../../SparseArray/help/SparseArray.html">SparseArray</a> objects.
+</p>
+</li>
+<li><p> The man pages of the various default methods defined in
+the <span class="pkg">base</span> package e.g. <code>base::<a href="../../base/help/range.html">range</a></code>,
+<code>base::<a href="../../base/help/mean.html">mean</a></code>, <code>base::<a href="../../base/help/anyNA.html">anyNA</a></code>,
+etc...
+</p>
+</li></ul>
+
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>svt0 &lt;- SVT_SparseArray(dim=c(4, 5, 2))
+svt0[c(1:2, 8, 10, 15:17, 24:26, 28, 40)] &lt;- (1:12)*10L
+svt0[4, 3, 1] &lt;- NA
+svt0
+
+anyNA(svt0)
+
+range(svt0)
+
+range(svt0, na.rm=TRUE)
+
+sum(svt0, na.rm=TRUE)
+
+sd(svt0, na.rm=TRUE)
+
+## Sanity checks:
+a0 &lt;- as.array(svt0)
+stopifnot(
+  identical(anyNA(svt0), anyNA(a0)),
+  identical(range(svt0), range(a0)),
+  identical(range(svt0, na.rm=TRUE), range(a0, na.rm=TRUE)),
+  identical(sum(svt0), sum(a0)),
+  identical(sum(svt0, na.rm=TRUE), sum(a0, na.rm=TRUE)),
+  all.equal(sd(svt0, na.rm=TRUE), sd(a0, na.rm=TRUE))
+)
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>SparseArray</em> version 1.10.8 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

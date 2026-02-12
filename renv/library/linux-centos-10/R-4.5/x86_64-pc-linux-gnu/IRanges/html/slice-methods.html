@@ -1,0 +1,143 @@
+<!DOCTYPE html><html><head><title>R: Slice a vector-like or list-like object</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>slice-methods {IRanges}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Slice a vector-like or list-like object</h2>
+
+<h3>Description</h3>
+
+<p><code>slice</code> is a generic function that creates views on a vector-like
+or list-like object that contain the elements that are within the
+specified bounds.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>slice(x, lower=-Inf, upper=Inf, ...)
+
+## S4 method for signature 'Rle'
+slice(x, lower=-Inf, upper=Inf,
+      includeLower=TRUE, includeUpper=TRUE, rangesOnly=FALSE)
+
+## S4 method for signature 'RleList'
+slice(x, lower=-Inf, upper=Inf,
+      includeLower=TRUE, includeUpper=TRUE, rangesOnly=FALSE)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="x">x</code></td>
+<td>
+
+<p>An Rle or <a href="../../IRanges/help/RleList.html">RleList</a> object, or any object coercible to
+an Rle object.
+</p>
+</td></tr>
+<tr><td><code id="lower">lower</code>, <code id="upper">upper</code></td>
+<td>
+
+<p>The lower and upper bounds for the slice.
+</p>
+</td></tr>
+<tr><td><code id="includeLower">includeLower</code>, <code id="includeUpper">includeUpper</code></td>
+<td>
+
+<p>Logical indicating whether or not the specified boundary is open or closed.
+</p>
+</td></tr>
+<tr><td><code id="rangesOnly">rangesOnly</code></td>
+<td>
+
+<p>A logical indicating whether or not to drop the original data from the
+output.
+</p>
+</td></tr>
+<tr><td><code id="...">...</code></td>
+<td>
+
+<p>Additional arguments to be passed to specific methods.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p><code>slice</code> is useful for finding areas of absolute maxima (peaks),
+absolute minima (troughs), or fluctuations within specified limits.
+One or more view summarization methods can be used on the result of
+<code>slice</code>. See <code>?`link{view-summarization-methods}`</code>
+</p>
+
+
+<h3>Value</h3>
+
+<p>The method for Rle objects returns an <a href="../../IRanges/help/RleViews.html">RleViews</a> object
+if <code>rangesOnly=FALSE</code> or an <a href="../../IRanges/help/IRanges.html">IRanges</a> object if
+<code>rangesOnly=TRUE</code>.
+</p>
+<p>The method for <a href="../../IRanges/help/RleList.html">RleList</a> objects returns an <a href="../../IRanges/help/RleViewsList.html">RleViewsList</a> object
+if <code>rangesOnly=FALSE</code> or an <a href="../../IRanges/help/IRangesList.html">IRangesList</a> object if
+<code>rangesOnly=TRUE</code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>P. Aboyoun</p>
+
+
+<h3>See Also</h3>
+
+
+<ul>
+<li> <p><a href="../../IRanges/help/view-summarization-methods.html">view-summarization-methods</a> for summarizing the views
+returned by <code>slice</code>.
+</p>
+</li>
+<li> <p><a href="../../XVector/help/slice-methods.html">slice-methods</a> in the <span class="pkg">XVector</span> package
+for more <code>slice</code> methods.
+</p>
+</li>
+<li> <p><code><a href="../../IRanges/help/coverage.html">coverage</a></code> for computing the coverage across a set
+of ranges.
+</p>
+</li>
+<li><p> The Rle, <a href="../../IRanges/help/RleList.html">RleList</a>, <a href="../../IRanges/help/RleViews.html">RleViews</a>, and
+<a href="../../IRanges/help/RleViewsList.html">RleViewsList</a> classes.
+</p>
+</li></ul>
+
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>## Views derived from coverage
+x &lt;- IRanges(start=c(1L, 9L, 4L, 1L, 5L, 10L),
+             width=c(5L, 6L, 3L, 4L, 3L,  3L))
+cvg &lt;- coverage(x)
+slice(cvg, lower=2)
+slice(cvg, lower=2, rangesOnly=TRUE)
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>IRanges</em> version 2.44.0 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

@@ -1,0 +1,128 @@
+<!DOCTYPE html><html><head><title>R: 'Logic' operations on NaArray objects</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>NaArray-Logic-methods {SparseArray}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>'Logic' operations on NaArray objects</h2>
+
+<h3>Description</h3>
+
+<p>EXPERIMENTAL!!!
+</p>
+<p><a href="../../SparseArray/help/NaArray.html">NaArray</a> objects support operations from the <code>Logic</code> group
+(i.e. <code>&amp;</code> and <code>|</code>), as well as logical negation (<code>!</code>).
+See <code>?<a href="../../methods/help/S4groupGeneric.html">S4groupGeneric</a></code> in the <span class="pkg">methods</span> package
+for more information about the <code>Logic</code> group generic.
+</p>
+<p>Note that in base R, <code>Logic</code> operations support input of <code>type()</code>
+<code>"logical"</code>, <code>"integer"</code>, <code>"double"</code>, or <code>"complex"</code>.
+However, the corresponding methods for <a href="../../SparseArray/help/NaArray.html">NaArray</a> objects only
+support objects of <code>type()</code> <code>"logical"</code> for now.
+</p>
+
+
+<h3>Details</h3>
+
+<p>Three forms of 'Logic' operations involving <a href="../../SparseArray/help/NaArray.html">NaArray</a> objects are
+supported:
+</p>
+
+<ol>
+<li><p> Between an <a href="../../SparseArray/help/NaArray.html">NaArray</a> object <code>naa</code> and a single
+logical value <code>y</code>: </p>
+<pre>    naa op y
+    y op naa</pre>
+</li>
+<li><p> Between two <a href="../../SparseArray/help/NaArray.html">NaArray</a> objects <code>naa1</code> and <code>naa2</code>
+of same dimensions (a.k.a. <em>conformable arrays</em>):
+</p>
+<pre>    naa1 op naa2</pre>
+</li>
+<li><p> Between an <a href="../../SparseArray/help/NaArray.html">NaArray</a> object <code>naa</code> and an
+<a href="../../SparseArray/help/SVT_SparseArray.html">SVT_SparseArray</a> object <code>svt</code> of same dimensions
+(a.k.a. <em>conformable arrays</em>):
+</p>
+<pre>    naa op svt
+    svt op naa</pre>
+<p>Note that, in this case, <code>|</code> returns an <a href="../../SparseArray/help/NaArray.html">NaArray</a>
+object but <code>&amp;</code> returns an <a href="../../SparseArray/help/SVT_SparseArray.html">SVT_SparseArray</a> object.
+</p>
+</li></ol>
+
+
+
+<h3>Value</h3>
+
+<p>An <a href="../../SparseArray/help/NaArray.html">NaArray</a> object of <code>type()</code> <code>"logical"</code> and same
+dimensions as the input object(s), <em>except</em> when <code>&amp;</code> is used
+between an <a href="../../SparseArray/help/NaArray.html">NaArray</a> object and an <a href="../../SparseArray/help/SVT_SparseArray.html">SVT_SparseArray</a> object
+in which case an <a href="../../SparseArray/help/SVT_SparseArray.html">SVT_SparseArray</a> object is returned.
+</p>
+
+
+<h3>See Also</h3>
+
+
+<ul>
+<li> <p><code><a href="../../methods/help/S4groupGeneric.html">S4groupGeneric</a></code> in the <span class="pkg">methods</span> package.
+</p>
+</li>
+<li> <p><a href="../../SparseArray/help/NaArray.html">NaArray</a> objects.
+</p>
+</li>
+<li> <p><a href="../../SparseArray/help/SVT_SparseArray.html">SVT_SparseArray</a> objects.
+</p>
+</li>
+<li><p> Ordinary <a href="../../base/help/array.html">array</a> objects in base R.
+</p>
+</li></ul>
+
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>nam1 &lt;- NaArray(dim=c(15, 6))
+nam1[cbind(1:15, 2)] &lt;- c(TRUE, FALSE, NA)
+nam1[cbind(1:15, 5)] &lt;- c(TRUE, NA, NA, FALSE, TRUE)
+nam1
+
+!nam1
+nam1 &amp; NA  # replaces all TRUE's with NA's
+nam1 | NA  # replaces all FALSE's with NA's
+
+nam2 &lt;- NaArray(dim=dim(nam1))
+nam2[c(2, 6, 12:17, 22:33, 55, 59:62, 90)] &lt;- c(TRUE, NA)
+nam2
+
+nam1 &amp; nam2
+nam1 | nam2
+
+## Sanity checks:
+m1 &lt;- as.matrix(nam1)
+m2 &lt;- as.matrix(nam2)
+stopifnot(
+  identical(as.matrix(!nam1), !m1),
+  identical(as.matrix(nam1 &amp; NA), m1 &amp; NA),
+  identical(as.matrix(nam1 | NA), m1 | NA),
+  identical(as.matrix(nam1 &amp; nam2), m1 &amp; m2),
+  identical(as.matrix(nam1 | nam2), m1 | m2)
+)
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>SparseArray</em> version 1.10.8 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

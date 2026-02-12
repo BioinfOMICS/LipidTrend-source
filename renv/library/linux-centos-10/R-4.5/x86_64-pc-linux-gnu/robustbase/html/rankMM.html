@@ -1,0 +1,92 @@
+<!DOCTYPE html><html><head><title>R: Simple Matrix Rank</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>rankMM {robustbase}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Simple Matrix Rank</h2>
+
+<h3>Description</h3>
+
+<p>Compute the rank of a matrix <code>A</code> in simple way, based on the SVD,
+<code><a href="../../base/html/svd.html">svd</a>()</code>, and &ldquo;the same as Matlab&rdquo;.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>rankMM(A, tol = NULL, sv = svd(A, 0, 0)$d)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="A">A</code></td>
+<td>
+<p>a numerical matrix, maybe non-square.  When <code>sv</code> is
+specified, only <code>dim(A)</code> is made use of.</p>
+</td></tr>
+<tr><td><code id="tol">tol</code></td>
+<td>
+<p>numerical tolerance (compared to singular values).  By
+default, when <code>NULL</code>, the tolerance is determined from the
+maximal value of <code>sv</code> and the computer epsilon.</p>
+</td></tr>
+<tr><td><code id="sv">sv</code></td>
+<td>
+<p>vector of <em>non-increasing</em> singular values of <code>A</code>, (to be
+passed if already known).</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>an integer from the set <code>0:min(dim(A))</code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Martin Maechler, Date: 7 Apr 2007
+</p>
+
+
+<h3>See Also</h3>
+
+<p>There are more sophisticated proposals for computing the rank of a
+matrix; for a couple of those, see <code><a href="../../Matrix/help/rankMatrix.html">rankMatrix</a></code> in the
+<a href="https://CRAN.R-project.org/package=Matrix"><span class="pkg">Matrix</span></a> package.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>rankMM # - note the simple function definition
+
+hilbert &lt;- function(n) { i &lt;- seq_len(n); 1/outer(i - 1L, i, "+") }
+hilbert(4)
+H12 &lt;- hilbert(12)
+rankMM(H12)        # 11 - numerically more realistic
+rankMM(H12, tol=0) # -&gt; 12
+## explanation :
+round(log10(svd(H12, 0,0)$d), 1)
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>robustbase</em> version 0.99-7 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

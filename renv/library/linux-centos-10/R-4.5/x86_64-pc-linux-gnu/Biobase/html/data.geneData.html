@@ -1,0 +1,58 @@
+<!DOCTYPE html><html><head><title>R: Sample expression matrix and phenotype data.frames.</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>data:geneData {Biobase}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Sample expression matrix and phenotype data.frames.</h2>
+
+<h3>Description</h3>
+
+<p>The <code>geneData</code> data.frame has 500 rows and 26 columns.  It consists
+of a subset of real expression data from an Affymetrix U95v2 chip. The
+data are anonymous. The covariate data <code>geneCov</code> and
+<code>geneCovariate</code> are made up. The standard error data <code>seD</code> is
+also made up.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>data(geneData)</code></pre>
+
+
+<h3>Format</h3>
+
+<p>A 500 by 26 data frame.
+</p>
+
+
+<h3>Source</h3>
+
+<p>The J. Ritz Laboratory (S. Chiaretti).
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>data(geneData)
+data(geneCovariate)
+data(seD)
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>Biobase</em> version 2.70.0 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

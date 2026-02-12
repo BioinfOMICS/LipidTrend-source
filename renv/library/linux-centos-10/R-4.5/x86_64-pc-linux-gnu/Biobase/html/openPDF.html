@@ -1,0 +1,79 @@
+<!DOCTYPE html><html><head><title>R: Open PDF Files in a Standard Viewer</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>openPDF {Biobase}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Open PDF Files in a Standard Viewer</h2>
+
+<h3>Description</h3>
+
+<p>Displays the specified PDF file.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>openPDF(file, bg=TRUE)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="file">file</code></td>
+<td>
+<p>A character string, indicating the file to view</p>
+</td></tr>
+<tr><td><code id="bg">bg</code></td>
+<td>
+<p>Should the pdf viewer be opened in the background.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Currently this function works on Windows and Unix platforms.  Under
+Windows, whatever program is associated with the file extension will
+be used.  Under Unix, the function will use the program named in the
+option &quot;pdfviewer&quot; (see <code>help(options)</code> for information on
+how this is set.)
+</p>
+<p>The <code>bg</code> argument is only interpreted on Unix.
+</p>
+
+
+<h3>Value</h3>
+
+<p>This function is executed for its side effects.  The specified PDF file
+is opened in the PDF viewer and <code>TRUE</code> is returned.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> Jeff Gentry</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>## Not run: openPDF("annotate.pdf")
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>Biobase</em> version 2.70.0 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

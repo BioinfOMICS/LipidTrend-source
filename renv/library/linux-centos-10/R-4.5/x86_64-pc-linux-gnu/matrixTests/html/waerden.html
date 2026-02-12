@@ -1,0 +1,91 @@
+<!DOCTYPE html><html><head><title>R: Van der Waerden test</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>waerden {matrixTests}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Van der Waerden test</h2>
+
+<h3>Description</h3>
+
+<p>Performs van der Waerden test on each row/column of the input matrix.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>row_waerden(x, g)
+
+col_waerden(x, g)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="x">x</code></td>
+<td>
+<p>numeric matrix.</p>
+</td></tr>
+<tr><td><code id="g">g</code></td>
+<td>
+<p>a vector specifying group membership for each observation of x.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p><code>row_waerden(x, g)</code> - van der Waerden test on rows.
+<code>col_waerden(x, g)</code> - van det Waerden test on columns.
+</p>
+
+
+<h3>Value</h3>
+
+<p>a data.frame where each row contains the results of van det Waerden
+test performed on the corresponding row/column of x.<br><br>
+Each row contains the following information (in order):<br>
+1. obs.tot - total number of observations<br>
+2. obs.groups - number of groups<br>
+3. df - degrees of freedome<br>
+4. statistic - van det Waerden chi-squared statistic<br>
+5. pvalue - p.value
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Karolis Koncevičius
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../PMCMRplus/help/vanWaerdenTest.html">vanWaerdenTest</a></code>, <code>row_oneway_equalvar</code>, <code>row_kruskalwallis</code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>col_waerden(iris[,1:4], iris$Species)
+row_waerden(t(iris[,1:4]), iris$Species)
+
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>matrixTests</em> version 0.2.3.1 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

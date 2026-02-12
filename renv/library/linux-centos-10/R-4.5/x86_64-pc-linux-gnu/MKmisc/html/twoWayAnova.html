@@ -1,0 +1,114 @@
+<!DOCTYPE html><html><head><title>R: A function for Analysis of Variance</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>twoWayAnova {MKmisc}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> A function for Analysis of Variance </h2>
+
+<h3>Description</h3>
+
+<p>This function is a slight modification of function <code><a href="../../genefilter/help/Anova.html">Anova</a></code> of
+package <code>"genefilter"</code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>twoWayAnova(cov1, cov2, interaction, na.rm = TRUE)</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="cov1">cov1</code></td>
+<td>
+<p> The first covariate. It must have length equal to the number of
+columns of the array that the result of <code>twoWayAnova</code> will be 
+applied to. </p>
+</td></tr>
+<tr><td><code id="cov2">cov2</code></td>
+<td>
+<p> The second covariate. It must have length equal to the number of
+columns of the array that the result of <code>twoWayAnova</code> will be 
+applied to. </p>
+</td></tr>
+<tr><td><code id="interaction">interaction</code></td>
+<td>
+<p> logical, should interaction be considered </p>
+</td></tr>
+<tr><td><code id="na.rm">na.rm</code></td>
+<td>
+<p> a logical value indicating whether 'NA' values should be
+stripped before the computation proceeds. </p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The function returned by <code>twoWayAnova</code> uses <code><a href="../../stats/help/lm.html">lm</a></code> to fit 
+a linear model of the form <code>lm(x ~ cov1*cov2)</code>, where <code>x</code> is the set 
+of gene expressions. The F statistics for the main effects and the interaction are  
+computed and the corresponding p-values are returned.
+</p>
+
+
+<h3>Value</h3>
+
+<p><code>twoWayAnova</code> returns a function with bindings for <code>cov1</code> and 
+<code>cov2</code>that will perform a two-way ANOVA.
+</p>
+
+
+<h3>Note</h3>
+
+<p>A first version of this function appeared in package SLmisc.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> Matthias Kohl <a href="mailto:Matthias.Kohl@stamats.de">Matthias.Kohl@stamats.de</a></p>
+
+
+<h3>References</h3>
+
+<p>R. Gentleman, V. Carey, W. Huber and F. Hahne (2006). 
+genefilter: methods for filtering genes from microarray experiments. 
+R package version 1.13.7.
+</p>
+
+
+<h3>See Also</h3>
+
+ <p><code><a href="../../genefilter/help/Anova.html">Anova</a></code> </p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>set.seed(123)
+af1 &lt;- twoWayAnova(c(rep(1,6),rep(2,6)), rep(c(rep(1,3), rep(2,3)), 2))
+af2 &lt;- twoWayAnova(c(rep(1,6),rep(2,6)), rep(c(rep(1,3), rep(2,3)), 2), 
+                   interaction = FALSE)
+x &lt;- matrix(rnorm(12*10), nrow = 10)
+apply(x, 1, af1)
+apply(x, 1, af2)
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>MKmisc</em> version 1.9 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

@@ -1,0 +1,98 @@
+<!DOCTYPE html><html><head><title>R: Accessors and generic functions used in the context of count...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>dge {BiocGenerics}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Accessors and generic functions used in the context of count datasets</h2>
+
+<h3>Description</h3>
+
+<p>These generic functions provide basic interfaces to operations on
+and data access to count datasets.</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>counts(object, ...)
+counts(object, ...) &lt;- value
+design(object, ...)
+design(object, ...) &lt;- value
+dispTable(object, ...)
+dispTable(object, ...)  &lt;- value
+sizeFactors(object, ...)
+sizeFactors(object, ...) &lt;- value
+conditions(object, ...)
+conditions(object, ...) &lt;- value
+estimateSizeFactors(object, ...)
+estimateDispersions(object, ...)
+plotDispEsts(object, ...)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="object">object</code></td>
+<td>
+<p>Object of class for which methods are defined, e.g.,
+<code>CountDataSet</code>, <code>DESeqSummarizedExperiment</code> or <code>ExonCountSet</code>.</p>
+</td></tr>
+<tr><td><code id="value">value</code></td>
+<td>
+<p>Value to be assigned to corresponding components of
+<code>object</code>; supported types depend on method implementation.</p>
+</td></tr>
+<tr><td><code id="...">...</code></td>
+<td>
+<p>Further arguments, perhaps used by metohds</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>For the details, please consult the manual pages of the
+methods in the <span class="pkg">DESeq</span>, <span class="pkg">DESeq2</span>, and <span class="pkg">DEXSeq</span> packages and the package
+vignettes.</p>
+
+
+<h3>Author(s)</h3>
+
+<p>W. Huber, S. Anders</p>
+
+
+<h3>See Also</h3>
+
+
+<ul>
+<li> <p><code><a href="../../methods/help/showMethods.html">showMethods</a></code> for displaying a summary of the
+methods defined for a given generic function.
+</p>
+</li>
+<li> <p><code><a href="../../methods/help/selectMethod.html">selectMethod</a></code> for getting the definition of
+a specific method.
+</p>
+</li>
+<li> <p><a href="../../BiocGenerics/help/BiocGenerics.html">BiocGenerics</a> for a summary of all the generics defined
+in the <span class="pkg">BiocGenerics</span> package.
+</p>
+</li></ul>
+
+
+<hr><div style="text-align: center;">[Package <em>BiocGenerics</em> version 0.56.0 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

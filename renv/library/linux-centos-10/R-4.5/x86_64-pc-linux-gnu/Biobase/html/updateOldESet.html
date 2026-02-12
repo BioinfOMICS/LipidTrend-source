@@ -1,0 +1,83 @@
+<!DOCTYPE html><html><head><title>R: Update previously created eSet object to current eSet...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>updateOldESet {Biobase}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Update previously created eSet object to current eSet structure</h2>
+
+<h3>Description</h3>
+
+<p>This function updates <code>eSet</code> objects created in previous versions
+of Biobase to the current class structure. Warnings indicate when
+coercions change how data in the <code>from</code> object are
+altered. If the <code>from</code> object was not a valid object of the
+original eSet class, then <code>updateOldESet</code> may fail.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>updateOldESet(from, toClass, ...)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="from">from</code></td>
+<td>
+<p>Object created using a previous version of the eSet class.</p>
+</td></tr>
+<tr><td><code id="toClass">toClass</code></td>
+<td>
+<p>Character string identifying new class, e.g.,
+<code>"ExpressionSet"</code></p>
+</td></tr>
+<tr><td><code id="...">...</code></td>
+<td>
+<p>Additional arguments passed to the initialization method
+for class <code>toClass</code></p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>Valid object of class <code>toClass</code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Biocore</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../Biobase/help/eSet-class.html">eSet-class</a></code>, <code><a href="../../Biobase/help/ExpressionSet-class.html">ExpressionSet-class</a></code>, <code><a href="../../Biobase/help/SnpSet-class.html">SnpSet-class</a></code></p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>## Not run: 
+updateOldESet(oldESet, "ExpressionSet")
+
+## End(Not run)</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>Biobase</em> version 2.70.0 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

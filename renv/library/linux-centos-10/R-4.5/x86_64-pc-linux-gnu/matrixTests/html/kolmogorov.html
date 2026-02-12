@@ -1,0 +1,123 @@
+<!DOCTYPE html><html><head><title>R: Kolmogorov-Smirnov test</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>kolmogorov {matrixTests}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Kolmogorov-Smirnov test</h2>
+
+<h3>Description</h3>
+
+<p>Performs a Kolmogorov-Smirnov test on each row/column of the input matrix.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>row_kolmogorovsmirnov_twosample(x, y, alternative = "two.sided", exact = NA)
+
+col_kolmogorovsmirnov_twosample(x, y, alternative = "two.sided", exact = NA)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="x">x</code></td>
+<td>
+<p>numeric matrix.</p>
+</td></tr>
+<tr><td><code id="y">y</code></td>
+<td>
+<p>numeric matrix for the second group of observations.</p>
+</td></tr>
+<tr><td><code id="alternative">alternative</code></td>
+<td>
+<p>alternative hypothesis to use for each row/column of x.
+A single string or a vector with values for each observation.
+Values must be one of &quot;two.sided&quot; (default), &quot;greater&quot; or &quot;less&quot;.</p>
+</td></tr>
+<tr><td><code id="exact">exact</code></td>
+<td>
+<p>logical or NA (default) indicator whether an exact p-value should be computed (see Details).
+A single value or a logical vector with values for each observation.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Function to perform two sample Kolmogorov-Smirnov test on rows/columns of
+matrices. Main arguments and results were intentionally matched to the
+<code>ks.test()</code> function from default stats package.
+</p>
+<p>Results should be the same as running <code>ks.test(x, y)</code> on every row (or
+column) of <code>x</code> and <code>y</code>.
+</p>
+<p>By default if 'exact' argument is set to 'NA', exact p-values are computed
+if the product of 'x' and 'y' sample sizes is less than 10000. Otherwise,
+asymptotic distributions are used.
+</p>
+<p>Alternative hypothesis setting specifies null and alternative hypotheses.
+The possible values of 'two sided', 'less', and 'greater'.
+'two sided' sets the null hypothesis for the distributions of 'x' being equal to the distribution 'y'.
+'less' sets the null hypothesis for the distribution of x not being less than the distribution of y.
+'greater' sets the null hypothesis for the distribution of x not being greater than the distribution of y.
+See <code>help(ks.test)</code> for more details.
+</p>
+
+
+<h3>Value</h3>
+
+<p>a data.frame where each row contains the results of a Kolmogorov-Smirnov test
+performed on the corresponding row/column of x and y.
+Each row contains the following information (in order):<br>
+1. obs.x - number of x observations<br>
+2. obs.y - number of y observations<br>
+3. obs.tot - total number of observations<br>
+5. statistic - Wilcoxon test statistic<br>
+6. pvalue - p-value<br>
+8. alternative - chosen alternative hypothesis<br>
+9. exact - indicates if exact p-value was computed<br>
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Karolis Koncevičius
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code>ks.test()</code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>X &lt;- iris[iris$Species=="setosa", 1:4]
+Y &lt;- iris[iris$Species=="virginica", 1:4]
+col_kolmogorovsmirnov_twosample(X, Y)
+
+# same column using different alternative hypotheses
+col_kolmogorovsmirnov_twosample(X[,c(1,1,1)], Y[,c(1,1,1)], alternative=c("t", "g", "l"))
+
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>matrixTests</em> version 0.2.3.1 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

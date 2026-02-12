@@ -1,0 +1,127 @@
+<!DOCTYPE html><html><head><title>R: rowsum() methods for sparse matrices</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>rowsum-methods {SparseArray}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>rowsum() methods for sparse matrices</h2>
+
+<h3>Description</h3>
+
+<p>The <span class="pkg">SparseArray</span> package provides memory-efficient
+<code><a href="../../S4Arrays/help/rowsum.html">rowsum</a>()</code> and <code><a href="../../S4Arrays/help/colsum.html">colsum</a>()</code>
+methods for <a href="../../SparseArray/help/SparseMatrix.html">SparseMatrix</a> and dsparseMatrix derivatives.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>## S4 method for signature 'SparseMatrix'
+rowsum(x, group, reorder=TRUE, ...)
+
+## S4 method for signature 'dsparseMatrix'
+rowsum(x, group, reorder=TRUE, ...)
+
+## S4 method for signature 'SparseMatrix'
+colsum(x, group, reorder=TRUE, ...)
+
+## S4 method for signature 'dsparseMatrix'
+colsum(x, group, reorder=TRUE, ...)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="x">x</code></td>
+<td>
+
+<p>A <a href="../../SparseArray/help/SparseMatrix.html">SparseMatrix</a> derivative (e.g. <a href="../../SparseArray/help/SVT_SparseMatrix.html">SVT_SparseMatrix</a> or
+<a href="../../SparseArray/help/COO_SparseMatrix.html">COO_SparseMatrix</a> object), or dsparseMatrix
+derivative (e.g. dgCMatrix or dgTMatrix
+object).
+</p>
+</td></tr>
+<tr><td><code id="group">group</code>, <code id="reorder">reorder</code></td>
+<td>
+
+<p>See <code>?base::<a href="../../base/help/rowsum.html">rowsum</a></code> for a description of
+these arguments.
+</p>
+</td></tr>
+<tr><td><code id="...">...</code></td>
+<td>
+
+<p>Like the default S3 <code>rowsum()</code> method defined in the <span class="pkg">base</span>
+package, the methods documented in this man page support additional
+argument <code>na.rm</code>, set to <code>FALSE</code> by default.
+If <code>TRUE</code>, missing values (<code>NA</code> or <code>NaN</code>) are omitted
+from the calculations.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>An <em>ordinary</em> matrix, like the default <code>rowsum()</code> method.
+See <code>?base::<a href="../../base/help/rowsum.html">rowsum</a></code> for how the matrix returned
+by the default <code>rowsum()</code> method is obtained.
+</p>
+
+
+<h3>See Also</h3>
+
+
+<ul>
+<li> <p><code><a href="../../base/help/rowsum.html">rowsum</a></code> in base R.
+</p>
+</li>
+<li> <p><code>S4Arrays::<a href="../../S4Arrays/help/rowsum.html">rowsum</a></code> in the <span class="pkg">S4Arrays</span>
+package for the <code>rowsum()</code> and <code>colsum()</code> S4 generic
+functions.
+</p>
+</li>
+<li> <p><a href="../../SparseArray/help/SparseMatrix.html">SparseMatrix</a> objects.
+</p>
+</li>
+<li> <p><a href="../../Matrix/help/dgCMatrix-class.html">dgCMatrix-class</a> in the <span class="pkg">Matrix</span> package.
+</p>
+</li></ul>
+
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>svt0 &lt;- randomSparseMatrix(7e5, 100, density=0.15)
+dgcm0 &lt;- as(svt0, "dgCMatrix")
+m0 &lt;- as.matrix(svt0)
+
+group &lt;- sample(10, nrow(m0), replace=TRUE)
+
+## Calling rowsum() on the sparse representations is usually faster
+## than on the dense representation:
+rs1 &lt;- rowsum(m0, group)
+rs2 &lt;- rowsum(svt0, group)   # about 3x faster
+rs3 &lt;- rowsum(dgcm0, group)  # also about 3x faster
+
+## Sanity checks:
+stopifnot(identical(rs1, rs2), identical(rs1, rs3))
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>SparseArray</em> version 1.10.8 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

@@ -1,0 +1,73 @@
+<!DOCTYPE html><html><head><title>R: Functions and classes that have moved to S4Arrays</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>compat {DelayedArray}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Functions and classes that have moved to S4Arrays</h2>
+
+<h3>Description</h3>
+
+<p>Some functions and classes that used to be defined in the
+<span class="pkg">DelayedArray</span> package have been moved to the new <span class="pkg">S4Arrays</span>
+package in BioC 3.17.
+The corresponding symbols are still exported by the <span class="pkg">DelayedArray</span>
+package for backward compatibility with existing code.
+</p>
+<p>WARNING: This is a temporary situation only. Packages that import
+these symbols from <span class="pkg">DelayedArray</span> must be modified to import them
+from <span class="pkg">S4Arrays</span> instead.
+</p>
+<p>These symbols are actually documented in the <span class="pkg">S4Arrays</span> package.
+See:
+</p>
+
+<ul>
+<li> <p><code>S4Arrays::<a href="../../S4Arrays/help/t.Array.html">t.Array</a></code>
+</p>
+</li>
+<li> <p><code>S4Arrays::<a href="../../S4Arrays/help/makeNindexFromArrayViewport.html">makeNindexFromArrayViewport</a></code>
+</p>
+</li>
+<li> <p><code>S4Arrays::<a href="../../S4Arrays/help/ArrayGrid.html">ArrayGrid</a></code>
+</p>
+</li>
+<li> <p><code>S4Arrays::<a href="../../S4Arrays/help/DummyArrayGrid.html">DummyArrayGrid</a></code>
+</p>
+</li>
+<li> <p><code>S4Arrays::<a href="../../S4Arrays/help/RegularArrayGrid.html">RegularArrayGrid</a></code>
+</p>
+</li>
+<li> <p><code>S4Arrays::<a href="../../S4Arrays/help/ArbitraryArrayGrid.html">ArbitraryArrayGrid</a></code>
+</p>
+</li>
+<li> <p><code>S4Arrays::<a href="../../S4Arrays/help/extract_array.html">extract_array</a></code>
+</p>
+</li>
+<li> <p><code>S4Arrays::<a href="../../S4Arrays/help/is_sparse.html">is_sparse</a></code>
+</p>
+</li>
+<li> <p><code>S4Arrays::<a href="../../S4Arrays/help/read_block.html">read_block</a></code>
+</p>
+</li>
+<li> <p><code>S4Arrays::<a href="../../S4Arrays/help/write_block.html">write_block</a></code>
+</p>
+</li></ul>
+
+
+<hr><div style="text-align: center;">[Package <em>DelayedArray</em> version 0.36.0 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

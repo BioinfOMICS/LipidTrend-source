@@ -1,0 +1,100 @@
+<!DOCTYPE html><html><head><title>R: Split Composite Names</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>strsplit2 {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Split Composite Names</h2>
+
+<h3>Description</h3>
+
+<p>Split a vector of composite names into a matrix of simple names.</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>strsplit2(x, split, ...)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="x">x</code></td>
+<td>
+<p>character vector</p>
+</td></tr>
+<tr><td><code id="split">split</code></td>
+<td>
+<p>character to split each element of vector on, see <code>strsplit</code></p>
+</td></tr>
+<tr><td><code id="...">...</code></td>
+<td>
+<p>other arguments are passed to <code>strsplit</code></p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This function is the same as <code><a href="../../base/help/strsplit.html">strsplit</a></code> except that the output value is a matrix instead of a list.
+The first column of the matrix contains the first component from each element of <code>x</code>, the second column contains the second components etc.
+The number of columns is equal to the maximum number of components for any element of <code>x</code>.
+</p>
+<p>The motivation for this function in the limma package is handle input columns which are composites of two or more annotation fields.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A list containing components
+</p>
+<table role = "presentation">
+<tr><td><code>Name</code></td>
+<td>
+<p>character vector of the same length as <code>x</code> contain first splits of each element</p>
+</td></tr>
+<tr><td><code>Annotation</code></td>
+<td>
+<p>character vector of the same length as <code>x</code> contain second splits of each element</p>
+</td></tr>
+</table>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../base/help/strsplit.html">strsplit</a></code>.
+</p>
+<p>An overview of LIMMA functions for reading data is given in <a href="../../limma/help/03.ReadingData.html">03.ReadingData</a>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>x &lt;- c("AA196000;actinin, alpha 3",
+"AA464163;acyl-Coenzyme A dehydrogenase, very long chain",
+"3E7;W15277;No Annotation")
+strsplit2(x,split=";")
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>limma</em> version 3.66.0 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

@@ -1,0 +1,177 @@
+<!DOCTYPE html><html><head><title>R: Make a IRanges object from a data.frame or DataFrame</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>makeIRangesFromDataFrame {IRanges}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Make a IRanges object from a data.frame or DataFrame</h2>
+
+<h3>Description</h3>
+
+<p><code>makeIRangesFromDataFrame</code> takes a data-frame-like object as input
+and try to automatically find the columns that describe integer ranges.
+If successful, it returns them in an object.
+</p>
+<p>The function is also the workhorse behind the coercion method from
+data.frame (or <a href="../../S4Vectors/help/DataFrame.html">DataFrame</a>) to <a href="../../IRanges/help/IRanges.html">IRanges</a>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>makeIRangesFromDataFrame(df, keep.extra.columns=FALSE,
+        start.field="start",
+        end.field=c("end", "stop"),
+        starts.in.df.are.0based=FALSE,
+        na.rm=FALSE)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="df">df</code></td>
+<td>
+
+<p>A data.frame or <a href="../../S4Vectors/help/DataFrame.html">DataFrame</a> object. If not, then
+the function first tries to turn <code>df</code> into a data frame with
+<code>as.data.frame(df)</code>.
+</p>
+</td></tr>
+<tr><td><code id="keep.extra.columns">keep.extra.columns</code></td>
+<td>
+
+<p><code>TRUE</code> or <code>FALSE</code> (the default).
+If <code>TRUE</code>, then the columns in <code>df</code> that are not used to
+form the integer ranges of the returned <a href="../../IRanges/help/IRanges.html">IRanges</a> are returned
+as metadata columns on the object. Otherwise, they are ignored.
+</p>
+<p>Note that if <code>df</code> has a <code>width</code> column, then
+<code>makeIRangesFromDataFrame</code> will always ignore it.
+</p>
+</td></tr>
+<tr><td><code id="start.field">start.field</code></td>
+<td>
+
+<p>A character vector of recognized names for the column in <code>df</code>
+that contains the start values of the integer ranges.
+Only the first name in <code>start.field</code> that is found
+in <code>colnames(df)</code> is used.
+If no one is found, then an error is raised.
+</p>
+</td></tr>
+<tr><td><code id="end.field">end.field</code></td>
+<td>
+
+<p>A character vector of recognized names for the column in <code>df</code>
+that contains the end values of the integer ranges.
+Only the first name in <code>start.field</code> that is found
+in <code>colnames(df)</code> is used.
+If no one is found, then an error is raised.
+</p>
+</td></tr>
+<tr><td><code id="starts.in.df.are.0based">starts.in.df.are.0based</code></td>
+<td>
+
+<p><code>TRUE</code> or <code>FALSE</code> (the default).
+If <code>TRUE</code>, then the start values of the integer ranges in
+<code>df</code> are considered to be <em>0-based</em> and are converted to
+<em>1-based</em> in the returned <a href="../../IRanges/help/IRanges.html">IRanges</a> object.
+This feature is intended to make it more convenient to handle input
+that contains data obtained from resources using the &quot;0-based
+start&quot; convention. A notorious example of such resource is the UCSC
+Table Browser (<a href="http://genome.ucsc.edu/cgi-bin/hgTables">http://genome.ucsc.edu/cgi-bin/hgTables</a>).
+</p>
+</td></tr>
+<tr><td><code id="na.rm">na.rm</code></td>
+<td>
+
+<p><code>TRUE</code> or <code>FALSE</code> (the default).
+</p>
+<p>If <code>TRUE</code>, then rows in the <code>df</code> with missing start or end
+values (i.e. the value is <code>NA</code>) are ignored.
+Otherwise, they trigger an error.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>An <a href="../../IRanges/help/IRanges.html">IRanges</a> object.
+</p>
+<p>If <code>na.rm</code> is set to <code>FALSE</code> (the default), then the 
+returned object is guaranteed to have one element per row in the input.
+However, if <code>na.rm</code> is set to <code>TRUE</code>, then the length of the
+returned object can be less than <code>nrow(df)</code>.
+</p>
+<p>If <code>df</code> has non-automatic row names (i.e. <code>rownames(df)</code> is
+not <code>NULL</code> and is not <code>seq_len(nrow(df))</code>), then they will be
+used to set names on the returned <a href="../../IRanges/help/IRanges.html">IRanges</a> object.
+</p>
+
+
+<h3>Note</h3>
+
+<p>Coercing a data.frame or <a href="../../S4Vectors/help/DataFrame.html">DataFrame</a> <code>df</code>
+to <a href="../../IRanges/help/IRanges.html">IRanges</a> (with <code>as(df, "IRanges")</code>), or calling
+<code>IRanges(df)</code>, are both equivalent to calling
+<code>makeIRangesFromDataFrame(df, keep.extra.columns=TRUE)</code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>H. Pagès</p>
+
+
+<h3>See Also</h3>
+
+
+<ul>
+<li> <p><code><a href="../../GenomicRanges/help/makeGRangesFromDataFrame.html">makeGRangesFromDataFrame</a></code> in the
+<span class="pkg">GenomicRanges</span> package to make a <a href="../../GenomicRanges/help/GRanges.html">GRanges</a>
+object from a data.frame or <a href="../../S4Vectors/help/DataFrame.html">DataFrame</a>.
+</p>
+</li>
+<li> <p><a href="../../IRanges/help/IRanges.html">IRanges</a> objects.
+</p>
+</li>
+<li> <p><a href="../../S4Vectors/help/DataFrame.html">DataFrame</a> objects in the <span class="pkg">S4Vectors</span> package.
+</p>
+</li></ul>
+
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>df &lt;- data.frame(ID=letters[1:5],
+                 locus_stART=11:15,
+                 locus_STop=12:16,
+                 score=1:5)
+
+## makeIRangesFromDataFrame() tries hard to figure out what columns
+## to use for the start and end values of the ranges.
+makeIRangesFromDataFrame(df)
+
+makeIRangesFromDataFrame(df, keep.extra.columns=TRUE)
+
+as(df, "IRanges")  # equivalent to the above
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>IRanges</em> version 2.44.0 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

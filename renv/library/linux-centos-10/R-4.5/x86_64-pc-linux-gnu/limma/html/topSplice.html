@@ -1,0 +1,145 @@
+<!DOCTYPE html><html><head><title>R: Top Table of Differential Transcript Usage</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>topSplice {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Top Table of Differential Transcript Usage</h2>
+
+<h3>Description</h3>
+
+<p>Top table of results from a <code>diffSplice</code> differential transcript usage analysis.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>topSplice(fit, coef = ncol(fit), test = "F", number = 10, FDR=1, sort.by = "p")
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="fit">fit</code></td>
+<td>
+<p><code>MArrayLM</code> fit object produced by <code>diffSplice</code>.</p>
+</td></tr>
+<tr><td><code id="coef">coef</code></td>
+<td>
+<p>the coefficient (column) of fit for which differential usage is assessed.</p>
+</td></tr>
+<tr><td><code id="test">test</code></td>
+<td>
+<p>character string specifying which statistical test to apply.
+Possible values are <code>"simes"</code>, <code>"F"</code> or <code>"t"</code>.
+<code>"F"</code> gives F-tests for each gene.
+<code>"t"</code> gives t-tests for each transcript or exon.
+<code>"simes"</code> gives genewise p-values derived from the t-tests after Simes adjustment for each gene.
+</p>
+</td></tr>
+<tr><td><code id="number">number</code></td>
+<td>
+<p>integer, maximum number of rows to output.</p>
+</td></tr>
+<tr><td><code id="FDR">FDR</code></td>
+<td>
+<p>numeric, only show exons or genes with false discovery rate less than this cutoff.</p>
+</td></tr>
+<tr><td><code id="sort.by">sort.by</code></td>
+<td>
+<p>character string specifying which column to sort results by.
+Possible values for <code>"p"</code>, <code>"logFC"</code>, <code>"NExons"</code> or <code>"none"</code>.
+<code>"logFC"</code> is only available if <code>test="t"</code> and <code>"NExons"</code> is only available if <code>test="simes"</code> or <code>test="F"</code>.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This function ranks results from a differential transcript usage analysis conducted by <code>diffSplice</code>.
+The output object from <code>diffSplice</code> includes results at the gene level and results at the isoform level.
+The isoform-level results can be transcripts, if a DTU analysis was done, or can be exons and exon-junctions, if a DEU analysis was done.
+</p>
+<p>Choosing <code>test="F"</code> or <code>test="simes"</code> gives gene-level results, where the null hypothesis is that all transcripts or exons are used equally.
+Choosing <code>test="t"</code> gives transcript or exon level results.
+</p>
+<p>The F-statistic option chosen by <code>test="F"</code> conducts an ANOVA-like F-tests of differential usage for each gene.
+Simes method chosen by <code>test="simes"</code> processes the isoform-level p-values for each gene to give an overall call of differential usage for that gene.
+The Simes p-values is likely to be more powerful than F-tests when only one transcript of the gene is differentially expressed.
+The F-tests are likely to be powerful than Simes when there multiple transcripts of the same gene differentially expressed in different directions.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A data.frame with annotation columns found in <code>fit</code> plus the following columns
+</p>
+<table role = "presentation">
+<tr><td><code>logFC</code></td>
+<td>
+<p>log2-fold change of transcript vs other transcripts for the same gene (if <code>test="t"</code>)</p>
+</td></tr>
+<tr><td><code>t</code></td>
+<td>
+<p>moderated t-statistic (if <code>test="t"</code>)</p>
+</td></tr>
+<tr><td><code>F</code></td>
+<td>
+<p>moderated F-statistic (if <code>test="F"</code>)</p>
+</td></tr>
+<tr><td><code>P.Value</code></td>
+<td>
+<p>p-value</p>
+</td></tr>
+<tr><td><code>FDR</code></td>
+<td>
+<p>false discovery rate bound, computed by the Benjamini &amp; Hochberg method.</p>
+</td></tr>
+</table>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth</p>
+
+
+<h3>References</h3>
+
+<p>Baldoni PL, Chen L, Li M, Chen Y, Smyth GK (2025).
+Dividing out quantification uncertainty enables assessment of differential transcript usage with limma and edgeR.
+<em>bioRxiv</em>
+<a href="https://doi.org/10.1101/2025.04.07.647659">doi:10.1101/2025.04.07.647659</a>.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../limma/help/diffSplice.html">diffSplice</a></code>, <code><a href="../../limma/help/plotSplice.html">plotSplice</a></code>.
+See also the <code>diffSplice</code> method for <code>DGEGLM</code> objects in the edgeR package.
+</p>
+<p>A summary of functions available in LIMMA for RNA-seq analysis is given in <a href="../../limma/help/11.RNAseq.html">11.RNAseq</a>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'># See diffSplice</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>limma</em> version 3.66.0 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

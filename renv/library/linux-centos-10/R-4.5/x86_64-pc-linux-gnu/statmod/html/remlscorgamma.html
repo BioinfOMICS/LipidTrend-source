@@ -1,0 +1,172 @@
+<!DOCTYPE html><html><head><title>R: Approximate REML for Gamma Regression with Structured...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>remlscoregamma {statmod}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Approximate REML for Gamma Regression with Structured Dispersion</h2>
+
+<h3>Description</h3>
+
+<p>Estimates structured dispersion effects using approximate REML with gamma responses.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>remlscoregamma(y, X, Z, mlink="log", dlink="log", trace=FALSE, tol=1e-5, maxit=40)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="y">y</code></td>
+<td>
+<p>numeric vector of responses.</p>
+</td></tr>
+<tr><td><code id="X">X</code></td>
+<td>
+<p>design matrix for predicting the mean.</p>
+</td></tr>
+<tr><td><code id="Z">Z</code></td>
+<td>
+<p>design matrix for predicting the variance.</p>
+</td></tr>
+<tr><td><code id="mlink">mlink</code></td>
+<td>
+<p>character string or numeric value specifying link for mean model.</p>
+</td></tr>
+<tr><td><code id="dlink">dlink</code></td>
+<td>
+<p>character string or numeric value specifying link for dispersion model.</p>
+</td></tr>
+<tr><td><code id="trace">trace</code></td>
+<td>
+<p>logical value. If <code>TRUE</code> then diagnostic information is output at each iteration.</p>
+</td></tr>
+<tr><td><code id="tol">tol</code></td>
+<td>
+<p>convergence tolerance.</p>
+</td></tr>
+<tr><td><code id="maxit">maxit</code></td>
+<td>
+<p>maximum number of iterations allowed.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This function fits a double generalized linear model (glm) with gamma responses.
+As for ordinary gamma glms, a link-linear model is assumed for the expected values.
+The double glm assumes a separate link-linear model for the dispersions as well.
+The responses <code>y</code> are assumed to follow a gamma generalized linear model with link <code>mlink</code> and design matrix
+<code>X</code>.
+The dispersions follow a link-linear model with link <code>dlink</code> and design matrix <code>Z</code>.
+</p>
+<p>Write <code class="reqn">y_i</code> for the <code class="reqn">i</code>th response.
+The <code class="reqn">y_i</code> are assumed to be independent and gamma distributed with <code class="reqn">E(y_i) = \mu_i</code> and var<code class="reqn">(y_i)=\phi_i\mu_i^2</code>.
+The link-linear model for the means can be written as
+</p>
+<p style="text-align: center;"><code class="reqn">g(\mu)=X\beta</code>
+</p>
+
+<p>where <code class="reqn">g</code> is the mean-link function defined by <code>mlink</code> and <code class="reqn">\mu</code> is the vector of means.
+The dispersion link-linear model can be written as
+</p>
+<p style="text-align: center;"><code class="reqn">h(\phi)=Z\gamma</code>
+</p>
+
+<p>where <code class="reqn">h</code> is the dispersion-link function defined by <code>dlink</code> and <code class="reqn">\phi</code> is the vector of dispersions.
+</p>
+<p>The parameters <code class="reqn">\gamma</code> are estimated by approximate REML likelihood using an adaption of the algorithm described by Smyth (2002).
+See also Smyth and Verbyla (1999a,b) and Smyth and Verbyla (2009).
+Having estimated <code class="reqn">\gamma</code> and <code class="reqn">\phi</code>, the <code class="reqn">\beta</code> are estimated as usual for a gamma glm.
+</p>
+<p>The estimated values for <code class="reqn">\beta</code>, <code class="reqn">\mu</code>, <code class="reqn">\gamma</code> and <code class="reqn">\phi</code> are return as <code>beta</code>, <code>mu</code>, <code>gamma</code> and <code>phi</code> respectively.
+</p>
+
+
+<h3>Value</h3>
+
+<p>List with the following components:
+</p>
+<table role = "presentation">
+<tr><td><code>beta</code></td>
+<td>
+<p>numeric vector of regression coefficients for predicting the mean.</p>
+</td></tr>
+<tr><td><code>se.beta</code></td>
+<td>
+<p>numeric vector of standard errors for beta.</p>
+</td></tr>
+<tr><td><code>gamma</code></td>
+<td>
+<p>numeric vector of regression coefficients for predicting the variance.</p>
+</td></tr>
+<tr><td><code>se.gam</code></td>
+<td>
+<p>numeric vector of standard errors for gamma.</p>
+</td></tr>
+<tr><td><code>mu</code></td>
+<td>
+<p>numeric vector of estimated means.</p>
+</td></tr>
+<tr><td><code>phi</code></td>
+<td>
+<p>numeric vector of estimated dispersions.</p>
+</td></tr>
+<tr><td><code>deviance</code></td>
+<td>
+<p>minus twice the REML log-likelihood.</p>
+</td></tr>
+<tr><td><code>h</code></td>
+<td>
+<p>numeric vector of leverages.</p>
+</td></tr>
+</table>
+
+
+<h3>References</h3>
+
+<p>Smyth, G. K., and Verbyla, A. P. (1999a). Adjusted likelihood methods for modelling dispersion in generalized linear models. <em>Environmetrics</em> 10, 695-709. 
+<a href="http://www.statsci.org/smyth/pubs/ties98tr.html">http://www.statsci.org/smyth/pubs/ties98tr.html</a>
+</p>
+<p>Smyth, G. K., and Verbyla, A. P. (1999b). Double generalized linear models: approximate REML and diagnostics. In <em>Statistical Modelling: Proceedings of the 14th International Workshop on Statistical Modelling</em>, Graz, Austria, July 19-23, 1999, H. Friedl, A. Berghold, G. Kauermann (eds.), Technical University, Graz, Austria, pages 66-80.
+<a href="http://www.statsci.org/smyth/pubs/iwsm99-Preprint.pdf">http://www.statsci.org/smyth/pubs/iwsm99-Preprint.pdf</a>
+</p>
+<p>Smyth, G. K. (2002). An efficient algorithm for REML in heteroscedastic regression. <em>Journal of Computational and Graphical Statistics</em> <b>11</b>, 836-847.
+</p>
+<p>Smyth, GK, and Verbyla, AP (2009). Leverage adjustments for dispersion modelling in generalized nonlinear models. <em>Australian and New Zealand Journal of Statistics</em> 51, 433-448.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>data(welding)
+attach(welding)
+y &lt;- Strength
+X &lt;- cbind(1,(Drying+1)/2,(Material+1)/2)
+colnames(X) &lt;- c("1","B","C")
+Z &lt;- cbind(1,(Material+1)/2,(Method+1)/2,(Preheating+1)/2)
+colnames(Z) &lt;- c("1","C","H","I")
+out &lt;- remlscoregamma(y,X,Z)
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>statmod</em> version 1.5.1 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

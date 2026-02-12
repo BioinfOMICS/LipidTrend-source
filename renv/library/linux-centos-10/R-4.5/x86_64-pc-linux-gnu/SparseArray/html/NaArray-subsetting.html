@@ -1,0 +1,141 @@
+<!DOCTYPE html><html><head><title>R: Subsetting an NaArray object</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>NaArray-subsetting {SparseArray}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Subsetting an NaArray object</h2>
+
+<h3>Description</h3>
+
+<p>EXPERIMENTAL!!!
+</p>
+<p>Like ordinary arrays in base R, <a href="../../SparseArray/help/NaArray.html">NaArray</a> objects support
+subsetting via the single bracket operator (<code>[</code>).
+</p>
+
+
+<h3>See Also</h3>
+
+
+<ul>
+<li> <p><code><a href="../../base/help/drop.html">drop</a></code> in base R to drop the <em>ineffective
+dimensions</em> of an array or array-like object.
+</p>
+</li>
+<li> <p><code><a href="../../S4Arrays/help/Lindex2Mindex.html">Lindex2Mindex</a></code> in the <span class="pkg">S4Arrays</span>
+package for how to convert an <em>L-index</em> to an <em>M-index</em>
+and vice-versa.
+</p>
+</li>
+<li> <p><a href="../../SparseArray/help/NaArray.html">NaArray</a> objects.
+</p>
+</li>
+<li> <p><code><a href="../../base/help/+5B.html">[</a></code> and ordinary <a href="../../base/help/array.html">array</a> objects
+in base R.
+</p>
+</li></ul>
+
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>naa &lt;- NaArray(dim=5:3)
+naa[c(1:2, 8, 10, 15:17, 20, 24, 40, 56:60)] &lt;- (1:15)*10L
+
+## ---------------------------------------------------------------------
+## N-dimensional subsetting
+## ---------------------------------------------------------------------
+naa[5:3, c(4,2,4), 2:3]
+naa[ , c(4,2,4), 2:3]
+naa[ , c(4,2,4), -1]
+naa[ , c(4,2,4), 1]
+
+naa2 &lt;- naa[ , c(4,2,4), 1, drop=FALSE]
+naa2
+
+## Ineffective dimensions can always be dropped as a separate step:
+drop(naa2)
+
+naa[ , c(4,2,4), integer(0)]
+
+dimnames(naa) &lt;- list(letters[1:5], NULL, LETTERS[1:3])
+
+naa[c("d", "a"), c(4,2,4), "C"]
+
+naa2 &lt;- naa["e", c(4,2,4), , drop=FALSE]
+naa2
+
+drop(naa2)
+
+## ---------------------------------------------------------------------
+## 1D-style subsetting (a.k.a. linear subsetting)
+## ---------------------------------------------------------------------
+
+## Using a numeric vector (L-index):
+naa[c(60, 24, 21, 56)]
+
+## Using a matrix subscript (M-index):
+m &lt;- rbind(c(5, 4, 3),
+           c(4, 1, 2),
+           c(1, 1, 2),
+           c(1, 4, 3))
+naa[m]
+
+## See '?Lindex2Mindex' in the S4Arrays package for how to convert an
+## L-index to an M-index and vice-versa.
+
+## ---------------------------------------------------------------------
+## Sanity checks
+## ---------------------------------------------------------------------
+a &lt;- as.array(naa)
+naa2 &lt;- naa[5:3, c(4,2,4), 2:3]
+a2   &lt;- a  [5:3, c(4,2,4), 2:3]
+stopifnot(identical(as.array(naa2), a2), identical(naa2, NaArray(a2)))
+naa2 &lt;- naa[ , c(4,2,4), 2:3]
+a2   &lt;- a  [ , c(4,2,4), 2:3]
+stopifnot(identical(as.array(naa2), a2), identical(naa2, NaArray(a2)))
+naa2 &lt;- naa[ , c(4,2,4), -1]
+a2   &lt;- a  [ , c(4,2,4), -1]
+stopifnot(identical(as.array(naa2), a2), identical(naa2, NaArray(a2)))
+naa2 &lt;- naa[ , c(4,2,4), 1]
+a2   &lt;- a  [ , c(4,2,4), 1]
+stopifnot(identical(as.array(naa2), a2), identical(naa2, NaArray(a2)))
+naa2 &lt;- naa[ , c(4,2,4), 1, drop=FALSE]
+a2   &lt;- a  [ , c(4,2,4), 1, drop=FALSE]
+stopifnot(identical(as.array(naa2), a2), identical(naa2, NaArray(a2)))
+naa2 &lt;- drop(naa2)
+a2 &lt;- drop(a2)
+stopifnot(identical(as.array(naa2), a2), identical(naa2, NaArray(a2)))
+naa2 &lt;- naa[ , c(4,2,4), integer(0)]
+a2   &lt;- a  [ , c(4,2,4), integer(0)]
+stopifnot(identical(as.array(naa2), a2),
+          identical(unname(naa2), unname(NaArray(a2))))
+naa2 &lt;- naa[c("d", "a"), c(4,2,4), "C"]
+a2   &lt;- a  [c("d", "a"), c(4,2,4), "C"]
+stopifnot(identical(as.array(naa2), a2), identical(naa2, NaArray(a2)))
+naa2 &lt;- naa["e", c(4,2,4), , drop=FALSE]
+a2   &lt;- a  ["e", c(4,2,4), , drop=FALSE]
+stopifnot(identical(as.array(naa2), a2), identical(naa2, NaArray(a2)))
+naa2 &lt;- drop(naa2)
+a2 &lt;- drop(a2)
+stopifnot(identical(as.array(naa2), a2), identical(naa2, NaArray(a2)))
+stopifnot(identical(naa[c(60, 24, 21, 56)], naa[m]))
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>SparseArray</em> version 1.10.8 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

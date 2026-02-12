@@ -1,0 +1,167 @@
+<!DOCTYPE html><html><head><title>R: DelayedMatrix row/col summarization</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>matrixStats-methods {DelayedArray}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>DelayedMatrix row/col summarization</h2>
+
+<h3>Description</h3>
+
+<p>Only a small number of row/col summarization methods are provided by
+the <span class="pkg">DelayedArray</span> package.
+</p>
+<p>See the <span class="pkg">DelayedMatrixStats</span> package for an extensive set of
+row/col summarization methods.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>## N.B.: Showing ONLY the col*() methods (usage of row*() methods is
+## the same):
+
+## S4 method for signature 'DelayedMatrix'
+colSums(x, na.rm=FALSE, dims=1)
+
+## S4 method for signature 'DelayedMatrix'
+colMeans(x, na.rm=FALSE, dims=1)
+
+## S4 method for signature 'DelayedMatrix'
+colMins(x, rows=NULL, cols=NULL, na.rm=FALSE, useNames=TRUE)
+
+## S4 method for signature 'DelayedMatrix'
+colMaxs(x, rows=NULL, cols=NULL, na.rm=FALSE, useNames=TRUE)
+
+## S4 method for signature 'DelayedMatrix'
+colRanges(x, rows=NULL, cols=NULL, na.rm=FALSE, useNames=TRUE)
+
+## S4 method for signature 'DelayedMatrix'
+colVars(x, rows=NULL, cols=NULL, na.rm=FALSE, center=NULL, useNames=TRUE)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="x">x</code></td>
+<td>
+
+<p>A <a href="../../DelayedArray/help/DelayedMatrix.html">DelayedMatrix</a> object.
+</p>
+</td></tr>
+<tr><td><code id="na.rm">na.rm</code>, <code id="useNames">useNames</code>, <code id="center">center</code></td>
+<td>
+
+<p>See man pages for the corresponding generics in the <span class="pkg">MatrixGenerics</span>
+package (e.g. <code>?MatrixGenerics::<a href="../../MatrixGenerics/help/rowVars.html">rowVars</a></code>)
+for a description of these arguments.
+</p>
+</td></tr>
+<tr><td><code id="dims">dims</code>, <code id="rows">rows</code>, <code id="cols">cols</code></td>
+<td>
+
+<p>These arguments are not supported. Don't use them.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>All these operations are block-processed.
+</p>
+
+
+<h3>See Also</h3>
+
+
+<ul>
+<li><p> The <span class="pkg">DelayedMatrixStats</span> package for more row/col summarization
+methods for <a href="../../DelayedArray/help/DelayedMatrix.html">DelayedMatrix</a> objects.
+</p>
+</li>
+<li><p> The man pages for the various generic functions defined
+in the <span class="pkg">MatrixGenerics</span> package e.g.
+<code>MatrixGenerics::<a href="../../MatrixGenerics/help/colVars.html">colVars</a></code> etc...
+</p>
+</li>
+<li> <p><a href="../../DelayedArray/help/DelayedMatrix-rowsum.html">DelayedMatrix-rowsum</a> for <code>rowsum()</code> and
+<code>colsum()</code> methods for <a href="../../DelayedArray/help/DelayedMatrix.html">DelayedMatrix</a> objects.
+</p>
+</li>
+<li> <p><a href="../../DelayedArray/help/DelayedMatrix-mult.html">DelayedMatrix-mult</a> for DelayedMatrix multiplication
+and cross-product.
+</p>
+</li>
+<li> <p><a href="../../DelayedArray/help/DelayedArray.html">DelayedArray</a> objects.
+</p>
+</li></ul>
+
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>library(HDF5Array)
+toy_h5 &lt;- system.file("extdata", "toy.h5", package="HDF5Array")
+h5ls(toy_h5)
+
+M1 &lt;- HDF5Array(toy_h5, "M1")
+M2 &lt;- HDF5Array(toy_h5, "M2")
+
+M12 &lt;- rbind(M1, t(M2))  # delayed
+
+## All these operations are block-processed.
+
+rsums &lt;- rowSums(M12)
+csums &lt;- colSums(M12)
+
+rmeans &lt;- rowMeans(M12)
+cmeans &lt;- colMeans(M12)
+
+rmins &lt;- rowMins(M12)
+cmins &lt;- colMins(M12)
+
+rmaxs &lt;- rowMaxs(M12)
+cmaxs &lt;- colMaxs(M12)
+
+rranges &lt;- rowRanges(M12)
+cranges &lt;- colRanges(M12)
+
+rvars &lt;- rowVars(M12, center=rmeans)
+cvars &lt;- colVars(M12, center=cmeans)
+
+## Sanity checks:
+m12 &lt;- rbind(as.matrix(M1), t(as.matrix(M2)))
+stopifnot(
+  identical(rsums, rowSums(m12)),
+  identical(csums, colSums(m12)),
+  identical(rmeans, rowMeans(m12)),
+  identical(cmeans, colMeans(m12)),
+  identical(rmins, rowMins(m12)),
+  identical(cmins, colMins(m12)),
+  identical(rmaxs, rowMaxs(m12)),
+  identical(cmaxs, colMaxs(m12)),
+  identical(rranges, cbind(rmins, rmaxs, deparse.level=0)),
+  identical(cranges, cbind(cmins, cmaxs, deparse.level=0)),
+  all.equal(rvars, rowVars(m12)),
+  all.equal(cvars, colVars(m12))
+)
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>DelayedArray</em> version 0.36.0 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

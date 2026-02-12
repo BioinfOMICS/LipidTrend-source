@@ -1,0 +1,210 @@
+<!DOCTYPE html><html><head><title>R: extract_array</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>extract_array {S4Arrays}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>extract_array</h2>
+
+<h3>Description</h3>
+
+<p><code>extract_array</code> is an internal generic function not intended to be
+used directly by the end user. It has methods defined for array, data.frame,
+<a href="../../S4Vectors/help/DataFrame.html">DataFrame</a> objects, and other array-like objects.
+</p>
+<p>Note that <code>extract_array</code> is part of the <em>seed contract</em> as
+defined in the <em>Implementing A DelayedArray Backend</em> vignette from
+the <span class="pkg">DelayedArray</span> package.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>## The extract_array() S4 generic:
+
+extract_array(x, index)
+
+## extract_array() methods defined in the S4Arrays package:
+
+## S4 method for signature 'ANY'
+extract_array(x, index)
+
+## S4 method for signature 'array'
+extract_array(x, index)
+
+## S4 method for signature 'data.frame'
+extract_array(x, index)
+
+## S4 method for signature 'DataFrame'
+extract_array(x, index)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="x">x</code></td>
+<td>
+
+<p>An array-like object.
+</p>
+<p>This can be an ordinary array, a <a href="../../SparseArray/help/SparseArray.html">SparseArray</a>
+object from the <span class="pkg">SparseArray</span> package, a dgCMatrix
+object from the <span class="pkg">Matrix</span> package, a <a href="../../DelayedArray/help/DelayedArray.html">DelayedArray</a>
+object from the <span class="pkg">DelayedArray</span> package, or any object with an array
+semantic (i.e. an object for which <code>dim(x)</code> is not NULL).
+</p>
+<p>Note that data.frame and <a href="../../S4Vectors/help/DataFrame.html">DataFrame</a> objects are also
+supported.
+</p>
+</td></tr>
+<tr><td><code id="index">index</code></td>
+<td>
+
+<p>An unnamed list of integer vectors, one per dimension in <code>x</code>.
+Each vector is called a <em>subscript</em> and can only contain
+positive integers that are valid 1-based indices along the corresponding
+dimension in <code>x</code>.
+</p>
+<p>Empty or missing subscripts are allowed. They must be represented
+by list elements set to <code>integer(0)</code> or <code>NULL</code>, respectively.
+</p>
+<p>The subscripts cannot contain NAs or non-positive values.
+</p>
+<p>Individual subscripts are allowed to contain duplicated indices.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p><code>extract_array()</code> methods need to support empty or missing subscripts.
+For example, if <code>x</code> is an M x N matrix-like object, then
+<code>extract_array(x, list(NULL, integer(0)))</code> must return an M x 0
+ordinary matrix, and <code>extract_array(x, list(integer(0), integer(0)))</code>
+a 0 x 0 ordinary matrix.
+</p>
+<p>Also subscripts are allowed to contain duplicated indices so things like
+<code>extract_array(x, list(c(1:3, 3:1), 2L))</code> need to be supported.
+</p>
+<p>Finally, for maximum efficiency, <code>extract_array()</code> methods
+should not try to do anything with the dimnames on <code>x</code>.
+</p>
+
+
+<h3>Value</h3>
+
+<p>An <em>ordinary</em> array of the same <code>type()</code> as <code>x</code>.
+For example, if <code>x</code> is an object representing an M x N matrix
+of complex numbers (i.e. <code>type(x) == "complex"</code>), then
+<code>extract_array(x, list(NULL, 2L))</code> must return the 2nd column
+in <code>x</code> as an M x 1 <em>ordinary</em> matrix of <code>type()</code>
+<code>"complex"</code>.
+</p>
+
+
+<h3>See Also</h3>
+
+
+<ul>
+<li> <p><code>S4Arrays::<a href="../help/type.html">type</a></code> to get the type of the
+elements of an array-like object.
+</p>
+</li>
+<li> <p><a href="../../base/help/array.html">array</a> and <a href="../../base/help/data.frame.html">data.frame</a> objects in base R.
+</p>
+</li>
+<li> <p><a href="../../SparseArray/help/SparseArray.html">SparseArray</a> objects implemented in the
+<span class="pkg">SparseArray</span> package.
+</p>
+</li>
+<li> <p><a href="../../DelayedArray/help/DelayedArray.html">DelayedArray</a> objects implemented in the
+<span class="pkg">DelayedArray</span> package.
+</p>
+</li>
+<li> <p><a href="../../S4Vectors/help/DataFrame.html">DataFrame</a> objects implemented in the
+<span class="pkg">S4Vectors</span> package.
+</p>
+</li></ul>
+
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>extract_array
+showMethods("extract_array")
+
+## extract_array() works on array-like objects like SparseArray objects,
+## dgCMatrix objects, DataFrame objects, etc...
+
+## --- On a SparseArray object ---
+
+library(SparseArray)
+a &lt;- array(0L, 5:3)
+a[c(1:2, 8, 10, 15:17, 20, 24, 40, 56:60)] &lt;- (1:15)*10L
+svt &lt;- as(a, "SparseArray")
+svt
+
+extract_array(svt, list(NULL, c(4L,2L,4L), 1L))
+extract_array(svt, list(NULL, c(4L,2L,4L), 2:3))
+extract_array(svt, list(NULL, c(4L,2L,4L), integer(0)))
+
+## Sanity checks:
+stopifnot(
+  identical(extract_array(svt, list(NULL, c(4L,2L,4L), 1L)),
+            as.array(svt)[ , c(4L,2L,4L), 1L, drop=FALSE]),
+  identical(extract_array(svt, list(NULL, c(4L,2L,4L), 2:3)),
+            as.array(svt)[ , c(4L,2L,4L), 2:3]),
+  identical(extract_array(svt, list(NULL, c(4L,2L,4L), integer(0))),
+            as.array(svt)[ , c(4L,2L,4L), integer(0)])
+)
+
+## --- On a dgCMatrix object ---
+
+library(Matrix)
+m &lt;- a[ , , 1]
+dgcm &lt;- as(m, "dgCMatrix")
+dgcm
+
+extract_array(dgcm, list(NULL, c(4L,2L,4L)))
+
+## Sanity check:
+stopifnot(
+  identical(extract_array(dgcm, list(NULL, c(4L,2L,4L))),
+            as.matrix(dgcm)[ , c(4L,2L,4L)])
+)
+
+## --- On a data.frame or DataFrame object ---
+
+df &lt;- data.frame(a=44:49, b=letters[1:6], c=c(TRUE, FALSE))
+DF &lt;- as(df, "DataFrame")
+
+extract_array(df, list(4:2, c(1L,3L)))
+extract_array(DF, list(4:2, c(1L,3L)))
+
+## Sanity check:
+target &lt;- as.matrix(df)[4:2, c(1L,3L)]
+dimnames(target) &lt;- NULL
+stopifnot(
+  identical(extract_array(df, list(4:2, c(1L,3L))), target),
+  identical(extract_array(DF, list(4:2, c(1L,3L))), target)
+)
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>S4Arrays</em> version 1.10.1 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

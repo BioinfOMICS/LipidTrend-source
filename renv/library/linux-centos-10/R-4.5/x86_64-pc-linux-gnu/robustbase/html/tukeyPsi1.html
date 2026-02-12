@@ -1,0 +1,132 @@
+<!DOCTYPE html><html><head><title>R: Tukey's Bi-square Score (Psi) and &quot;Chi&quot; (Rho) Functions and...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>tukeyPsi1 {robustbase}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Tukey's Bi-square Score (Psi) and &quot;Chi&quot; (Rho) Functions and Derivatives</h2>
+
+<h3>Description</h3>
+
+<p>These are <b>deprecated</b>, replaced by
+<code><a href="../../robustbase/help/Mchi.html">Mchi</a>(*, psi="tukey")</code>, <code><a href="../../robustbase/help/Mpsi.html">Mpsi</a>(*, psi="tukey")</code>
+</p>
+<p><code>tukeyPsi1()</code> computes Tukey's bi-square score (psi) function, its first
+derivative or it's integral/&ldquo;principal function&rdquo;.  This is
+scaled such that <code class="reqn">\psi'(0) = 1</code>, i.e.,
+<code class="reqn">\psi(x) \approx x</code> around 0.
+</p>
+<p><code>tukeyChi()</code> computes Tukey's bi-square loss function,
+<code>chi(x)</code> and its first two derivatives.  Note that in the general
+context of <code class="reqn">M</code>-estimators, these loss functions are called
+<code class="reqn">\rho (rho)</code>-functions.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>tukeyPsi1(x, cc, deriv = 0)
+tukeyChi (x, cc, deriv = 0)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="x">x</code></td>
+<td>
+<p>numeric vector.</p>
+</td></tr>
+<tr><td><code id="cc">cc</code></td>
+<td>
+<p> tuning constant </p>
+</td></tr>
+<tr><td><code id="deriv">deriv</code></td>
+<td>
+<p>integer in <code class="reqn">\{-1,0,1,2\}</code> specifying the order of the
+derivative; the default, <code>deriv = 0</code> computes the psi-, or
+chi- (&quot;rho&quot;-)function.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>a numeric vector of the same length as <code>x</code>.
+</p>
+
+
+<h3>Note</h3>
+
+<p><code>tukeyPsi1(x, d)</code> and <code><a href="../../robustbase/help/tukeyChi.html">tukeyChi</a>(x, d+1)</code> are just
+re-scaled versions of each other (for <code>d in -1:1</code>), i.e.,
+</p>
+<p style="text-align: center;"><code class="reqn">\chi^{(\nu)}(x, c) = (6/c^2) \psi^{(\nu-1)}(x,c),</code>
+</p>
+
+<p>for <code class="reqn">\nu = 0,1,2</code>.
+</p>
+<p>We use the name &lsquo;tukeyPsi<b>1</b>&rsquo;, because <code>tukeyPsi</code> is
+reserved for a future &ldquo;Psi Function&rdquo; class object, see
+<code><a href="../../robustbase/help/psiFunc.html">psiFunc</a></code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Matias Salibian-Barrera, Martin Maechler and Andreas Ruckstuhl</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../robustbase/help/lmrob.html">lmrob</a></code> and <code><a href="../../robustbase/help/Mpsi.html">Mpsi</a></code>; further
+<code><a href="../../robustbase/help/anova.lmrob.html">anova.lmrob</a></code> which needs the <code>deriv = -1</code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>
+op &lt;- par(mfrow = c(3,1), oma = c(0,0, 2, 0),
+          mgp = c(1.5, 0.6, 0), mar= .1+c(3,4,3,2))
+x &lt;- seq(-2.5, 2.5, length = 201)
+cc &lt;- 1.55 # as set by default in lmrob.control()
+plot. &lt;- function(...) { plot(...); abline(h=0,v=0, col="gray", lty=3)}
+plot.(x, tukeyChi(x, cc), type = "l", col = 2)
+plot.(x, tukeyChi(x, cc, deriv = 1), type = "l", col = 2)
+plot.(x, tukeyChi(x, cc, deriv = 2), type = "l", col = 2)
+mtext(sprintf("tukeyChi(x, c = %g, deriv),  deriv = 0,1,2", cc),
+      outer = TRUE, font = par("font.main"), cex = par("cex.main"))
+par(op)
+
+op &lt;- par(mfrow = c(3,1), oma = c(0,0, 2, 0),
+          mgp = c(1.5, 0.6, 0), mar= .1+c(3,4,1,1))
+x &lt;- seq(-5, 5, length = 201)
+cc &lt;- 4.69 # as set by default in lmrob.control()
+plot. &lt;- function(...) { plot(..., asp = 1); abline(h=0,v=0, col="gray", lty=3)}
+plot.(x, tukeyPsi1(x, cc), type = "l", col = 2)
+abline(0:1, lty = 3, col = "light blue")
+plot.(x, tukeyPsi1(x, cc, deriv = -1), type = "l", col = 2)
+plot.(x, tukeyPsi1(x, cc, deriv =  1), type = "l", col = 2); abline(h=1,lty=3)
+mtext(sprintf("tukeyPsi1(x, c = %g, deriv),  deriv = 0, -1, 1", cc),
+      outer = TRUE, font = par("font.main"), cex = par("cex.main"))
+par(op)
+
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>robustbase</em> version 0.99-7 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

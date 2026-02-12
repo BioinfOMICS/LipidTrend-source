@@ -1,0 +1,295 @@
+<!DOCTYPE html><html><head><title>R: Empirical Bayes Statistics for Differential Expression</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>eBayes {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Empirical Bayes Statistics for Differential Expression</h2>
+
+<h3>Description</h3>
+
+<p>Given a linear model fit from <code>lmFit</code>, compute moderated t-statistics, moderated F-statistic, and log-odds of differential expression by empirical Bayes moderation of the standard errors towards a global value.</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>eBayes(fit, proportion = 0.01, stdev.coef.lim = c(0.1,4),
+       trend = FALSE, span = NULL,
+       robust = FALSE, winsor.tail.p = c(0.05,0.1), legacy = NULL)
+treat(fit, fc = 1.2, lfc = NULL, trend = FALSE,
+      robust = FALSE, winsor.tail.p = c(0.05,0.1), legacy = NULL, upshot = FALSE)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="fit">fit</code></td>
+<td>
+<p>an <code>MArrayLM</code> fitted model object produced by <code>lmFit</code> or <code>contrasts.fit</code>.
+For <code>ebayes</code> only, <code>fit</code> can alternatively be an unclassed list produced by <code>lm.series</code>, <code>gls.series</code> or <code>mrlm</code> containing components <code>coefficients</code>, <code>stdev.unscaled</code>, <code>sigma</code> and <code>df.residual</code>.</p>
+</td></tr>
+<tr><td><code id="proportion">proportion</code></td>
+<td>
+<p>numeric value between 0 and 1, assumed proportion of genes which are differentially expressed</p>
+</td></tr>
+<tr><td><code id="stdev.coef.lim">stdev.coef.lim</code></td>
+<td>
+<p>numeric vector of length 2, assumed lower and upper limits for the standard deviation of log2-fold-changes for differentially expressed genes</p>
+</td></tr>
+<tr><td><code id="trend">trend</code></td>
+<td>
+<p>logical, should an intensity-dependent trend be allowed for the prior variance? If <code>FALSE</code> then the prior variance is constant. Alternatively, <code>trend</code> can be a row-wise numeric vector, which will be used as the covariate for the prior variance.</p>
+</td></tr>
+<tr><td><code id="span">span</code></td>
+<td>
+<p>lowess span used for prior variance trend.</p>
+</td></tr>
+<tr><td><code id="robust">robust</code></td>
+<td>
+<p>logical, should the estimation of <code>df.prior</code> and <code>var.prior</code> be robustified against outlier sample variances?</p>
+</td></tr>
+<tr><td><code id="winsor.tail.p">winsor.tail.p</code></td>
+<td>
+<p>numeric vector of length 1 or 2, giving left and right tail proportions of <code>x</code> to Winsorize (if <code>robust=TRUE</code> and <code>legacy=TRUE</code>).</p>
+</td></tr>
+<tr><td><code id="legacy">legacy</code></td>
+<td>
+<p>logical. If <code>FALSE</code> then the new hyperparameter estimation (introduced in limma 3.61.8) will be used, if <code>TRUE</code> the earlier hyperparameter estimation will be used. If <code>NULL</code>, then the new method will be used when the residual degrees of freedom are not all equal and the old method will be used otherwise. <code>legacy=FALSE</code> will also be assumed if <code>span</code> is not <code>NULL</code>.</p>
+</td></tr>
+<tr><td><code id="fc">fc</code></td>
+<td>
+<p>minimum fold-change below which changes are not considered scientifically meaningful.</p>
+</td></tr>
+<tr><td><code id="lfc">lfc</code></td>
+<td>
+<p>minimum log2-fold-change below which changes not considered scientifically meaningful. Defaults to <code>log2(fc)</code>. If specified then takes precedence over <code>fc</code>.</p>
+</td></tr>
+<tr><td><code id="upshot">upshot</code></td>
+<td>
+<p>logical. If <code>TRUE</code>, then a more powerful test is conducted assuming that the true logFC are uniformly distributed over the null interval from <code>-lfc</code> to <code>lfc</code>. If <code>FALSE</code>, then the standard TREAT p-values are computed assuming the worst-case scenario of true logFC equal to <code>lfc</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>These functions are used to rank genes in order of evidence for differential expression.
+They use an empirical Bayes method to squeeze the genewise-wise residual variances towards a common value (or towards a global trend) (Smyth, 2004; Phipson et al, 2016).
+The degrees of freedom for the individual variances are increased to reflect the extra information gained from the empirical Bayes moderation, resulting in increased statistical power to detect differential expression.
+</p>
+<p>Theese functions accept as input an <code>MArrayLM</code> fitted model object <code>fit</code> produced by <code>lmFit</code>.
+The columns of <code>fit</code> define a set of contrasts which are to be tested equal to zero.
+The fitted model object may have been processed by <code>contrasts.fit</code> before being passed to <code>eBayes</code> to convert the coefficients of the original design matrix into an arbitrary number of contrasts.
+</p>
+<p>The empirical Bayes moderated t-statistics test each individual contrast equal to zero.
+For each gene (row), the moderated F-statistic tests whether all the contrasts are zero.
+The F-statistic is an overall test computed from the set of t-statistics for that probe.
+This is exactly analogous the relationship between t-tests and F-statistics in conventional anova, except that the residual mean squares have been moderated between genes.
+</p>
+<p>The estimates <code>s2.prior</code> and <code>df.prior</code> are computed by one of <code>fitFDist</code>, <code>fitFDistRobustly</code> or <code>fitFDistUnequalDF1</code> (depending on settings for <code>robust</code> and <code>legacy</code>).
+<code>s2.post</code> is the weighted average of <code>s2.prior</code> and <code>sigma^2</code> with weights proportional to <code>df.prior</code> and <code>df.residual</code> respectively.
+The log-odds of differential expression <code>lods</code> was called the <em>B-statistic</em> by Loennstedt and Speed (2002).
+The F-statistics <code>F</code> are computed by <code>classifyTestsF</code> with <code>fstat.only=TRUE</code>.
+</p>
+<p><code>eBayes</code> does not compute ordinary t-statistics because they always have worse performance than the moderated versions.
+The ordinary (unmoderated) t-statistics can, however, can be easily extracted from the linear model output for comparison purposes&mdash;see the example code below.
+</p>
+<p><code>treat</code> computes empirical Bayes moderated-t p-values relative to a minimum fold-change threshold.
+Instead of testing for genes that have true log-fold-changes different from zero, it tests whether the true log2-fold-change is greater than <code>lfc</code> in absolute value (McCarthy and Smyth, 2009).
+In other words, it uses an interval null hypothesis, where the interval is [-lfc,lfc].
+When the number of DE genes is large, <code>treat</code> is often useful for giving preference to larger fold-changes and for prioritizing genes that are biologically important.
+<code>treat</code> is concerned with p-values rather than posterior odds, so it does not compute the B-statistic <code>lods</code>.
+The idea of thresholding doesn't apply to F-statistics in a straightforward way, so moderated F-statistics are also not computed.
+When <code>fc=1</code> and <code>lfc=0</code>, <code>treat</code> is identical to <code>eBayes</code>, except that F-statistics and B-statistics are not computed.
+The <code>fc</code> threshold is usually chosen relatively small, because genes need to have fold changes substantially greater than the testing threshold in order to be considered statistically significant.
+Typical values for <code>fc</code> are <code>1.1</code>, <code>1.2</code> or <code>1.5</code>.
+The top genes chosen by <code>treat</code> can be examined using <code><a href="../../limma/help/topTreat.html">topTreat</a></code>.
+</p>
+<p>The <code>treat</code> threshold can be specified either as a fold-change via <code>fc</code> or as a log2-fold-change via <code>lfc</code>, with <code>lfc = log2(fc)</code>.
+Note that the <code>treat</code> testing procedure is considerably more rigorous and conservative than simply applying same <code>fc</code> values as a fold-change cutoff to the list of differentially expressed genes.
+Indeed, the observed log2-fold-change needs to substantially larger than <code>lfc</code> for a gene to be called as statistically significant by <code>treat</code>.
+The threshold should be chosen as a small value below which results should be ignored rather than as a target fold-change.
+In practice, modest values for <code>fc</code> such as <code>1.1</code>, <code>1.2</code> or <code>1.5</code> are usually the most useful.
+Setting <code>fc=1.2</code> or <code>fc=1.5</code> will usually cause most differentially expressed genes to have estimated fold-changes of 2-fold or greater, depending on the sample size and precision of the experiment.
+Larger thresholds are usually overly conservative and counter productive.
+In general, the <code>fc</code> threshold should be chosen sufficiently small so that a worthwhile number of DE genes remain, otherwise the purpose of prioritizing genes with larger fold-changes will be defeated.
+</p>
+<p>The use of <code>eBayes</code> or <code>treat</code> with <code>trend=TRUE</code> is known as the <em>limma-trend</em> method (Law et al, 2014; Phipson et al, 2016).
+With this option, an intensity-dependent trend is fitted to the prior variances <code>s2.prior</code>.
+Specifically, <code><a href="../../limma/help/squeezeVar.html">squeezeVar</a></code> is called with the <code>covariate</code> equal to <code>Amean</code>, the average log2-intensity for each gene.
+The trend that is fitted can be examined by <code><a href="../../limma/help/plotSA.html">plotSA</a></code>.
+limma-trend is useful for processing expression values that show a mean-variance relationship.
+This is often useful for microarray data, and it can also be applied to RNA-seq counts that have been converted to log2-counts per million (logCPM) values (Law et al, 2014).
+When applied to RNA-seq logCPM values, limma-trend give similar results to the <code><a href="../../limma/help/voom.html">voom</a></code> method.
+The voom method incorporates the mean-variance trend into the precision weights, whereas limma-trend incorporates the trend into the empirical Bayes moderation.
+limma-trend is somewhat simpler than <code>voom</code> because it assumes that the sequencing depths (library sizes) are not wildly different between the samples and it applies the mean-variance trend on a genewise basis instead to individual observations.
+limma-trend is recommended for RNA-seq analysis when the library sizes are reasonably consistent (less than 3-fold difference from smallest to largest) because of its simplicity and speed.
+</p>
+<p>If <code>robust=TRUE</code> then the robust empirical Bayes procedure of Phipson et al (2016) is used.
+This is frequently useful to protect the empirical Bayes procedure against hyper-variable or hypo-variable genes, especially when analysing RNA-seq data.
+See <code><a href="../../limma/help/squeezeVar.html">squeezeVar</a></code> for more details.
+</p>
+<p>In limma 3.61.8 (August 2024), the new function <code><a href="../../limma/help/fitFDistUnequalDF1.html">fitFDistUnequalDF1</a></code> was introduced to improve estimation of the hyperparameters <code>s2.prior</code> and <code>df.prior</code>, especially when not all genes have the same residual degrees of freedom.
+<code>fitFDistUnequalDF1</code> is a potential replacement for the original functions <code>fitFDist</code> and <code>fitFDistRobustly</code> and the argument <code>legacy</code> is provided to control backward compatibility.
+The new hyperparameter estimation will be used if <code>legacy=FALSE</code> and the original methods will be used if <code>legacy=TRUE</code>.
+If <code>legacy=NULL</code>, then the new method will be used if the residual degrees of freedom are unequal and the original methods otherwise.
+Unequal residual degrees of freedom arise in limma pipelines when the expression matrix includes missing values or from the quasi-likelihood pipeline in edgeR v4.
+</p>
+<p>If <code>upshot=FALSE</code>, then the original TREAT method is used, which computes p-values relative to the &quot;worst case&quot; scenario in which the true logFCs are on the boundary of the null hypothesis interval closest to the observed logFC.
+If <code>upshot=TRUE</code>, then a new more powerful UPSHOT approach suggested by Nikos Ignatiadis (University of Chicago) is used.
+The UPSHOT test assumes that the true logFC are uniformly distributed over the null interval from <code>-lfc</code> to <code>lfc</code>.
+The UPSHOT test gives correct error rate control over any unimodal distribution of true logFCs over the null interval.
+</p>
+
+
+<h3>Value</h3>
+
+<p><code>eBayes</code> produces an object of class <code>MArrayLM</code> (see <code><a href="../../limma/help/MArrayLM-class.html">MArrayLM-class</a></code>) containing everything found in <code>fit</code> plus the following added components:
+</p>
+<table role = "presentation">
+<tr><td><code>t</code></td>
+<td>
+<p>numeric matrix of moderated t-statistics.</p>
+</td></tr>
+<tr><td><code>p.value</code></td>
+<td>
+<p>numeric matrix of two-sided p-values corresponding to the t-statistics.</p>
+</td></tr>
+<tr><td><code>lods</code></td>
+<td>
+<p>numeric matrix giving the log-odds of differential expression (on the natural log scale).</p>
+</td></tr>
+<tr><td><code>s2.prior</code></td>
+<td>
+<p>estimated prior value for <code>sigma^2</code>. A row-wise vector if <code>covariate</code> is non-<code>NULL</code>, otherwise a single value.</p>
+</td></tr>
+<tr><td><code>df.prior</code></td>
+<td>
+<p>degrees of freedom associated with <code>s2.prior</code>. A row-wise vector if <code>robust=TRUE</code>, otherwise a single value.</p>
+</td></tr>
+<tr><td><code>df.total</code></td>
+<td>
+<p>row-wise numeric vector giving the total degrees of freedom associated with the t-statistics for each gene. Equal to <code>df.prior+df.residual</code> or <code>sum(df.residual)</code>, whichever is smaller.</p>
+</td></tr>
+<tr><td><code>s2.post</code></td>
+<td>
+<p>row-wise numeric vector giving the posterior values for <code>sigma^2</code>.</p>
+</td></tr>
+<tr><td><code>var.prior</code></td>
+<td>
+<p>column-wise numeric vector giving estimated prior values for the variance of the log2-fold-changes for differentially expressed gene for each constrast. Used for evaluating <code>lods</code>.</p>
+</td></tr>
+<tr><td><code>F</code></td>
+<td>
+<p>row-wise numeric vector of moderated F-statistics for testing all contrasts defined by the columns of <code>fit</code> simultaneously equal to zero.</p>
+</td></tr>
+<tr><td><code>F.p.value</code></td>
+<td>
+<p>row-wise numeric vector giving p-values corresponding to <code>F</code>.</p>
+</td></tr>
+</table>
+<p>The matrices <code>t</code>, <code>p.value</code> and <code>lods</code> have the same dimensions as the input object <code>fit</code>, with rows corresponding to genes and columns to coefficients or contrasts.
+The vectors <code>s2.prior</code>, <code>df.prior</code>, <code>df.total</code>, <code>F</code> and <code>F.p.value</code> correspond to rows, with length equal to the number of genes.
+The vector <code>var.prior</code> corresponds to columns, with length equal to the number of contrasts.
+If <code>s2.prior</code> or <code>df.prior</code> have length 1, then the same value applies to all genes.
+</p>
+<p><code>s2.prior</code>, <code>df.prior</code> and <code>var.prior</code> contain empirical Bayes hyperparameters used to obtain <code>df.total</code>, <code>s2.post</code> and <code>lods</code>.
+</p>
+<p><code>treat</code> a produces an <code>MArrayLM</code> object similar to that from <code>eBayes</code> but without <code>lods</code>, <code>var.prior</code>, <code>F</code> or <code>F.p.value</code>.
+</p>
+
+
+<h3>Note</h3>
+
+<p>The algorithm used by <code>eBayes</code> and <code>treat</code> with <code>robust=TRUE</code> was revised slightly in limma 3.27.6.
+The minimum <code>df.prior</code> returned may be slightly smaller than previously.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth and Davis McCarthy</p>
+
+
+<h3>References</h3>
+
+<p>Law CW, Chen Y, Shi W, Smyth GK (2014).
+Voom: precision weights unlock linear model analysis tools for RNA-seq read counts.
+<em>Genome Biology</em> 15, R29.
+<a href="https://doi.org/10.1186/gb-2014-15-2-r29">doi:10.1186/gb-2014-15-2-r29</a>.
+See also the Preprint Version at <a href="https://gksmyth.github.io/pubs/VoomPreprint.pdf">https://gksmyth.github.io/pubs/VoomPreprint.pdf</a> incorporating some notational corrections.
+</p>
+<p>Loennstedt I, Speed TP (2002).
+Replicated microarray data.
+<em>Statistica Sinica</em> 12, 31-46.
+</p>
+<p>McCarthy DJ, Smyth GK (2009).
+Testing significance relative to a fold-change threshold is a TREAT.
+<em>Bioinformatics</em> 25, 765-771.
+<a href="https://doi.org/10.1093/bioinformatics/btp053">doi:10.1093/bioinformatics/btp053</a>
+</p>
+<p>Phipson B, Lee S, Majewski IJ, Alexander WS, Smyth GK (2016).
+Robust hyperparameter estimation protects against hypervariable genes and improves power to detect differential expression.
+<em>Annals of Applied Statistics</em> 10, 946-963.
+<a href="https://doi.org/10.1214/16-AOAS920">doi:10.1214/16-AOAS920</a>
+</p>
+<p>Smyth GK (2004).
+Linear models and empirical Bayes methods for assessing differential expression in microarray experiments.
+<em>Statistical Applications in Genetics and Molecular Biology</em> Volume 3, Issue 1, Article 3.
+<a href="https://doi.org/10.2202/1544-6115.1027">doi:10.2202/1544-6115.1027</a>.
+See also the Preprint Version
+<a href="https://gksmyth.github.io/pubs/ebayes.pdf">https://gksmyth.github.io/pubs/ebayes.pdf</a>
+incorporating corrections to 30 June 2009.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../limma/help/squeezeVar.html">squeezeVar</a></code>, <code><a href="../../limma/help/fitFDist.html">fitFDist</a></code>, <code><a href="../../limma/help/tmixture.matrix.html">tmixture.matrix</a></code>, <code><a href="../../limma/help/plotSA.html">plotSA</a></code>.
+</p>
+<p>An overview of linear model functions in limma is given by <a href="../../limma/help/06.LinearModels.html">06.LinearModels</a>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>#  See also lmFit examples
+
+#  Simulate gene expression data,
+#  6 microarrays and 100 genes with one gene differentially expressed
+set.seed(2016)
+sigma2 &lt;- 0.05 / rchisq(100, df=10) * 10
+y &lt;- matrix(rnorm(100*6,sd=sqrt(sigma2)),100,6)
+design &lt;- cbind(Intercept=1,Group=c(0,0,0,1,1,1))
+y[1,4:6] &lt;- y[1,4:6] + 1
+fit &lt;- lmFit(y,design)
+
+#  Moderated t-statistic
+fit &lt;- eBayes(fit)
+topTable(fit,coef=2)
+
+#  Ordinary t-statistic
+ordinary.t &lt;- fit$coef[,2] / fit$stdev.unscaled[,2] / fit$sigma
+
+# Treat relative to a 10% fold-change
+tfit &lt;- treat(fit, fc=1.1)
+topTreat(tfit,coef=2)
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>limma</em> version 3.66.0 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

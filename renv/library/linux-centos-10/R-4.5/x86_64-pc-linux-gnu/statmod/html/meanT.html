@@ -1,0 +1,84 @@
+<!DOCTYPE html><html><head><title>R: Mean t-Statistic Between Two Groups of Growth Curves</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>meanT {statmod}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Mean t-Statistic Between Two Groups of Growth Curves</h2>
+
+<h3>Description</h3>
+
+<p>The mean-t statistic of the distance between two groups of growth curves. 
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>meanT(y1, y2)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="y1">y1</code></td>
+<td>
+<p>matrix of response values for the first group, with a row for each individual and a column for each time. Missing values are allowed.</p>
+</td></tr>
+<tr><td><code id="y2">y2</code></td>
+<td>
+<p>matrix of response values for the second group.  Must have the same number of columns as <code>y1</code>. Missing values are allowed.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This function computes the pooled two-sample t-statistic between the response values at each time, and returns the mean of these values weighted by the degrees of freedom.
+This function is used by <code>compareGrowthCurves</code>.
+</p>
+
+
+<h3>Value</h3>
+
+<p>numeric vector of length one containing the mean t-statistic.</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../statmod/help/compareGrowthCurves.html">compareGrowthCurves</a></code>, <code><a href="../../statmod/help/compareTwoGrowthCurves.html">compareTwoGrowthCurves</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>y1 &lt;- matrix(rnorm(4*3),4,3)
+y2 &lt;- matrix(rnorm(4*3),4,3)
+meanT(y1,y2)
+
+data(PlantGrowth)
+compareGrowthCurves(PlantGrowth$group,as.matrix(PlantGrowth$weight))
+# Can make p-values more accurate by nsim=10000
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>statmod</em> version 1.5.1 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

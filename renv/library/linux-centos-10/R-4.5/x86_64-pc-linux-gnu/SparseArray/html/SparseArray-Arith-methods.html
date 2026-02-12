@@ -1,0 +1,171 @@
+<!DOCTYPE html><html><head><title>R: 'Arith' operations on SparseArray objects</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>SparseArray-Arith-methods {SparseArray}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>'Arith' operations on SparseArray objects</h2>
+
+<h3>Description</h3>
+
+<p><a href="../../SparseArray/help/SparseArray.html">SparseArray</a> derivatives support operations from the <code>Arith</code>
+group, with some restrictions.
+See <code>?<a href="../../methods/help/S4groupGeneric.html">S4groupGeneric</a></code> in the <span class="pkg">methods</span> package
+for more information about the <code>Arith</code> group generic.
+</p>
+<p>IMPORTANT NOTES:
+</p>
+
+<ul>
+<li><p> Only <a href="../../SparseArray/help/SVT_SparseArray.html">SVT_SparseArray</a> objects are supported at the moment.
+Support for <a href="../../SparseArray/help/COO_SparseArray.html">COO_SparseArray</a> objects might be added in the
+future.
+</p>
+</li>
+<li> <p><a href="../../SparseArray/help/SVT_SparseArray.html">SVT_SparseArray</a> of <code>type()</code> <code>"complex"</code> don't
+support <code>Arith</code> operations at the moment.
+</p>
+</li></ul>
+
+
+
+<h3>Details</h3>
+
+<p>Two forms of 'Arith' operations are supported:
+</p>
+
+<ol>
+<li><p> Between an <a href="../../SparseArray/help/SVT_SparseArray.html">SVT_SparseArray</a> object <code>svt</code> and an atomic
+vector <code>y</code>: </p>
+<pre>    svt op y
+    y op svt</pre>
+<p>The <code>Arith</code> operations that support this form are: <code>*</code>,
+<code>/</code>, <code>^</code>, <code>%%</code>,<code>%/%</code>.
+Note that, except for <code>*</code> (for which both <code>svt * y</code>
+and <code>y * svt</code> are supported), atomic vector <code>y</code> must
+be on the right e.g. <code>svt ^ 3</code>.
+</p>
+</li>
+<li><p> Between two <a href="../../SparseArray/help/SVT_SparseArray.html">SVT_SparseArray</a> objects <code>svt1</code> and
+<code>svt2</code> of same dimensions (a.k.a. <em>conformable arrays</em>):
+</p>
+<pre>    svt1 op svt2</pre>
+<p>The <code>Arith</code> operations that support this form are: <code>+</code>,
+<code>-</code>, <code>*</code>.
+</p>
+</li></ol>
+
+
+
+<h3>Value</h3>
+
+<p>A <a href="../../SparseArray/help/SparseArray.html">SparseArray</a> derivative of the same dimensions as the input
+object(s).
+</p>
+
+
+<h3>See Also</h3>
+
+
+<ul>
+<li> <p><code><a href="../../methods/help/S4groupGeneric.html">S4groupGeneric</a></code> in the <span class="pkg">methods</span> package.
+</p>
+</li>
+<li> <p><a href="../../SparseArray/help/SparseArray.html">SparseArray</a> objects.
+</p>
+</li>
+<li><p> Ordinary <a href="../../base/help/array.html">array</a> objects in base R.
+</p>
+</li></ul>
+
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>## ---------------------------------------------------------------------
+## Basic examples
+## ---------------------------------------------------------------------
+
+svt1 &lt;- SVT_SparseArray(dim=c(15, 6), type="integer")
+svt1[cbind(1:15, 2)] &lt;- 100:114
+svt1[cbind(1:15, 5)] &lt;- -(114:100)
+svt1
+
+svt1 * -0.01
+
+svt1 * 10   # result is of type "double"
+svt1 * 10L  # result is of type "integer"
+
+svt1 * c(10, 5, 0.1)  # right vector recycled along 1st dimension
+
+svt1 / 10L
+
+svt1 ^ 2
+svt1 ^ (2:6)
+
+svt1 %% 5L
+svt1 %/% 5L
+
+svt2 &lt;- SVT_SparseArray(dim=dim(svt1), type="double")
+svt2[c(2, 6, 12:17, 22:33, 55, 59:62, 90)] &lt;- runif(26)
+svt2
+
+svt1 + svt2
+svt1 - svt2
+svt1 * svt2
+
+svt2 * (0.1 * svt1 - svt2 ^ 2) + svt1 / sum(svt2)
+
+## Sanity checks:
+m1 &lt;- as.matrix(svt1)
+m2 &lt;- as.matrix(svt2)
+stopifnot(
+  identical(as.matrix(svt1 * -0.01), m1 * -0.01),
+  identical(as.matrix(svt1 * 10), m1 * 10),
+  identical(as.matrix(svt1 * 10L), m1 * 10L),
+  identical(as.matrix(svt1 / 10L), m1 / 10L),
+  identical(as.matrix(svt1 ^ 3.5), m1 ^ 3.5),
+  identical(as.matrix(svt1 %% 5L), m1 %% 5L),
+  identical(as.matrix(svt1 %/% 5L), m1 %/% 5L),
+  identical(as.matrix(svt1 + svt2), m1 + m2),
+  identical(as.matrix(svt1 - svt2), m1 - m2),
+  identical(as.matrix(svt1 * svt2), m1 * m2),
+  all.equal(as.matrix(svt2 * (0.1 * svt1 - svt2 ^ 2) + svt1 / sum(svt2)),
+            m2 * (0.1 * m1 - m2 ^ 2) + m1 / sum(m2))
+)
+
+## ---------------------------------------------------------------------
+## An example combining operations from the 'Arith', 'Compare',
+## and 'Logic' groups
+## ---------------------------------------------------------------------
+
+m3 &lt;- matrix(0L, nrow=15, ncol=6)
+m3[c(2, 6, 12:17, 22:33, 55, 59:62, 90)] &lt;- 101:126
+svt3 &lt;- SparseArray(m3)
+
+## Can be 5x or 10x faster than with a dgCMatrix object on a big
+## SVT_SparseMatrix object!
+svt4 &lt;- (svt3^1.5 + svt3) %% 100 - 0.2 * svt3 &gt; 0
+svt4
+
+## Sanity check:
+m4 &lt;- (m3^1.5 + m3) %% 100 - 0.2 * m3 &gt; 0
+stopifnot(identical(as.matrix(svt4), m4))
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>SparseArray</em> version 1.10.8 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

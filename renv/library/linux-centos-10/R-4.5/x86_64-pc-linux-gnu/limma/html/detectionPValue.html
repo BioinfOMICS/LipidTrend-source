@@ -1,0 +1,112 @@
+<!DOCTYPE html><html><head><title>R: Detection P-Values from Negative Controls</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>detectionPValues {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Detection P-Values from Negative Controls</h2>
+
+<h3>Description</h3>
+
+<p>Compute the proportion of negative controls greater than each observed expression value.
+Particularly useful for Illumina BeadChips.</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>## S3 method for class 'EListRaw'
+detectionPValues(x, status = NULL, ...)
+## Default S3 method:
+detectionPValues(x, status, negctrl = "negative", ...)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="x">x</code></td>
+<td>
+<p>object of class <code>EListRaw</code> or a numeric <code>matrix</code> containing raw intensities for regular and control probes from a series of microarrays.</p>
+</td></tr>
+<tr><td><code id="status">status</code></td>
+<td>
+<p>character vector giving probe types.  Defaults to <code>x$genes$Status</code> if <code>x</code> is an <code>EListRaw</code> object.</p>
+</td></tr>
+<tr><td><code id="negctrl">negctrl</code></td>
+<td>
+<p>character string identifier for negative control probes.</p>
+</td></tr>
+<tr><td><code id="...">...</code></td>
+<td>
+<p>other arguments are not currently used.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The rows of <code>x</code> for which <code>status == negctrl</code> are assumed to correspond to negative control probes.
+</p>
+<p>For each column of <code>x</code>, the detection p-values are defined as <code>(N.eq/2 + N.gt) / N.neg</code>, where <code>N.gt</code> is the number of negative controls with expression greater than the observed value, <code>N.eq</code> is the number of negative controls with expression equal to the observed value, and <code>N.neg</code> is the total number of negative controls.
+</p>
+<p>When used on Illumina BeadChip data, this function produces essentially the same detection p-values as returned by Illumina's GenomeStudio software.
+</p>
+
+
+<h3>Value</h3>
+
+<p>numeric matrix of same dimensions as <code>x</code> containing detection p-values.</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth</p>
+
+
+<h3>References</h3>
+
+<p>Shi W, de Graaf C, Kinkel S, Achtman A, Baldwin T, Schofield L, Scott H, Hilton D, Smyth GK (2010).
+Estimating the proportion of microarray probes expressed in an RNA sample.
+<em>Nucleic Acids Research</em> 38(7), 2168-2176.
+<a href="https://doi.org/10.1093/nar/gkp1204">doi:10.1093/nar/gkp1204</a>
+</p>
+
+
+<h3>See Also</h3>
+
+ 
+<p>An overview of LIMMA functions to read expression data is given in <a href="../../limma/help/03.ReadingData.html">03.ReadingData</a>.
+</p>
+<p><code><a href="../../limma/help/read.idat.html">read.idat</a></code> reads Illumina BeadChip expression data from binary IDAT files.
+</p>
+<p><code><a href="../../limma/help/neqc.html">neqc</a></code> performs normexp background correction and quantile normalization aided by control probes.  
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>## Not run: 
+# Read Illumina binary IDAT files
+x &lt;- read.idat(idat, bgx)
+x$other$Detection &lt;- detectionPValues(x)
+y &lt;- neqc(x)
+
+## End(Not run)
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>limma</em> version 3.66.0 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

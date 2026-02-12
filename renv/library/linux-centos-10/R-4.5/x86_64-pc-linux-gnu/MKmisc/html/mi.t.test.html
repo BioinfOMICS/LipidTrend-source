@@ -1,0 +1,231 @@
+<!DOCTYPE html><html><head><title>R: Multiple Imputation Student's t-Test</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>mi.t.test {MKmisc}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Multiple Imputation Student's t-Test</h2>
+
+<h3>Description</h3>
+
+<p>Performs one and two sample t-tests on multiple imputed datasets.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>mi.t.test(miData, ...)
+
+## Default S3 method:
+mi.t.test(miData, x, y = NULL,
+        alternative = c("two.sided", "less", "greater"), mu = 0,
+        paired = FALSE, var.equal = FALSE, conf.level = 0.95,
+        subset = NULL, ...)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="miData">miData</code></td>
+<td>
+<p>list of multiple imputed datasets.</p>
+</td></tr>
+<tr><td><code id="x">x</code></td>
+<td>
+<p>name of a variable that shall be tested.</p>
+</td></tr>
+<tr><td><code id="y">y</code></td>
+<td>
+<p>an optional name of a variable that shall be tested (paired test)
+or a variable that shall be used to split into groups (unpaired test).</p>
+</td></tr>
+<tr><td><code id="alternative">alternative</code></td>
+<td>
+<p>a character string specifying the alternative
+hypothesis, must be one of <code>"two.sided"</code> (default),
+<code>"greater"</code> or <code>"less"</code>.  You can specify just the initial
+letter.</p>
+</td></tr>
+<tr><td><code id="mu">mu</code></td>
+<td>
+<p>a number indicating the true value of the mean (or
+difference in means if you are performing a two sample test).</p>
+</td></tr>
+<tr><td><code id="paired">paired</code></td>
+<td>
+<p>a logical indicating whether you want a paired
+t-test.</p>
+</td></tr>
+<tr><td><code id="var.equal">var.equal</code></td>
+<td>
+<p>a logical variable indicating whether to treat the
+two variances as being equal. If <code>TRUE</code> then the pooled
+variance is used to estimate the variance otherwise the Welch
+(or Satterthwaite) approximation to the degrees of freedom is used.</p>
+</td></tr>
+<tr><td><code id="conf.level">conf.level</code></td>
+<td>
+<p>confidence level of the interval.</p>
+</td></tr>
+<tr><td><code id="subset">subset</code></td>
+<td>
+<p>an optional vector specifying a subset of observations
+to be used.</p>
+</td></tr>
+<tr><td><code id="...">...</code></td>
+<td>
+<p>further arguments to be passed to or from methods.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p><code>alternative = "greater"</code> is the alternative that <code>x</code> has a
+larger mean than <code>y</code>.
+</p>
+<p>If <code>paired</code> is <code>TRUE</code> then both <code>x</code> and <code>y</code> must
+be specified and they must be the same length.  Missing values are
+not allowed as they should have been imputed.  If
+<code>var.equal</code> is <code>TRUE</code> then the pooled estimate of the
+variance is used.  By default, if <code>var.equal</code> is <code>FALSE</code>
+then the variance is estimated separately for both groups and the
+Welch modification to the degrees of freedom is used.
+</p>
+<p>We use the approach of Rubin (1987) in combination with the adjustment of
+Barnard and Rubin (1999).
+</p>
+
+
+<h3>Value</h3>
+
+<p>A list with class <code>"htest"</code> containing the following components:
+</p>
+<table role = "presentation">
+<tr><td><code>statistic</code></td>
+<td>
+<p>the value of the t-statistic.</p>
+</td></tr>
+<tr><td><code>parameter</code></td>
+<td>
+<p>the degrees of freedom for the t-statistic.</p>
+</td></tr>
+<tr><td><code>p.value</code></td>
+<td>
+<p>the p-value for the test.</p>
+</td></tr>
+<tr><td><code>conf.int</code></td>
+<td>
+<p>a confidence interval for the mean appropriate to the
+specified alternative hypothesis.</p>
+</td></tr>
+<tr><td><code>estimate</code></td>
+<td>
+<p>the estimated mean (one-sample test), difference in means
+(paired test), or estimated means (two-sample test) as well as the
+respective standard deviations.</p>
+</td></tr>
+<tr><td><code>null.value</code></td>
+<td>
+<p>the specified hypothesized value of the mean or mean
+difference depending on whether it was a one-sample test or a
+two-sample test.</p>
+</td></tr>
+<tr><td><code>alternative</code></td>
+<td>
+<p>a character string describing the alternative
+hypothesis.</p>
+</td></tr>
+<tr><td><code>method</code></td>
+<td>
+<p>a character string indicating what type of t-test was
+performed.</p>
+</td></tr>
+<tr><td><code>data.name</code></td>
+<td>
+<p>a character string giving the name(s) of the data.</p>
+</td></tr>
+</table>
+
+
+<h3>Author(s)</h3>
+
+<p> Matthias Kohl <a href="mailto:Matthias.Kohl@stamats.de">Matthias.Kohl@stamats.de</a></p>
+
+
+<h3>References</h3>
+
+<p>Rubin, D. (1987). <em>Multiple Imputation for Nonresponse in Surveys</em>.
+John Wiley &amp; Sons, New York.
+</p>
+<p>Barnard, J. and Rubin, D. (1999). Small-Sample Degrees of Freedom with
+Multiple Imputation. <em>Biometrika</em>, <b>86</b>(4), 948-955.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../stats/help/t.test.html">t.test</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>## Generate some data
+set.seed(123)
+x &lt;- rnorm(25, mean = 1)
+x[sample(1:25, 5)] &lt;- NA
+y &lt;- rnorm(20, mean = -1)
+y[sample(1:20, 4)] &lt;- NA
+pair &lt;- c(rnorm(25, mean = 1), rnorm(20, mean = -1))
+g &lt;- factor(c(rep("yes", 25), rep("no", 20)))
+D &lt;- data.frame(ID = 1:45, variable = c(x, y), pair = pair, group = g)
+
+## Use Amelia to impute missing values
+library(Amelia)
+res &lt;- amelia(D, m = 10, p2s = 0, idvars = "ID", noms = "group")
+
+## Per protocol analysis (Welch two-sample t-test)
+t.test(variable ~ group, data = D)
+## Intention to treat analysis (Multiple Imputation Welch two-sample t-test)
+mi.t.test(res$imputations, x = "variable", y = "group")
+
+## Per protocol analysis (Two-sample t-test)
+t.test(variable ~ group, data = D, var.equal = TRUE)
+## Intention to treat analysis (Multiple Imputation two-sample t-test)
+mi.t.test(res$imputations, x = "variable", y = "group", var.equal = TRUE)
+
+## Specifying alternatives
+mi.t.test(res$imputations, x = "variable", y = "group", alternative = "less")
+mi.t.test(res$imputations, x = "variable", y = "group", alternative = "greater")
+
+## One sample test
+t.test(D$variable[D$group == "yes"])
+mi.t.test(res$imputations, x = "variable", subset = D$group == "yes")
+mi.t.test(res$imputations, x = "variable", mu = -1, subset = D$group == "yes",
+          alternative = "less")
+mi.t.test(res$imputations, x = "variable", mu = -1, subset = D$group == "yes",
+          alternative = "greater")
+
+## paired test
+t.test(D$variable, D$pair, paired = TRUE)
+mi.t.test(res$imputations, x = "variable", y = "pair", paired = TRUE)
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>MKmisc</em> version 1.9 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

@@ -1,0 +1,128 @@
+<!DOCTYPE html><html><head><title>R: Make an R package from a data object</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>makeDataPackage {Biobase}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Make an R package from a data object</h2>
+
+<h3>Description</h3>
+
+<p>This generic creates a valid R package from an R data object.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>makeDataPackage(object, author, email,
+                packageName=deparse(substitute(object)),
+                packageVersion=package_version("1.0.0"),
+                license="Artistic-2.0",
+                biocViews="ExperimentData",
+                filePath=tempdir(),
+                ...)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="object">object</code></td>
+<td>
+<p>An instance of an R data object.</p>
+</td></tr>
+<tr><td><code id="author">author</code></td>
+<td>
+<p>The author, as a character string.</p>
+</td></tr>
+<tr><td><code id="email">email</code></td>
+<td>
+<p>A valid email address for the maintainer, as a character string.</p>
+</td></tr>
+<tr><td><code id="packageName">packageName</code></td>
+<td>
+<p>The name of the package, defaults to the name of the object instance.</p>
+</td></tr>
+<tr><td><code id="packageVersion">packageVersion</code></td>
+<td>
+<p>The version number, as a character string.</p>
+</td></tr>
+<tr><td><code id="license">license</code></td>
+<td>
+<p>The license, as a character string.</p>
+</td></tr>
+<tr><td><code id="biocViews">biocViews</code></td>
+<td>
+<p>A character vector of valid biocViews views.</p>
+</td></tr>
+<tr><td><code id="filePath">filePath</code></td>
+<td>
+<p>The location to create the package.</p>
+</td></tr>
+<tr><td><code id="...">...</code></td>
+<td>
+<p>Additional arguments to specific methods.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The function makes use of various tools in R and Bioconductor to automatically
+generate the source files for a valid R package.
+</p>
+
+
+<h3>Value</h3>
+
+<p>The return value is that from a call to <code>link{createPackage}</code> which
+is invoked once the default arguments are set up. The data instance
+is stored in the data directory with a name the same as that of the
+resulting package.
+</p>
+
+
+<h3>Note</h3>
+
+<p>Developers implementing derived methods might force correct
+package name evaluation by including 'packageName' in any
+<code>callNextMethod()</code>.</p>
+
+
+<h3>Author(s)</h3>
+
+<p>R. Gentleman</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../Biobase/help/createPackage.html">createPackage</a></code></p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'> data(sample.ExpressionSet)
+ ## package created in tempdir()
+ s1 &lt;- makeDataPackage(sample.ExpressionSet,
+                       author = "Foo Author",
+                       email = "foo@bar",
+                       packageName = "FooBarPkg",
+                       packageVersion = "1.0.0")
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>Biobase</em> version 2.70.0 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

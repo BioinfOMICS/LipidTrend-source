@@ -1,0 +1,61 @@
+<!DOCTYPE html><html><head><title>R: Class &quot;functionXal&quot; of Functionals (of Psi-like functions)</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>functionXal-class {robustbase}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Class &quot;functionXal&quot; of Functionals (of Psi-like functions)</h2>
+
+<h3>Description</h3>
+
+<p>The class <code>"functionXal"</code> is a class of functionals (typically
+integrals) typically of <code><a href="../../robustbase/help/functionX-class.html">functionX</a></code> functions.
+</p>
+<p>Since the <code>functionX</code> functions typically also depend on tuning
+parameters, objects of this class (<code>"functionXal"</code>) are functions
+of these tuning parameters.
+</p>
+
+
+<h3>Slots</h3>
+
+
+<dl>
+<dt><code>.Data</code>:</dt><dd><p>Directly extends class <code>"function"</code>.</p>
+</dd>
+</dl>
+
+
+
+<h3>Extends</h3>
+
+<p>Class <code>"function"</code>, from data part.
+Class <code>"OptionalFunction"</code>, by class <code>"function"</code>.
+Class <code>"PossibleMethod"</code>, by class <code>"function"</code>.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../robustbase/help/psiFunc.html">psiFunc</a>()</code> and the class definitions of
+<code><a href="../../robustbase/help/functionX-class.html">functionX</a></code> and
+<code><a href="../../robustbase/help/psi_func-class.html">psi_func</a></code> which has several <code>functionXal</code>
+slots.
+</p>
+
+<hr><div style="text-align: center;">[Package <em>robustbase</em> version 0.99-7 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

@@ -1,0 +1,116 @@
+<!DOCTYPE html><html><head><title>R: A function for Analysis of Variance</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>oneWayAnova {MKmisc}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> A function for Analysis of Variance </h2>
+
+<h3>Description</h3>
+
+<p>This function is a slight modification of function <code><a href="../../genefilter/help/Anova.html">Anova</a></code> of
+package <code>"genefilter"</code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>oneWayAnova(cov, na.rm = TRUE, var.equal = FALSE)</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="cov">cov</code></td>
+<td>
+<p> The covariate. It must have length equal to the number of
+columns of the array that the result of <code>oneWayAnova</code> will be 
+applied to. </p>
+</td></tr>
+<tr><td><code id="na.rm">na.rm</code></td>
+<td>
+<p> a logical value indicating whether <code>NA</code> values should be
+stripped before the computation proceeds. </p>
+</td></tr>
+<tr><td><code id="var.equal">var.equal</code></td>
+<td>
+<p> a logical variable indicating whether to treat the variances
+in the samples as equal.  If <code>TRUE</code>, then a simple F test for
+the equality of means in a one-way analysis of variance is
+performed.  If <code>FALSE</code>, an approximate method of Welch (1951)
+is used, which generalizes the commonly known 2-sample Welch
+test to the case of arbitrarily many samples. </p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The function returned by <code>oneWayAnova</code> uses <code><a href="../../stats/help/oneway.test.html">oneway.test</a></code> 
+to perform a one-way ANOVA, where <code>x</code> is the set of gene expressions. 
+The F statistic for an overall effect is computed and the corresponding
+p-value is returned.
+</p>
+<p>The function <code><a href="../../genefilter/help/Anova.html">Anova</a></code> instead compares the computed 
+p-value to a prespecified p-value and returns <code>TRUE</code>, if the computed p-value
+is smaller than the prespecified one.
+</p>
+
+
+<h3>Value</h3>
+
+<p><code>oneWayAnova</code> returns a function with bindings for <code>cov</code> that will
+perform a one-way ANOVA.
+</p>
+<p>The covariate can be continuous, in which case the test is for a linear effect 
+for the covariate.
+</p>
+
+
+<h3>Note</h3>
+
+<p>A first version of this function appeared in package SLmisc.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> Matthias Kohl <a href="mailto:Matthias.Kohl@stamats.de">Matthias.Kohl@stamats.de</a></p>
+
+
+<h3>References</h3>
+
+<p>R. Gentleman, V. Carey, W. Huber and F. Hahne (2006). 
+genefilter: methods for filtering genes from microarray experiments. 
+R package version 1.13.7.
+</p>
+
+
+<h3>See Also</h3>
+
+ <p><code><a href="../../stats/help/oneway.test.html">oneway.test</a></code>, <code><a href="../../genefilter/help/Anova.html">Anova</a></code> </p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>set.seed(123)
+af &lt;- oneWayAnova(c(rep(1,5),rep(2,5)))
+af(rnorm(10))
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>MKmisc</em> version 1.9 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

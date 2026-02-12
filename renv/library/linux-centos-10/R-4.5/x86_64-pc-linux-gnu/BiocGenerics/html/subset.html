@@ -1,0 +1,110 @@
+<!DOCTYPE html><html><head><title>R: Subsetting vector-like, matrix-like and data-frame-like...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>subset {BiocGenerics}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Subsetting vector-like, matrix-like and data-frame-like objects</h2>
+
+<h3>Description</h3>
+
+<p>Return subsets of vector-like, matrix-like or data-frame-like objects
+which meet conditions.
+</p>
+<p>NOTE: This man page is for the <code>subset</code> <em>S4 generic function</em>
+defined in the <span class="pkg">BiocGenerics</span> package.
+See <code>?base::<a href="../../base/help/subset.html">subset</a></code> for the <code>subset</code> S3 generic
+defined in the <span class="pkg">base</span> package.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>subset(x, ...)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="x">x</code></td>
+<td>
+
+<p>A vector-like, matrix-like or data-frame-like object to be subsetted.
+</p>
+</td></tr>
+<tr><td><code id="...">...</code></td>
+<td>
+
+<p>Additional arguments (e.g. <code>subset</code>, <code>select</code>, <code>drop</code>),
+for use in specific methods. See <code>?base::<a href="../../base/help/subset.html">subset</a></code> for
+more information.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>An object similar to <code>x</code> containing just the selected elements (for a
+vector-like object), or the selected rows and columns (for a matrix-like or
+data-frame-like object).
+</p>
+
+
+<h3>See Also</h3>
+
+
+<ul>
+<li> <p><code>base::<a href="../../base/help/subset.html">subset</a></code> in the <span class="pkg">base</span> package
+for the <code>subset</code> S3 generic.
+</p>
+</li>
+<li> <p><code><a href="../../methods/help/showMethods.html">showMethods</a></code> for displaying a summary of the
+methods defined for a given generic function.
+</p>
+</li>
+<li> <p><code><a href="../../methods/help/selectMethod.html">selectMethod</a></code> for getting the definition of
+a specific method.
+</p>
+</li>
+<li> <p><a href="../../S4Vectors/help/subset+2CRectangularData-method.html">subset,RectangularData-method</a> in the <span class="pkg">S4Vectors</span>
+package for an example of a specific <code>subset</code> method (defined
+for <a href="../../S4Vectors/help/RectangularData.html">RectangularData</a> derivatives).
+</p>
+</li>
+<li> <p><a href="../../BiocGenerics/help/BiocGenerics.html">BiocGenerics</a> for a summary of all the generics defined
+in the <span class="pkg">BiocGenerics</span> package.
+</p>
+</li></ul>
+
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>subset
+showMethods("subset")
+selectMethod("subset", "ANY")  # the default method
+
+library(S4Vectors)
+showMethods("subset")
+## The subset() method for RectangularData derivatives:
+selectMethod("subset", "RectangularData")
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>BiocGenerics</em> version 0.56.0 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

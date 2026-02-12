@@ -1,0 +1,191 @@
+<!DOCTYPE html><html><head><title>R: S-regression estimators</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>lmrob.S {robustbase}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> S-regression estimators </h2>
+
+<h3>Description</h3>
+
+<p>Computes an S-estimator for linear regression,
+using the &ldquo;fast S&rdquo; algorithm.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>lmrob.S(x, y, control,
+        trace.lev = control$trace.lev,
+        only.scale = FALSE, mf)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="x">x</code></td>
+<td>
+<p>design matrix (<code class="reqn">n \times p</code>)</p>
+</td></tr>
+<tr><td><code id="y">y</code></td>
+<td>
+<p>numeric vector of responses (or residuals for <code>only.scale=TRUE</code>).</p>
+</td></tr>
+<tr><td><code id="control">control</code></td>
+<td>
+<p> list as returned by <code><a href="../../robustbase/help/lmrob.control.html">lmrob.control</a></code>; the
+following components are used for <code>lmrob.S()</code>:
+<code>"trace.lev"</code>, 
+<code>"nResample"</code>,
+<code>"groups"</code>,
+<code>"n.group"</code>,
+<code>"fast.s.large.n"</code>,
+<code>"seed"</code>,
+<code>"bb"</code>,
+<code>"psi"</code>, <code>"tuning.chi"</code>,
+<code>"best.r.s"</code>,
+<code>"k.fast.s"</code>,
+<code>"k.max"</code>,
+<code>"maxit.scale"</code>,
+<code>"refine.tol"</code>, <code>"solve.tol"</code>, <code>"scale.tol"</code>,
+<code>"mts"</code>,
+<code>"subsampling"</code>.
+</p>
+</td></tr>
+<tr><td><code id="trace.lev">trace.lev</code></td>
+<td>
+<p>integer indicating if the progress of the algorithm
+should be traced (increasingly); default <code>trace.lev = 0</code> does
+no tracing.</p>
+</td></tr>
+<tr><td><code id="only.scale">only.scale</code></td>
+<td>
+<p><code><a href="../../base/html/logical.html">logical</a></code> indicating if only the scale
+of <code>y</code> should be computed.  In this case, <code>y</code> will
+typically contain <em>residuals</em>.</p>
+</td></tr>
+
+<tr><td><code id="mf">mf</code></td>
+<td>
+<p>defunct.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This function is used by <code><a href="../../robustbase/help/lmrob.fit.html">lmrob.fit</a></code> and typically not
+to be used on its own (because an S-estimator has too low
+efficiency &lsquo;on its own&rsquo;).
+</p>
+<p>By default, the subsampling algorithm uses a customized LU
+decomposition which ensures a non singular subsample (if this is at
+all possible). This makes the Fast-S algorithm also feasible for
+categorical and mixed continuous-categorical data.
+</p>
+<p>One can revert to the old subsampling scheme by setting the parameter
+<code>subsampling</code> in <code>control</code> to <code>"simple"</code>.
+</p>
+
+
+<h3>Value</h3>
+
+<p>By default (when <code>only.scale</code> is false), a list with components
+</p>
+<table role = "presentation">
+<tr><td><code>coefficients</code></td>
+<td>
+<p>numeric vector (length <code class="reqn">p</code>) of S-regression coefficient estimates.</p>
+</td></tr>
+<tr><td><code>scale</code></td>
+<td>
+<p>the S-scale residual estimate</p>
+</td></tr>
+
+
+<tr><td><code>fitted.values</code></td>
+<td>
+<p>numeric vector (length <code class="reqn">n</code>) of the fitted
+values.</p>
+</td></tr>
+<tr><td><code>residuals</code></td>
+<td>
+<p>numeric vector (length <code class="reqn">n</code>) of the residuals.</p>
+</td></tr>
+<tr><td><code>rweights</code></td>
+<td>
+<p>numeric vector (length <code class="reqn">n</code>) of the robustness weights.</p>
+</td></tr>
+<tr><td><code>k.iter</code></td>
+<td>
+<p>(maximal) number of refinement iterations used.</p>
+</td></tr>
+<tr><td><code>converged</code></td>
+<td>
+<p>logical indicating if <b>all</b> refinement
+iterations had converged.</p>
+</td></tr>
+<tr><td><code>control</code></td>
+<td>
+<p>the same list as the <code>control</code> argument.</p>
+</td></tr>
+</table>
+<p>If <code>only.scale</code> is true, the computed scale (a number) is returned.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> Matias Salibian-Barrera and Manuel Koller; Martin Maechler for
+minor new options and more documentation.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../robustbase/help/lmrob.html">lmrob</a></code>, also for references.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>set.seed(33)
+x1 &lt;- sort(rnorm(30)); x2 &lt;- sort(rnorm(30)); x3 &lt;- sort(rnorm(30))
+X. &lt;- cbind(x1, x2, x3)
+y &lt;-  10 + X. %*% (10*(2:4)) + rnorm(30)/10
+y[1] &lt;- 500   # a moderate outlier
+X.[2,1] &lt;- 20 # an X outlier
+X1  &lt;- cbind(1, X.)
+
+(m.lm &lt;- lm(y ~ X.))
+set.seed(12)
+m.lmS &lt;- lmrob.S(x=X1, y=y,
+                 control = lmrob.control(nRes = 20), trace.lev=1)
+m.lmS[c("coefficients","scale")]
+all.equal(unname(m.lmS$coef), 10 * (1:4), tolerance = 0.005)
+stopifnot(all.equal(unname(m.lmS$coef), 10 * (1:4), tolerance = 0.005),
+          all.equal(m.lmS$scale, 1/10, tolerance = 0.09))
+
+## only.scale = TRUE:  Compute the S scale, given residuals;
+s.lmS &lt;- lmrob.S(X1, y=residuals(m.lmS), only.scale = TRUE,
+                 control = lmrob.control(trace.lev = 3))
+all.equal(s.lmS, m.lmS$scale) # close: 1.89e-6 [64b Lnx]
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>robustbase</em> version 0.99-7 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

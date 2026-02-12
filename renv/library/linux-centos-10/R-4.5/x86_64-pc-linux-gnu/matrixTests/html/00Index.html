@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head><title>R: Fast Statistical Hypothesis Tests on Rows and Columns of
+Matrices</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container">
+<h1> Fast Statistical Hypothesis Tests on Rows and Columns of
+Matrices
+<img class="toplogo" src="../../../doc/html/Rlogo.svg" alt="[R logo]">
+</h1>
+<hr>
+<div style="text-align: center;">
+<a href="../../../doc/html/packages.html"><img class="arrow" src="../../../doc/html/left.jpg" alt="[Up]"></a>
+<a href="../../../doc/html/index.html"><img class="arrow" src="../../../doc/html/up.jpg" alt="[Top]"></a>
+</div><h2>Documentation for package &lsquo;matrixTests&rsquo; version 0.2.3.1</h2>
+
+<ul><li><a href="../DESCRIPTION" type="text/plain; charset=utf-8">DESCRIPTION file</a>.</li>
+<li><a href="../NEWS">Package NEWS</a>.</li>
+</ul>
+
+<h2>Help Pages</h2>
+
+
+<table style="width: 100%;">
+<tr><td style="width: 25%;"><a href="andersondarling.html">andersondarling</a></td>
+<td>Anderson-Darling test</td></tr>
+<tr><td style="width: 25%;"><a href="bartlett.html">bartlett</a></td>
+<td>Bartlett test</td></tr>
+<tr><td style="width: 25%;"><a href="andersondarling.html">col_andersondarling</a></td>
+<td>Anderson-Darling test</td></tr>
+<tr><td style="width: 25%;"><a href="bartlett.html">col_bartlett</a></td>
+<td>Bartlett test</td></tr>
+<tr><td style="width: 25%;"><a href="levene.html">col_brownforsythe</a></td>
+<td>Levene test</td></tr>
+<tr><td style="width: 25%;"><a href="cortest.html">col_cor_pearson</a></td>
+<td>Correlation</td></tr>
+<tr><td style="width: 25%;"><a href="cosinor.html">col_cosinor</a></td>
+<td>Cosinor</td></tr>
+<tr><td style="width: 25%;"><a href="fligner.html">col_flignerkilleen</a></td>
+<td>Fligner-Killeen test</td></tr>
+<tr><td style="width: 25%;"><a href="fvar.html">col_f_var</a></td>
+<td>F Variance test</td></tr>
+<tr><td style="width: 25%;"><a href="jarquebera.html">col_jarquebera</a></td>
+<td>Jarque-Bera test</td></tr>
+<tr><td style="width: 25%;"><a href="kolmogorov.html">col_kolmogorovsmirnov_twosample</a></td>
+<td>Kolmogorov-Smirnov test</td></tr>
+<tr><td style="width: 25%;"><a href="kruskalwallis.html">col_kruskalwallis</a></td>
+<td>Kruskal-Wallis rank sum test</td></tr>
+<tr><td style="width: 25%;"><a href="levene.html">col_levene</a></td>
+<td>Levene test</td></tr>
+<tr><td style="width: 25%;"><a href="oneway.html">col_oneway_equalvar</a></td>
+<td>Oneway ANOVA</td></tr>
+<tr><td style="width: 25%;"><a href="oneway.html">col_oneway_welch</a></td>
+<td>Oneway ANOVA</td></tr>
+<tr><td style="width: 25%;"><a href="ttest.html">col_t_equalvar</a></td>
+<td>t-test</td></tr>
+<tr><td style="width: 25%;"><a href="ttest.html">col_t_onesample</a></td>
+<td>t-test</td></tr>
+<tr><td style="width: 25%;"><a href="ttest.html">col_t_paired</a></td>
+<td>t-test</td></tr>
+<tr><td style="width: 25%;"><a href="ttest.html">col_t_welch</a></td>
+<td>t-test</td></tr>
+<tr><td style="width: 25%;"><a href="waerden.html">col_waerden</a></td>
+<td>Van der Waerden test</td></tr>
+<tr><td style="width: 25%;"><a href="wilcoxon.html">col_wilcoxon_onesample</a></td>
+<td>Wilcoxon test</td></tr>
+<tr><td style="width: 25%;"><a href="wilcoxon.html">col_wilcoxon_paired</a></td>
+<td>Wilcoxon test</td></tr>
+<tr><td style="width: 25%;"><a href="wilcoxon.html">col_wilcoxon_twosample</a></td>
+<td>Wilcoxon test</td></tr>
+<tr><td style="width: 25%;"><a href="cortest.html">cortest</a></td>
+<td>Correlation</td></tr>
+<tr><td style="width: 25%;"><a href="cosinor.html">cosinor</a></td>
+<td>Cosinor</td></tr>
+<tr><td style="width: 25%;"><a href="fligner.html">fligner</a></td>
+<td>Fligner-Killeen test</td></tr>
+<tr><td style="width: 25%;"><a href="fvar.html">fvar</a></td>
+<td>F Variance test</td></tr>
+<tr><td style="width: 25%;"><a href="jarquebera.html">jarquebera</a></td>
+<td>Jarque-Bera test</td></tr>
+<tr><td style="width: 25%;"><a href="kolmogorov.html">kolmogorov</a></td>
+<td>Kolmogorov-Smirnov test</td></tr>
+<tr><td style="width: 25%;"><a href="kruskalwallis.html">kruskalwallis</a></td>
+<td>Kruskal-Wallis rank sum test</td></tr>
+<tr><td style="width: 25%;"><a href="levene.html">levene</a></td>
+<td>Levene test</td></tr>
+<tr><td style="width: 25%;"><a href="oneway.html">oneway</a></td>
+<td>Oneway ANOVA</td></tr>
+<tr><td style="width: 25%;"><a href="andersondarling.html">row_andersondarling</a></td>
+<td>Anderson-Darling test</td></tr>
+<tr><td style="width: 25%;"><a href="bartlett.html">row_bartlett</a></td>
+<td>Bartlett test</td></tr>
+<tr><td style="width: 25%;"><a href="levene.html">row_brownforsythe</a></td>
+<td>Levene test</td></tr>
+<tr><td style="width: 25%;"><a href="cortest.html">row_cor_pearson</a></td>
+<td>Correlation</td></tr>
+<tr><td style="width: 25%;"><a href="cosinor.html">row_cosinor</a></td>
+<td>Cosinor</td></tr>
+<tr><td style="width: 25%;"><a href="fligner.html">row_flignerkilleen</a></td>
+<td>Fligner-Killeen test</td></tr>
+<tr><td style="width: 25%;"><a href="fvar.html">row_f_var</a></td>
+<td>F Variance test</td></tr>
+<tr><td style="width: 25%;"><a href="jarquebera.html">row_jarquebera</a></td>
+<td>Jarque-Bera test</td></tr>
+<tr><td style="width: 25%;"><a href="kolmogorov.html">row_kolmogorovsmirnov_twosample</a></td>
+<td>Kolmogorov-Smirnov test</td></tr>
+<tr><td style="width: 25%;"><a href="kruskalwallis.html">row_kruskalwallis</a></td>
+<td>Kruskal-Wallis rank sum test</td></tr>
+<tr><td style="width: 25%;"><a href="levene.html">row_levene</a></td>
+<td>Levene test</td></tr>
+<tr><td style="width: 25%;"><a href="oneway.html">row_oneway_equalvar</a></td>
+<td>Oneway ANOVA</td></tr>
+<tr><td style="width: 25%;"><a href="oneway.html">row_oneway_welch</a></td>
+<td>Oneway ANOVA</td></tr>
+<tr><td style="width: 25%;"><a href="ttest.html">row_t_equalvar</a></td>
+<td>t-test</td></tr>
+<tr><td style="width: 25%;"><a href="ttest.html">row_t_onesample</a></td>
+<td>t-test</td></tr>
+<tr><td style="width: 25%;"><a href="ttest.html">row_t_paired</a></td>
+<td>t-test</td></tr>
+<tr><td style="width: 25%;"><a href="ttest.html">row_t_welch</a></td>
+<td>t-test</td></tr>
+<tr><td style="width: 25%;"><a href="waerden.html">row_waerden</a></td>
+<td>Van der Waerden test</td></tr>
+<tr><td style="width: 25%;"><a href="wilcoxon.html">row_wilcoxon_onesample</a></td>
+<td>Wilcoxon test</td></tr>
+<tr><td style="width: 25%;"><a href="wilcoxon.html">row_wilcoxon_paired</a></td>
+<td>Wilcoxon test</td></tr>
+<tr><td style="width: 25%;"><a href="wilcoxon.html">row_wilcoxon_twosample</a></td>
+<td>Wilcoxon test</td></tr>
+<tr><td style="width: 25%;"><a href="ttest.html">ttest</a></td>
+<td>t-test</td></tr>
+<tr><td style="width: 25%;"><a href="waerden.html">waerden</a></td>
+<td>Van der Waerden test</td></tr>
+<tr><td style="width: 25%;"><a href="wilcoxon.html">wilcoxon</a></td>
+<td>Wilcoxon test</td></tr>
+</table>
+</div></body></html>

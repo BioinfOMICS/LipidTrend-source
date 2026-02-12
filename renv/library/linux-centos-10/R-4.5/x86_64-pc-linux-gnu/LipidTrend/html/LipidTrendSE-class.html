@@ -1,0 +1,54 @@
+<!DOCTYPE html><html><head><title>R: Class for storing analyzeLipidRegion analysis results</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>LipidTrendSE-class {LipidTrend}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Class for storing analyzeLipidRegion analysis results</h2>
+
+<h3>Description</h3>
+
+<p>This class extends SummarizedExperiment to store
+analyzeLipidRegion analysis results
+</p>
+
+
+<h3>Slots</h3>
+
+
+<dl>
+<dt><code>split_chain</code></dt><dd><p>Logical. Indicates whether chains were split by
+parity (even vs. odd).
+When TRUE, results are stored in even_chain_result and
+odd_chain_result slots.
+When FALSE, results are stored in the result slot.</p>
+</dd>
+<dt><code>result</code></dt><dd><p>Data frame of analysis results (for non-split data)</p>
+</dd>
+<dt><code>even_chain_result</code></dt><dd><p>Data frame of results for even chains
+(when split_chain is TRUE)</p>
+</dd>
+<dt><code>odd_chain_result</code></dt><dd><p>Data frame of results for odd chains
+(when split_chain is TRUE)</p>
+</dd>
+<dt><code>abund_weight</code></dt><dd><p>Logical. Logical. Set to TRUE to incorporate average
+lipid abundance as a weight in the test statistic.</p>
+</dd>
+</dl>
+
+<hr><div style="text-align: center;">[Package <em>LipidTrend</em> version 1.0.0 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

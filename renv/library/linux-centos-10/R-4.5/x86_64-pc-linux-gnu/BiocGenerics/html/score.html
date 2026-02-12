@@ -1,0 +1,103 @@
+<!DOCTYPE html><html><head><title>R: Score accessor</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>score {BiocGenerics}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Score accessor</h2>
+
+<h3>Description</h3>
+
+<p>Get or set the score value contained in an object.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>score(x, ...)
+score(x, ...) &lt;- value
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="x">x</code></td>
+<td>
+
+<p>An object to get or set the score value of.
+</p>
+</td></tr>
+<tr><td><code id="...">...</code></td>
+<td>
+
+<p>Additional arguments, for use in specific methods.
+</p>
+</td></tr>
+<tr><td><code id="value">value</code></td>
+<td>
+
+<p>The score value to set on <code>x</code>.
+</p>
+</td></tr>
+</table>
+
+
+<h3>See Also</h3>
+
+
+<ul>
+<li> <p><code><a href="../../methods/help/showMethods.html">showMethods</a></code> for displaying a summary of the
+methods defined for a given generic function.
+</p>
+</li>
+<li> <p><code><a href="../../methods/help/selectMethod.html">selectMethod</a></code> for getting the definition of
+a specific method.
+</p>
+</li>
+<li> <p><a href="../../GenomicRanges/help/score+2CGenomicRanges-method.html">score,GenomicRanges-method</a> in the
+<span class="pkg">GenomicRanges</span> package for an example of a specific
+<code>score</code> method (defined for <a href="../../GenomicRanges/help/GenomicRanges.html">GenomicRanges</a>
+objects).
+</p>
+</li>
+<li> <p><a href="../../BiocGenerics/help/BiocGenerics.html">BiocGenerics</a> for a summary of all the generics defined
+in the <span class="pkg">BiocGenerics</span> package.
+</p>
+</li></ul>
+
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>score
+showMethods("score")
+
+`score&lt;-`
+showMethods("score&lt;-")
+
+library(GenomicRanges)
+
+showMethods("score")
+selectMethod("score", "GenomicRanges")
+
+showMethods("score&lt;-")
+selectMethod("score&lt;-", "GenomicRanges")
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>BiocGenerics</em> version 0.56.0 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

@@ -1,0 +1,81 @@
+<!DOCTYPE html><html><head><title>R: Check for Full Column Rank</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>is.fullrank {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Check for Full Column Rank</h2>
+
+<h3>Description</h3>
+
+<p>Test whether a numeric matrix has full column rank.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>is.fullrank(x)
+nonEstimable(x)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="x">x</code></td>
+<td>
+<p>a numeric matrix or vector</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p><code>is.fullrank</code> is used to check the integrity of design matrices in limma, for example after <a href="../help/subsetting.html">subsetting</a> operations.
+</p>
+<p><code>nonEstimable</code> is used by <code><a href="../../limma/help/lmFit.html">lmFit</a></code> to report which coefficients in a linear model cannot be estimated.
+</p>
+
+
+<h3>Value</h3>
+
+<p><code>is.fullrank</code> returns <code>TRUE</code> or <code>FALSE</code>.
+</p>
+<p><code>nonEstimable</code> returns a character vector of names for the columns of <code>x</code> which are linearly dependent on previous columns.
+If <code>x</code> has full column rank, then the value is <code>NULL</code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'># TRUE
+is.fullrank(1)
+is.fullrank(cbind(1,0:1))
+
+# FALSE
+is.fullrank(0)
+is.fullrank(matrix(1,2,2))
+nonEstimable(matrix(1,2,2))
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>limma</em> version 3.66.0 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

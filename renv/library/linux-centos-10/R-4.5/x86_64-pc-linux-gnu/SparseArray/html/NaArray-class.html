@@ -1,0 +1,233 @@
+<!DOCTYPE html><html><head><title>R: NaArray objects</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>NaArray {SparseArray}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>NaArray objects</h2>
+
+<h3>Description</h3>
+
+<p>EXPERIMENTAL!!!
+</p>
+<p>Like <a href="../../SparseArray/help/SVT_SparseArray.html">SVT_SparseArray</a> objects but the background value is <code>NA</code>
+instead of zero.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>## Constructor function:
+NaArray(x, dim=NULL, dimnames=NULL, type=NA)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="x">x</code></td>
+<td>
+
+<p>If <code>dim</code> is <code>NULL</code> (the default) then <code>x</code> must be an
+ordinary matrix or array, or a dgCMatrix/lgCMatrix object, or any
+matrix-like or array-like object that supports coercion to NaArray.
+</p>
+<p>If <code>dim</code> is provided then <code>x</code> can either be missing, a
+vector (atomic or list), or an array-like object. If missing, then
+an all-NA NaArray object will be constructed. Otherwise <code>x</code>
+will be used to fill the returned object (<code>length(x)</code> must be
+<code>&lt;= prod(dim)</code>). Note that if <code>x</code> is an array-like object
+then its dimensions are ignored i.e. it's treated as a vector.
+</p>
+</td></tr>
+<tr><td><code id="dim">dim</code></td>
+<td>
+
+<p><code>NULL</code> or the dimensions (supplied as an integer vector) of
+the NaArray or NaMatrix object to construct.
+If <code>NULL</code> (the default) then the returned object will have
+the dimensions of matrix-like or array-like object <code>x</code>.
+</p>
+</td></tr>
+<tr><td><code id="dimnames">dimnames</code></td>
+<td>
+
+<p>The <em>dimnames</em> of the object to construct. Must be <code>NULL</code> or
+a list of length the number of dimensions. Each list element must be
+either <code>NULL</code> or a character vector along the corresponding dimension.
+If both <code>dim</code> and <code>dimnames</code> are <code>NULL</code> (the default) then
+the returned object will have the <em>dimnames</em> of matrix-like or
+array-like object <code>x</code>.
+</p>
+</td></tr>
+<tr><td><code id="type">type</code></td>
+<td>
+
+<p>A single string specifying the requested type of the object.
+</p>
+<p>By default the NaArray object returned by the constructor
+function will have the same <code>type()</code> as <code>x</code>. However the
+user can use the <code>type</code> argument to request a different type.
+Note that doing:
+</p>
+<pre>    naa &lt;- NaArray(x, type=type)</pre>
+<p>is equivalent to doing:
+</p>
+<pre>    naa &lt;- NaArray(x)
+    type(naa) &lt;- type</pre>
+<p>but the former is more convenient and will generally be more efficient.
+</p>
+<p>The supported types for NaArray objects are <code>"integer"</code>,
+<code>"logical"</code>, <code>"double"</code>, <code>"complex"</code>, and
+<code>"character"</code>.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>NaArray is a concrete subclass of the <a href="../../S4Arrays/help/Array.html">Array</a> virtual
+class (the latter is defined in the <span class="pkg">S4Arrays</span> package).
+This makes NaArray objects Array derivatives.
+</p>
+<p>Like with <a href="../../SparseArray/help/SVT_SparseArray.html">SVT_SparseArray</a> objects, the non-NA data in an NaArray
+object is stored in a <em>Sparse Vector Tree</em>.
+See <code>?<a href="../../SparseArray/help/SVT_SparseArray.html">SVT_SparseArray</a></code> for more information.
+</p>
+<p>Most of the <em>matrix and array standard API</em> defined in base R should
+work on NaArray objects, including <code>dim()</code>, <code>length()</code>,
+<code>dimnames()</code>, <code>`dimnames&lt;-`()</code>, <code>[</code>, <code>drop()</code>,
+<code>`[&lt;-`</code> (subassignment), <code>t()</code>, <code>rbind()</code>, <code>cbind()</code>,
+etc...
+</p>
+<p>NaArray objects also support <code>type()</code>, <code>`type&lt;-`()</code>,
+<code>is_nonna()</code>, <code>nnacount()</code>, <code>nnawhich()</code>, <code>nnavals()</code>,
+<code>`nnavals&lt;-`()</code>, <code>arbind()</code>, and <code>acbind()</code>.
+</p>
+
+
+<h3>Value</h3>
+
+<p>An NaArray or NaMatrix object.
+</p>
+<p>The <code>type()</code> of the input object is preserved, except if a
+different one was requested via the <code>type</code> argument.
+</p>
+
+
+<h3>See Also</h3>
+
+
+<ul>
+<li><p> The <a href="../../SparseArray/help/SVT_SparseArray.html">SVT_SparseArray</a> class.
+</p>
+</li>
+<li> <p><a href="../../SparseArray/help/is_nonna.html">is_nonna</a> for <code>is_nonna()</code> and <code>nna*()</code> functions
+<code>nnacount()</code>, <code>nnawhich()</code>, etc...
+</p>
+</li>
+<li> <p><a href="../../SparseArray/help/NaArray_aperm.html">NaArray_aperm</a> for permuting the dimensions of an
+NaArray object (e.g. transposition).
+</p>
+</li>
+<li> <p><a href="../../SparseArray/help/NaArray_subsetting.html">NaArray_subsetting</a> for subsetting an NaArray object.
+</p>
+</li>
+<li> <p><a href="../../SparseArray/help/NaArray_subassignment.html">NaArray_subassignment</a> for NaArray subassignment.
+</p>
+</li>
+<li> <p><a href="../../SparseArray/help/NaArray_abind.html">NaArray_abind</a> for combining 2D or multidimensional
+NaArray objects.
+</p>
+</li>
+<li> <p><a href="../../SparseArray/help/NaArray_summarization.html">NaArray_summarization</a> for NaArray summarization
+methods.
+</p>
+</li>
+<li> <p><a href="../../SparseArray/help/NaArray_Arith.html">NaArray_Arith</a>, <a href="../../SparseArray/help/NaArray_Compare.html">NaArray_Compare</a>, and
+<a href="../../SparseArray/help/NaArray_Logic.html">NaArray_Logic</a>, for operations from the <code>Arith</code>,
+<code>Compare</code>, and <code>Arith</code> groups on NaArray objects.
+</p>
+</li>
+<li> <p><a href="../../SparseArray/help/NaArray_Math.html">NaArray_Math</a> for operations from the <code>Math</code> and
+<code>Math2</code> groups on NaArray objects.
+</p>
+</li>
+<li> <p><a href="../../SparseArray/help/NaArray_misc.html">NaArray_misc</a> for miscellaneous operations on an
+NaArray object.
+</p>
+</li>
+<li> <p><a href="../../SparseArray/help/NaArray_matrixStats.html">NaArray_matrixStats</a> for col/row summarization methods
+for NaArray objects.
+</p>
+</li>
+<li><p> Ordinary <a href="../../base/help/array.html">array</a> objects in base R.
+</p>
+</li></ul>
+
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>## ---------------------------------------------------------------------
+## Display details of class definition &amp; known subclasses
+## ---------------------------------------------------------------------
+
+showClass("NaArray")
+
+## ---------------------------------------------------------------------
+## The NaArray() constructor
+## ---------------------------------------------------------------------
+
+naa1 &lt;- NaArray(dim=5:3)  # all-NA object
+naa1
+
+naa2 &lt;- NaArray(dim=c(35000, 2e6), type="integer")  # all-NA object
+naa2
+
+## Add some non-NA values to 'naa2':
+naa2[cbind( 1:99, 2:100)] &lt;-  1L
+naa2[cbind(1:100, 1:100)] &lt;-  0L
+naa2[cbind(2:100,  1:99)] &lt;- -1L
+naa2
+
+## The dimnames can be specified at construction time, or
+## added/modified later:
+naa3 &lt;- NaArray(c(NA, NA, 1L, NA, 0:7, rep(NA, 4), 12:14, NA),
+                dim=4:5, dimnames=list(letters[1:4], LETTERS[1:5]))
+naa3
+
+colnames(naa3) &lt;- LETTERS[22:26]
+naa3
+
+## Sanity checks:
+stopifnot(
+  is(naa1, "NaArray"),
+  identical(dim(naa1), 5:3),
+  identical(as.array(naa1), array(dim=5:3)),
+  is(naa2, "NaMatrix"),
+  all.equal(dim(naa2), c(35000, 2e6)),
+  identical(nnacount(naa2), 298L),
+  is(naa3, "NaMatrix"),
+  identical(dim(naa3), 4:5),
+  identical(nnacount(naa3), 12L)
+)
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>SparseArray</em> version 1.10.8 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

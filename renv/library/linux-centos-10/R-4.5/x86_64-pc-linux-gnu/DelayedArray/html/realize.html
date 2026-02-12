@@ -1,0 +1,184 @@
+<!DOCTYPE html><html><head><title>R: Realize an object in memory or on disk</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>realize {DelayedArray}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Realize an object in memory or on disk</h2>
+
+<h3>Description</h3>
+
+<p><code>realize()</code> is an S4 generic function.
+</p>
+<p>The default <code>realize()</code> method handles the array case. It will
+realize the array-like object (typically a <a href="../../DelayedArray/help/DelayedArray.html">DelayedArray</a> object)
+in memory or on disk, depending on the <em>realization backend</em> specified
+via its <code>BACKEND</code> argument,
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>realize(x, ...)
+
+## S4 method for signature 'ANY'
+realize(x, BACKEND=getAutoRealizationBackend())
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="x">x</code></td>
+<td>
+
+<p>An array-like object (typically a <a href="../../DelayedArray/help/DelayedArray.html">DelayedArray</a> object) for
+the default method.
+</p>
+<p>Other types of objects can be supported via additional methods.
+For example, the <span class="pkg">SummarizedExperiment</span> package defines a
+method for <a href="../../SummarizedExperiment/help/SummarizedExperiment.html">SummarizedExperiment</a> objects (see
+<code>?`<a href="../../SummarizedExperiment/help/realize+2CSummarizedExperiment-method.html">realize,SummarizedExperiment-method</a>`</code>).
+</p>
+</td></tr>
+<tr><td><code id="...">...</code></td>
+<td>
+
+<p>Additional arguments passed to methods.
+</p>
+</td></tr>
+<tr><td><code id="BACKEND">BACKEND</code></td>
+<td>
+
+<p><code>NULL</code> or a single string specifying the name of a
+<em>realization backend</em>. By default, the <em>automatic
+realization backend</em> will be used. This is the backend returned by
+<code><a href="../../DelayedArray/help/getAutoRealizationBackend.html">getAutoRealizationBackend</a>()</code>.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The default <code>realize()</code> method realizes an array-like object <code>x</code>
+in memory if <code>BACKEND</code> is <code>NULL</code>, otherwise on disk.
+</p>
+<p>Note that, when <code>BACKEND</code> is not <code>NULL</code>, <code>x</code> gets realized as
+a &quot;pristine&quot; <a href="../../DelayedArray/help/DelayedArray.html">DelayedArray</a> object (e.g. an <a href="../../HDF5Array/help/HDF5Array.html">HDF5Array</a>
+object), that is, as a <a href="../../DelayedArray/help/DelayedArray.html">DelayedArray</a> object that carries no delayed
+operations. This means that, if <code>x</code> is itself a <a href="../../DelayedArray/help/DelayedArray.html">DelayedArray</a>
+object, then the returned object is another <a href="../../DelayedArray/help/DelayedArray.html">DelayedArray</a> object
+semantically equivalent to <code>x</code> where the delayed operations carried
+by <code>x</code> have been realized.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A &quot;pristine&quot; <a href="../../DelayedArray/help/DelayedArray.html">DelayedArray</a> object if <code>BACKEND</code> is
+not <code>NULL</code>.
+</p>
+<p>Otherwise, an ordinary matrix or array, or a <a href="../../SparseArray/help/SparseArray.html">SparseArray</a>
+object.
+</p>
+
+
+<h3>See Also</h3>
+
+
+<ul>
+<li> <p><code><a href="../../DelayedArray/help/getAutoRealizationBackend.html">getAutoRealizationBackend</a></code> and
+<code><a href="../../DelayedArray/help/setAutoRealizationBackend.html">setAutoRealizationBackend</a></code> for getting and setting
+the <em>automatic realization backend</em>.
+</p>
+</li>
+<li> <p><a href="../../DelayedArray/help/DelayedArray.html">DelayedArray</a> objects.
+</p>
+</li>
+<li> <p><a href="../../DelayedArray/help/RleArray.html">RleArray</a> objects.
+</p>
+</li>
+<li> <p><a href="../../HDF5Array/help/HDF5Array.html">HDF5Array</a> objects in the <span class="pkg">HDF5Array</span> package.
+</p>
+</li>
+<li> <p><a href="../../SparseArray/help/SparseArray.html">SparseArray</a> objects implemented in the
+<span class="pkg">SparseArray</span> package.
+</p>
+</li>
+<li> <p><a href="../../base/help/array.html">array</a> objects in base R.
+</p>
+</li></ul>
+
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>## ---------------------------------------------------------------------
+## In-memory realization
+## ---------------------------------------------------------------------
+
+a &lt;- array(1:24, dim=4:2)
+realize(a, BACKEND=NULL)  # no-op
+
+A &lt;- DelayedArray(a)
+realize(log(A), BACKEND=NULL)  # same as 'as.array(log(A))'
+
+## Sanity checks:
+stopifnot(identical(realize(a, BACKEND=NULL), a))
+stopifnot(identical(realize(log(A), BACKEND=NULL), log(a)))
+
+## ---------------------------------------------------------------------
+## On-disk realization
+## ---------------------------------------------------------------------
+
+library(HDF5Array)
+
+realize(log(A), BACKEND="HDF5Array")  # same as 'as(log(A), "HDF5Array")'
+
+## ---------------------------------------------------------------------
+## Omitting the 'BACKEND' argument
+## ---------------------------------------------------------------------
+
+## When 'BACKEND' is not specified, the "automatic realization backend"
+## is used. This backend is controlled via setAutoRealizationBackend().
+
+toy_h5 &lt;- system.file("extdata", "toy.h5", package="HDF5Array")
+h5ls(toy_h5)
+M1 &lt;- HDF5Array(toy_h5, "M1")
+M2 &lt;- HDF5Array(toy_h5, "M2")
+M3 &lt;- rbind(log(M1), t(M2)) + 0.5
+M3
+
+## Set the "automatic realization backend" to NULL for in-memory
+## realization (as ordinary array or SparseArray object):
+setAutoRealizationBackend(NULL)
+m3 &lt;- realize(M3)  # in-memory realization
+
+registeredRealizationBackends()
+
+setAutoRealizationBackend("RleArray")
+realize(M3)  # realization as RleArray object
+
+setAutoRealizationBackend("HDF5Array")
+realize(M3)  # on-disk realization (as HDF5Array object)
+
+setAutoRealizationBackend()  # restore default (NULL)
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>DelayedArray</em> version 0.36.0 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

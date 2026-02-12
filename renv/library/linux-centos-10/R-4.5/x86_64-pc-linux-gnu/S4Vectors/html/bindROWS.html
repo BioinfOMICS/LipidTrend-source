@@ -1,0 +1,104 @@
+<!DOCTYPE html><html><head><title>R: Combine objects along their ROWS or COLS</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>bindROWS {S4Vectors}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Combine objects along their ROWS or COLS</h2>
+
+<h3>Description</h3>
+
+<p><code>bindROWS</code> and <code>bindCOLS</code> are low-level generic functions
+defined in the <span class="pkg">S4Vectors</span> package for binding objects along their
+1st or 2nd dimension. They are the workhorses behind higher-level
+operations like <code>c()</code>, <code>rbind()</code>, or <code>cbind()</code> on
+most vector-like or rectangular objects defined in Bioconductor.
+</p>
+<p>They are not intended to be used directly by the end user.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>bindROWS(x, objects=list(), use.names=TRUE, ignore.mcols=FALSE, check=TRUE)
+bindCOLS(x, objects=list(), use.names=TRUE, ignore.mcols=FALSE, check=TRUE)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="x">x</code></td>
+<td>
+
+<p>An S4 object.
+</p>
+</td></tr>
+<tr><td><code id="objects">objects</code></td>
+<td>
+
+<p>A list of S4 objects to bind to <code>x</code>. They should typically (but not
+necessarily) have the same class as <code>x</code>.
+</p>
+</td></tr>
+<tr><td><code id="use.names">use.names</code></td>
+<td>
+
+<p>Should the names on the input objects be propagated? By default they are.
+</p>
+</td></tr>
+<tr><td><code id="ignore.mcols">ignore.mcols</code></td>
+<td>
+
+<p>Should the metadata columns on the input objects be ignored? By defaut
+they are not (i.e. they are propagated).
+</p>
+</td></tr>
+<tr><td><code id="check">check</code></td>
+<td>
+
+<p>Should the result object be validated before being returned to the user?
+By default it is.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>An object of the same class as <code>x</code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Hervé Pagès</p>
+
+
+<h3>See Also</h3>
+
+
+<ul>
+<li><p> The <code><a href="../../BiocGenerics/help/NROW.html">NROW</a></code> and
+<code><a href="../../BiocGenerics/help/NCOL.html">NCOL</a></code> generic functions
+defined in the <span class="pkg">BiocGenerics</span> package.
+</p>
+</li></ul>
+
+
+<hr><div style="text-align: center;">[Package <em>S4Vectors</em> version 0.48.0 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

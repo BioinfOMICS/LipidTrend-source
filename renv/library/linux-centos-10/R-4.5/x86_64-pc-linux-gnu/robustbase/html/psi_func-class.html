@@ -1,0 +1,111 @@
+<!DOCTYPE html><html><head><title>R: Class of &quot;Psi Functions&quot; for M-Estimation</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>psi_func-class {robustbase}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Class of &quot;Psi Functions&quot; for M-Estimation</h2>
+
+<h3>Description</h3>
+
+<p>The class <code>"psi_func"</code> is used to store <code class="reqn">\psi \ (psi)</code>
+functions for M-estimation.  In particular, an object of the class
+contains <code class="reqn">\rho(x) \ (\code{rho})</code>, its derivative
+<code class="reqn">\psi(x) \ (psi)</code>, the weight function <code class="reqn">\psi(x)/x</code>, and
+first derivative of <code class="reqn">\psi</code>, <code>Dpsi = </code> <code class="reqn">\psi'(x)</code>.
+</p>
+
+
+<h3>Objects from the Class</h3>
+
+<p>Objects can be created by calls of the form <code>new("psi_func", ...)</code>,
+but preferably by <code><a href="../../robustbase/help/psiFunc.html">psiFunc</a>(...)</code>.
+</p>
+
+
+<h3>Slots</h3>
+
+
+<dl>
+<dt><code>rho</code>:</dt><dd><p>the <code class="reqn">\rho()</code> function, an object of
+class <code>"functionX"</code>. This is used to formulate the
+objective function; <code class="reqn">\rho()</code> can be regarded as generalized
+negative log-likelihood.</p>
+</dd>
+<dt><code>psi</code>:</dt><dd><p><code class="reqn">\psi()</code> is the derivative of <code class="reqn">\rho</code>,
+<code class="reqn">\psi(x) = \frac{d}{dx} \rho(x)</code>;
+also of class <code>"functionX"</code>.</p>
+</dd>
+<dt><code>wgt</code>:</dt><dd><p>The weight function <code class="reqn">\psi(x)/x</code>,
+of class <code>"functionX"</code>.</p>
+</dd>
+<dt><code>Dpsi</code>:</dt><dd><p>the derivative of <code class="reqn">\psi</code>,
+<code class="reqn">Dpsi(x) = psi'(x)</code>; of class <code>"functionX"</code>.</p>
+</dd>
+<dt><code>Dwgt</code>:</dt><dd><p>the derivative of the weight function,
+of class <code>"functionX"</code>, is generated automatically if
+<code><a href="../../robustbase/help/psiFunc.html">psiFunc</a></code> constructor is used.</p>
+</dd>
+<dt><code>tDefs</code>:</dt><dd><p><em>named</em> numeric vector of <b>t</b>uning
+parameter <b>Def</b>ault values.</p>
+</dd>
+
+<dt><code>Erho</code>:</dt><dd><p>A function of class <code>"functionXal"</code> for
+computing <code class="reqn">E[\rho(X)]</code> when <code class="reqn">X</code> is standard normal
+<code class="reqn">\mathcal{N}(0,1)</code>.</p>
+</dd>
+<dt><code>Epsi2</code>:</dt><dd><p>A function of class <code>"functionXal"</code> for
+computing <code class="reqn">E[\psi^2(X)]</code> when <code class="reqn">X</code> is standard normal.</p>
+</dd>
+<dt><code>EDpsi</code>:</dt><dd><p>A function of class <code>"functionXal"</code> for
+computing <code class="reqn">E[\psi'(X)]</code> when <code class="reqn">X</code> is standard normal.</p>
+</dd>
+<dt><code>name</code>:</dt><dd><p>Name of <code class="reqn">\psi</code>-function used for printing.</p>
+</dd>
+<dt><code>xtras</code>:</dt><dd><p>Potentially further information.</p>
+</dd>
+</dl>
+
+
+
+<h3>Methods</h3>
+
+<p>Currently, only <code><a href="../../robustbase/help/chgDefaults.html">chgDefaults</a>()</code>, <code><a href="../../robustbase/help/plot-methods.html">plot</a>()</code>
+and <code>show()</code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Martin Maechler</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../robustbase/help/psiFunc.html">psiFunc</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>str(huberPsi, give.attr = FALSE)
+
+plot(hampelPsi)# calling the plot method (nicely showing "all" !)
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>robustbase</em> version 0.99-7 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

@@ -1,0 +1,196 @@
+<!DOCTYPE html><html><head><title>R: is_nonzero() and the nz*() functions</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>is_nonzero {SparseArray}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>is_nonzero() and the nz*() functions</h2>
+
+<h3>Description</h3>
+
+<p>A set of functions for direct manipulation of the nonzero elements
+of an array-like object.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>is_nonzero(x)
+
+nzcount(x)
+nzwhich(x, arr.ind=FALSE)
+nzvals(x)
+nzvals(x) &lt;- value
+
+sparsity(x)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="x">x</code></td>
+<td>
+
+<p>Typically (but not necessarily) an array-like object that is sparse,
+like a <a href="../../SparseArray/help/SparseArray.html">SparseArray</a> derivative, or a dg[C|R]Matrix or lg[C|R]Matrix
+object from the <span class="pkg">Matrix</span> package.
+</p>
+<p>However, <code>x</code> can also be an ordinary matrix or array, or any
+matrix-like or array-like object.
+</p>
+</td></tr>
+<tr><td><code id="arr.ind">arr.ind</code></td>
+<td>
+
+<p>If <code>arr.ind=FALSE</code> (the default), the indices of the nonzero
+array elements are returned in a numeric vector (a.k.a. <em>L-index</em>).
+Otherwise, they're returned in an ordinary matrix (a.k.a. <em>M-index</em>).
+</p>
+<p>See <code>?<a href="../../S4Arrays/help/Lindex.html">Lindex</a></code> in the <span class="pkg">S4Arrays</span> package for
+more information about <em>L-index</em> and <em>M-index</em>, and how to
+convert from one to the other.
+</p>
+<p>Note that using <code>arr.ind=TRUE</code> won't work if <code>nzcount(x)</code>
+is &gt;= <code>.Machine$integer.max</code> (= 2^31), because, in that case,
+the returned <em>M-index</em> would need to be a matrix with more rows
+than what is supported by base R.
+</p>
+</td></tr>
+<tr><td><code id="value">value</code></td>
+<td>
+
+<p>A vector, typically of length <code>nzcount(x)</code> (or 1) and type
+<code>type(x)</code>.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p><code>nzcount(x)</code> and <code>nzwhich(x)</code> are equivalent to, but
+typically more efficient than, <code>sum(is_nonzero(x))</code> and
+<code>which(is_nonzero(x))</code>, respectively.
+</p>
+<p><code>nzvals(x)</code> is equivalent to, but typically more efficient than,
+<code>x[nzwhich(x)]</code> (or <code>x[is_nonzero(x)]</code>).
+</p>
+<p><code>nzvals(x) &lt;- value</code> replaces the values of the nonzero array
+elements in <code>x</code> with the supplied values. It's equivalent to,
+but typically more efficient than, <code>x[nzwhich(x)] &lt;- value</code>.
+</p>
+<p>Note that <code>nzvals(x) &lt;- nzvals(x)</code> is guaranteed to be a no-op.
+</p>
+
+
+<h3>Value</h3>
+
+<p><code>is_nonzero()</code>: An array-like object of <code>type()</code> <code>"logical"</code>
+and same dimensions as the input object.
+</p>
+<p><code>nzcount()</code>: The number of nonzero array elements in <code>x</code>.
+</p>
+<p><code>nzwhich()</code>: The indices of the nonzero array elements in <code>x</code>,
+either as an <em>L-index</em> (if <code>arr.ind</code> is <code>FALSE</code>) or as
+an <em>M-index</em> (if <code>arr.ind</code> is <code>TRUE</code>).
+Note that the indices are returned sorted in strictly ascending order.
+</p>
+<p><code>nzvals()</code>: A vector of the same <code>type()</code> as <code>x</code> and
+containing the values of the nonzero array elements in <code>x</code>.
+Note that the returned vector is guaranteed to be <em>parallel</em>
+to <code>nzwhich(x)</code>.
+</p>
+<p><code>sparsity(x)</code>: The ratio between the number of zero-valued
+elements in array-like object <code>x</code> and its total number of
+elements (<code>length(x)</code> or <code>prod(dim(x))</code>).
+More precisely, <code>sparsity(x)</code> is <code>1 - nzcount(x)/length(x)</code>.
+</p>
+
+
+<h3>See Also</h3>
+
+
+<ul>
+<li> <p><a href="../../SparseArray/help/is_nonna.html">is_nonna</a> for <code>is_nonna()</code> and <code>nna*()</code> functions
+<code>nnacount()</code>, <code>nnawhich()</code>, etc...
+</p>
+</li>
+<li> <p><a href="../../SparseArray/help/SparseArray.html">SparseArray</a> objects.
+</p>
+</li>
+<li> <p><a href="../../Matrix/help/dgCMatrix-class.html">dgCMatrix-class</a>, <a href="../../Matrix/help/lgCMatrix-class.html">lgCMatrix-class</a>,
+and <a href="../../Matrix/help/ngCMatrix-class.html">ngCMatrix-class</a> in the <span class="pkg">Matrix</span> package.
+</p>
+</li>
+<li><p> Ordinary <a href="../../base/help/array.html">array</a> objects in base R.
+</p>
+</li>
+<li> <p><code>base::<a href="../../base/help/which.html">which</a></code> in base R.
+</p>
+</li></ul>
+
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>a &lt;- array(rpois(120, lambda=0.3), dim=c(5, 12, 2))
+
+is_nonzero(a)
+
+## Get the number of nonzero array elements in 'a':
+nzcount(a)
+
+## nzwhich() returns the indices of the nonzero array elements in 'a'.
+## Either as a "L-index" i.e. an integer (or numeric) vector of
+## length 'nzcount(a)' containing "linear indices":
+nzidx &lt;- nzwhich(a)
+length(nzidx)
+head(nzidx)
+
+## Or as an "M-index" i.e. an integer matrix with 'nzcount(a)' rows
+## and one column per dimension where the rows represent "array indices"
+## (a.k.a. "array coordinates"):
+Mnzidx &lt;- nzwhich(a, arr.ind=TRUE)
+dim(Mnzidx)
+
+## Each row in the matrix is an n-tuple representing the "array
+## coordinates" of a nonzero element in 'a':
+head(Mnzidx)
+tail(Mnzidx)
+
+## Extract the values of the nonzero array elements in 'a' and return
+## them in a vector "parallel" to 'nzwhich(a)':
+a_nzvals &lt;- nzvals(a)  # equivalent to 'a[nzwhich(a)]'
+length(a_nzvals)
+head(a_nzvals)
+
+nzvals(a) &lt;- log1p(nzvals(a))
+a
+
+## Sanity checks:
+stopifnot(
+  identical(nzidx, which(a != 0)),
+  identical(Mnzidx, which(a != 0, arr.ind=TRUE, useNames=FALSE)),
+  identical(nzvals(a), a[nzidx]),
+  identical(nzvals(a), a[Mnzidx]),
+  identical(`nzvals&lt;-`(a, nzvals(a)), a)
+)
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>SparseArray</em> version 1.10.8 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

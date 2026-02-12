@@ -1,0 +1,119 @@
+<!DOCTYPE html><html><head><title>R: Hosmer-Lemeshow goodness of fit tests.</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>HLgof.test {MKmisc}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>
+Hosmer-Lemeshow goodness of fit tests.
+</h2>
+
+<h3>Description</h3>
+
+<p>The function computes Hosmer-Lemeshow goodness of fit tests
+for C and H statistic as well as the le Cessie-van Houwelingen-Copas-Hosmer 
+unweighted sum of squares test for global goodness of fit.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>HLgof.test(fit, obs, ngr = 10, X, verbose = FALSE)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="fit">fit</code></td>
+<td>
+<p> numeric vector with fitted probabilities. </p>
+</td></tr>
+<tr><td><code id="obs">obs</code></td>
+<td>
+<p> numeric vector with observed values. </p>
+</td></tr>
+<tr><td><code id="ngr">ngr</code></td>
+<td>
+<p> number of groups for C and H statistic. </p>
+</td></tr>
+<tr><td><code id="X">X</code></td>
+<td>
+<p> covariate(s) for le Cessie-van Houwelingen-Copas-Hosmer
+global goodness of fit test. </p>
+</td></tr>
+<tr><td><code id="verbose">verbose</code></td>
+<td>
+<p> logical, print intermediate results. </p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Hosmer-Lemeshow goodness of fit tests are computed; see Lemeshow and Hosmer 
+(1982).
+</p>
+<p>If <code>X</code> is specified, the le Cessie-van Houwelingen-Copas-Hosmer 
+unweighted sum of squares test for global goodness of fit is additionally 
+determined; see Hosmer et al. (1997).
+A more general version of this test is implemented in function 
+<code><a href="../../rms/help/residuals.lrm.html">residuals.lrm</a></code> in package <span class="pkg">rms</span>.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A list of test results.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> Matthias Kohl <a href="mailto:Matthias.Kohl@stamats.de">Matthias.Kohl@stamats.de</a></p>
+
+
+<h3>References</h3>
+
+<p>S. Lemeshow and D.W. Hosmer (1982). A review of goodness of fit statistics
+for use in the development of logistic regression models. 
+<em>American Journal of Epidemiology, <b>115</b>(1), 92-106.</em>
+</p>
+<p>D.W. Hosmer, T. Hosmer, S. le Cessie, S. Lemeshow (1997). A comparison 
+of goodness-of-fit tests for the logistic regression model. 
+<em>Statistics in Medicine</em>, <b>16</b>, 965-980.
+</p>
+
+
+<h3>See Also</h3>
+
+ <p><code><a href="../../rms/help/residuals.lrm.html">residuals.lrm</a></code> </p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>set.seed(111)
+x1 &lt;- factor(sample(1:3, 50, replace = TRUE))
+x2 &lt;- rnorm(50)
+obs &lt;- sample(c(0,1), 50, replace = TRUE)
+fit &lt;- glm(obs ~ x1+x2, family = binomial)
+HLgof.test(fit = fitted(fit), obs = obs)
+HLgof.test(fit = fitted(fit), obs = obs, X = model.matrix(obs ~ x1+x2))
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>MKmisc</em> version 1.9 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

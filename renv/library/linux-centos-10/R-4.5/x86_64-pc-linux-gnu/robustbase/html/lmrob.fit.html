@@ -1,0 +1,162 @@
+<!DOCTYPE html><html><head><title>R: MM-type estimator for regression</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>lmrob.fit {robustbase}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> MM-type estimator for regression </h2>
+
+<h3>Description</h3>
+
+<p>Compute MM-type estimators of regression:  An S-estimator is
+used as starting value, and an M-estimator with fixed scale and
+redescending psi-function is used from there. Optionally a D-step
+(Design Adaptive Scale estimate) as well as a second M-step is
+calculated.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>lmrob.fit(x, y, control, init = NULL, mf = NULL, bare.only = FALSE)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="x">x</code></td>
+<td>
+<p>design matrix (<code class="reqn">n \times p</code>) typically including a
+column of <code>1</code>s for the intercept.</p>
+</td></tr>
+<tr><td><code id="y">y</code></td>
+<td>
+<p>numeric response vector (of length <code class="reqn">n</code>).</p>
+</td></tr>
+<tr><td><code id="control">control</code></td>
+<td>
+<p>a list of control parameters as returned
+by <code><a href="../../robustbase/help/lmrob.control.html">lmrob.control</a></code>, used for both the initial S-estimate
+and the subsequent M- and D-estimates.</p>
+</td></tr>
+<tr><td><code id="init">init</code></td>
+<td>
+<p>optional <code><a href="../../base/html/list.html">list</a></code> of initial estimates.  See
+<em>Details</em>.</p>
+</td></tr>
+<tr><td><code id="mf">mf</code></td>
+<td>
+<p>defunct.</p>
+</td></tr>
+<tr><td><code id="bare.only">bare.only</code></td>
+<td>
+<p>logical indicating if the result should be
+<code><a href="../../base/html/function.html">return</a>()</code>ed after the bare computation steps are done.
+Useful, e.g., when you only need the <code>coefficients</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This function is the basic fitting function for MM-type estimation,
+called by <code><a href="../../robustbase/help/lmrob.html">lmrob</a></code> and typically not to be used on its own.
+</p>
+<p>If given, <code>init</code> must be a list of initial estimates containing
+at least the initial coefficients and scale as <code>coefficients</code> and
+<code>scale</code>.  Otherwise it calls <code><a href="../../robustbase/help/lmrob.S.html">lmrob.S</a>(..)</code> and uses it
+as initial estimator.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A list with components (some missing in case <code>bare.only</code> is true)
+</p>
+<table role = "presentation">
+<tr><td><code>fitted.values</code></td>
+<td>
+<p><code class="reqn">X \beta</code>, i.e., <code>X %*% coefficients</code>.</p>
+</td></tr>
+<tr><td><code>residuals</code></td>
+<td>
+<p>the raw residuals, <code>y - fitted.values</code></p>
+</td></tr>
+<tr><td><code>rweights</code></td>
+<td>
+<p>robustness weights derived from the final M-estimator
+residuals (even when not converged).</p>
+</td></tr>
+<tr><td><code>rank</code></td>
+<td>
+</td></tr>
+<tr><td><code>degree.freedom</code></td>
+<td>
+<p><code>n - rank</code></p>
+</td></tr>
+<tr><td><code>coefficients</code></td>
+<td>
+<p>estimated regression coefficient vector</p>
+</td></tr>
+<tr><td><code>scale</code></td>
+<td>
+<p>the robustly estimated error standard deviation</p>
+</td></tr>
+<tr><td><code>cov</code></td>
+<td>
+<p>variance-covariance matrix of <code>coefficients</code>, if the
+RWLS iterations have converged (and <code>control$cov</code> is not <code>"none"</code>).</p>
+</td></tr>
+<tr><td><code>control</code></td>
+<td>
+</td></tr>
+<tr><td><code>iter</code></td>
+<td>
+</td></tr>
+<tr><td><code>converged</code></td>
+<td>
+<p>logical indicating if the RWLS iterations have converged.</p>
+</td></tr>
+<tr><td><code>init.S</code></td>
+<td>
+<p>the whole initial S-estimator result, including its own
+<code>converged</code> flag, see <code><a href="../../robustbase/help/lmrob.S.html">lmrob.S</a></code> (only for MM-estimates).</p>
+</td></tr>
+<tr><td><code>init</code></td>
+<td>
+<p>A similar list that contains the results of intermediate
+estimates (not for MM-estimates).</p>
+</td></tr>
+</table>
+
+
+<h3>Author(s)</h3>
+
+<p> Matias Salibian-Barrera, Martin Maechler and Manuel Koller</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../robustbase/help/lmrob.html">lmrob</a></code>,
+<code><a href="../../robustbase/help/lmrob..M..fit.html">lmrob..M..fit</a></code>,
+<code><a href="../../robustbase/help/lmrob..D..fit.html">lmrob..D..fit</a></code>,
+<code><a href="../../robustbase/help/lmrob.S.html">lmrob.S</a></code>
+</p>
+
+<hr><div style="text-align: center;">[Package <em>robustbase</em> version 0.99-7 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html><html><head><title>R: Dataset of class 'ExpressionSet'</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>data:sample.ExpressionSet {Biobase}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Dataset of class 'ExpressionSet'</h2>
+
+<h3>Description</h3>
+
+<p>The expression data are real but anonymized. The data are from an
+experiment that used Affymetrix U95v2 chips. The data were processed by
+dChip and then exported to R for analysis.
+</p>
+<p>The data illustrate <code><a href="../../Biobase/help/ExpressionSet-class.html">ExpressionSet-class</a></code>, with
+<code>assayData</code> containing the required matrix element <code>exprs</code> and
+an additional matrix <code>se.exprs</code>. <code>se.exprs</code> has the same
+dimensions as <code>exprs</code>.
+</p>
+<p>The phenoData and standard error estimates (se.exprs) are made up.  
+The information in the &quot;description&quot; slot is fake.  
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>data(sample.ExpressionSet)</code></pre>
+
+
+<h3>Format</h3>
+
+<p>The data for 26 cases, labeled A to Z and 500 genes.
+Each case has three covariates: sex (male/female); type
+(case/control); and score (testing score). 
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>data(sample.ExpressionSet)
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>Biobase</em> version 2.70.0 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

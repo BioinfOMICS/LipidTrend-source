@@ -1,0 +1,105 @@
+<!DOCTYPE html><html><head><title>R: Controlling Robust GLM Fitting by Different Methods</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>glmrob..control {robustbase}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Controlling Robust GLM Fitting by Different Methods</h2>
+
+<h3>Description</h3>
+
+<p>These are auxiliary functions as user interface for <code><a href="../../robustbase/help/glmrob.html">glmrob</a></code> fitting
+when the different methods, <code>"Mqle"</code>, <code>"BY"</code>, or
+<code>"MT"</code> are used.  Typically only used when calling <code><a href="../../robustbase/help/glmrob.html">glmrob</a></code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>glmrobMqle.control(acc = 1e-04, test.acc = "coef", maxit = 50, tcc = 1.345)
+glmrobBY.control  (maxit = 1000, const = 0.5, maxhalf = 10)
+glmrobMT.control  (cw = 2.1, nsubm = 500, acc = 1e-06, maxit = 200)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="acc">acc</code></td>
+<td>
+<p>positive convergence tolerance;
+the iterations converge when ???</p>
+</td></tr>
+<tr><td><code id="test.acc">test.acc</code></td>
+<td>
+<p>Only &quot;coef&quot; is currently implemented</p>
+</td></tr>
+<tr><td><code id="maxit">maxit</code></td>
+<td>
+<p>integer giving the maximum number of iterations. </p>
+</td></tr>
+<tr><td><code id="tcc">tcc</code></td>
+<td>
+<p>tuning constant c for Huber's psi-function</p>
+</td></tr>
+<tr><td><code id="const">const</code></td>
+<td>
+<p>for &quot;BY&quot;, the normalizing constant ..</p>
+</td></tr>
+<tr><td><code id="maxhalf">maxhalf</code></td>
+<td>
+<p>for &quot;BY&quot;; the number of halving steps when the gradient
+itself no longer improves.  We have seen examples when increasing
+<code>maxhalf</code> was of relevance.</p>
+</td></tr>
+<tr><td><code id="cw">cw</code></td>
+<td>
+<p>tuning constant c for Tukey's biweight psi-function</p>
+</td></tr>
+<tr><td><code id="nsubm">nsubm</code></td>
+<td>
+<p>the number of subsamples to take for finding an initial
+estimate for <code>method = "MT"</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A <code><a href="../../base/html/list.html">list</a></code> with the arguments as components.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Andreas Ruckstuhl and Martin Maechler</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../robustbase/help/glmrob.html">glmrob</a></code></p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>str(glmrobMqle.control())
+str(glmrobBY.control())
+str(glmrobMT.control())
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>robustbase</em> version 0.99-7 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

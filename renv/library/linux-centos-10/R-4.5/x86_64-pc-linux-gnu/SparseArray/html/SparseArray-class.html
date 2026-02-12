@@ -1,0 +1,318 @@
+<!DOCTYPE html><html><head><title>R: SparseArray objects</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>SparseArray {SparseArray}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>SparseArray objects</h2>
+
+<h3>Description</h3>
+
+<p>The <span class="pkg">SparseArray</span> package defines the SparseArray virtual class
+whose purpose is to be extended by other S4 classes that aim
+at representing in-memory multidimensional sparse arrays.
+</p>
+<p>It has currently two concrete subclasses, <a href="../../SparseArray/help/COO_SparseArray.html">COO_SparseArray</a>
+and <a href="../../SparseArray/help/SVT_SparseArray.html">SVT_SparseArray</a>, both also defined in this package.
+Each subclass uses its own internal representation for the nonzero
+multidimensional data, the <em>COO layout</em> for <a href="../../SparseArray/help/COO_SparseArray.html">COO_SparseArray</a>,
+and the <em>SVT layout</em> for <a href="../../SparseArray/help/SVT_SparseArray.html">SVT_SparseArray</a>. The two layouts
+are described in the <a href="../../SparseArray/help/COO_SparseArray.html">COO_SparseArray</a> and <a href="../../SparseArray/help/SVT_SparseArray.html">SVT_SparseArray</a>
+man pages, respectively.
+</p>
+<p>Finally, the package also defines the SparseMatrix virtual class, as
+a subclass of the SparseArray class, for the specific 2D case.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>## Constructor function:
+SparseArray(x, type=NA)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="x">x</code></td>
+<td>
+
+<p>An ordinary matrix or array, or a dg[C|R]Matrix object, or an
+lg[C|R]Matrix object, or any matrix-like or array-like object that
+supports coercion to <a href="../../SparseArray/help/SVT_SparseArray.html">SVT_SparseArray</a>.
+</p>
+</td></tr>
+<tr><td><code id="type">type</code></td>
+<td>
+
+<p>A single string specifying the requested type of the object.
+</p>
+<p>By default, the SparseArray object returned by the constructor
+function has the same <code>type()</code> as <code>x</code>. However the
+user can use the <code>type</code> argument to request a different type.
+Note that doing:
+</p>
+<pre>    sa &lt;- SparseArray(x, type=type)</pre>
+<p>is equivalent to doing:
+</p>
+<pre>    sa &lt;- SparseArray(x)
+    type(sa) &lt;- type</pre>
+<p>but the former is more convenient and will generally be more efficient.
+</p>
+<p>Supported types are all R atomic types plus <code>"list"</code>.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The SparseArray class extends the <a href="../../S4Arrays/help/Array.html">Array</a> virtual class
+defined in the <span class="pkg">S4Arrays</span> package. Here is the full SparseArray
+sub-hierarchy as defined in the <span class="pkg">SparseArray</span> package (virtual
+classes are marked with an asterisk):
+</p>
+<pre>
+: Array class :                 Array*
+: hierarchy   :                   ^
+                                  |
+- - - - - - - - - - - - - - - - - | - - - - - - - - - - - - - - -
+: SparseArray   :            SparseArray*
+: sub-hierarchy :            ^    ^    ^
+                             |    |    |
+                 COO_SparseArray  |  SVT_SparseArray
+                        ^         |         ^
+- - - - - - - - - - - - | - - - - | - - - - | - - - - - - - - - -
+: SparseMatrix      :   |    SparseMatrix*  |
+: sub-sub-hierarchy :   |    ^         ^    |
+                        |    |         |    |
+                 COO_SparseMatrix    SVT_SparseMatrix</pre>
+<p>Any object that belongs to a class that extends SparseArray e.g. (a
+<a href="../../SparseArray/help/SVT_SparseArray.html">SVT_SparseArray</a> or <a href="../../SparseArray/help/SVT_SparseMatrix.html">SVT_SparseMatrix</a> object) is called
+a <em>SparseArray derivative</em>.
+</p>
+<p>Most of the <em>matrix and array standard API</em> defined in base R should
+work on SparseArray derivatives, including <code>dim()</code>, <code>length()</code>,
+<code>dimnames()</code>, <code>`dimnames&lt;-`()</code>, <code>[</code>, <code>drop()</code>,
+<code>`[&lt;-`</code> (subassignment), <code>t()</code>, <code>rbind()</code>, <code>cbind()</code>,
+etc...
+</p>
+<p>SparseArray derivatives also support <code>type()</code>, <code>`type&lt;-`()</code>,
+<code>is_sparse()</code>, <code>is_nonzero()</code>, <code>nzcount()</code>, <code>nzwhich()</code>,
+<code>nzvals()</code>, <code>`nzvals&lt;-`()</code>, <code>sparsity()</code>, <code>arbind()</code>,
+and <code>acbind()</code>.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A <em>SparseArray derivative</em>, that is a <a href="../../SparseArray/help/SVT_SparseArray.html">SVT_SparseArray</a>,
+<a href="../../SparseArray/help/COO_SparseArray.html">COO_SparseArray</a>, <a href="../../SparseArray/help/SVT_SparseMatrix.html">SVT_SparseMatrix</a>, or
+<a href="../../SparseArray/help/COO_SparseMatrix.html">COO_SparseMatrix</a> object.
+</p>
+<p>The <code>type()</code> of the input object is preserved, except if a
+different one was requested via the <code>type</code> argument.
+</p>
+<p>What is considered a zero depends on the <code>type()</code>:
+</p>
+
+<ul>
+<li> <p><code>"logical"</code> zero is <code>FALSE</code>;
+</p>
+</li>
+<li> <p><code>"integer"</code> zero is <code>0L</code>;
+</p>
+</li>
+<li> <p><code>"double"</code> zero is <code>0</code>;
+</p>
+</li>
+<li> <p><code>"complex"</code> zero is <code>0+0i</code>;
+</p>
+</li>
+<li> <p><code>"raw"</code> zero is <code>raw(1)</code>;
+</p>
+</li>
+<li> <p><code>"character"</code> zero is <code>""</code> (empty string);
+</p>
+</li>
+<li> <p><code>"list"</code> zero is <code>NULL</code>.
+</p>
+</li></ul>
+
+
+
+<h3>See Also</h3>
+
+
+<ul>
+<li><p> The <a href="../../SparseArray/help/COO_SparseArray.html">COO_SparseArray</a> and <a href="../../SparseArray/help/SVT_SparseArray.html">SVT_SparseArray</a> classes.
+</p>
+</li>
+<li> <p><a href="../../SparseArray/help/is_nonzero.html">is_nonzero</a> for <code>is_nonzero()</code> and <code>nz*()</code> functions
+<code>nzcount()</code>, <code>nzwhich()</code>, etc...
+</p>
+</li>
+<li> <p><a href="../../SparseArray/help/SparseArray_aperm.html">SparseArray_aperm</a> for permuting the dimensions of a
+SparseArray object (e.g. transposition).
+</p>
+</li>
+<li> <p><a href="../../SparseArray/help/SparseArray_subsetting.html">SparseArray_subsetting</a> for subsetting a SparseArray object.
+</p>
+</li>
+<li> <p><a href="../../SparseArray/help/SparseArray_subassignment.html">SparseArray_subassignment</a> for SparseArray subassignment.
+</p>
+</li>
+<li> <p><a href="../../SparseArray/help/SparseArray_abind.html">SparseArray_abind</a> for combining 2D or multidimensional
+SparseArray objects.
+</p>
+</li>
+<li> <p><a href="../../SparseArray/help/SparseArray_summarization.html">SparseArray_summarization</a> for SparseArray summarization
+methods.
+</p>
+</li>
+<li> <p><a href="../../SparseArray/help/SparseArray_Arith.html">SparseArray_Arith</a>, <a href="../../SparseArray/help/SparseArray_Compare.html">SparseArray_Compare</a>, and
+<a href="../../SparseArray/help/SparseArray_Logic.html">SparseArray_Logic</a>, for operations from the <code>Arith</code>,
+<code>Compare</code>, and <code>Logic</code> groups on SparseArray objects.
+</p>
+</li>
+<li> <p><a href="../../SparseArray/help/SparseArray_Math.html">SparseArray_Math</a> for operations from the <code>Math</code> and
+<code>Math2</code> groups on SparseArray objects.
+</p>
+</li>
+<li> <p><a href="../../SparseArray/help/SparseArray_Complex.html">SparseArray_Complex</a> for operations from the <code>Complex</code>
+group on SparseArray objects.
+</p>
+</li>
+<li> <p><a href="../../SparseArray/help/SparseArray_misc.html">SparseArray_misc</a> for miscellaneous operations on a
+SparseArray object.
+</p>
+</li>
+<li> <p><a href="../../SparseArray/help/SparseArray_matrixStats.html">SparseArray_matrixStats</a> for col/row summarization methods
+for SparseArray objects.
+</p>
+</li>
+<li> <p><a href="../../SparseArray/help/rowsum_methods.html">rowsum_methods</a> for <code>rowsum()</code> methods for sparse
+matrices.
+</p>
+</li>
+<li> <p><a href="../../SparseArray/help/SparseMatrix_mult.html">SparseMatrix_mult</a> for SparseMatrix multiplication and
+cross-product.
+</p>
+</li>
+<li> <p><code><a href="../../SparseArray/help/randomSparseArray.html">randomSparseArray</a></code> to generate a random SparseArray
+object.
+</p>
+</li>
+<li> <p><code><a href="../../SparseArray/help/readSparseCSV.html">readSparseCSV</a></code> to read/write a sparse matrix
+from/to a CSV (comma-separated values) file.
+</p>
+</li>
+<li> <p><a href="../../Matrix/help/dgCMatrix-class.html">dgCMatrix-class</a>, <a href="../../Matrix/help/dgRMatrix-class.html">dgRMatrix-class</a>,
+and <a href="../../Matrix/help/lgCMatrix-class.html">lgCMatrix-class</a> in the <span class="pkg">Matrix</span> package,
+for the de facto standard for sparse matrix representations in
+the R ecosystem.
+</p>
+</li>
+<li> <p><code><a href="../../S4Arrays/help/is_sparse.html">is_sparse</a></code> in the <span class="pkg">S4Arrays</span> package.
+</p>
+</li>
+<li><p> The <a href="../../S4Arrays/help/Array.html">Array</a> class defined in the <span class="pkg">S4Arrays</span>
+package.
+</p>
+</li>
+<li><p> Ordinary <a href="../../base/help/array.html">array</a> objects in base R.
+</p>
+</li>
+<li> <p><code>base::<a href="../../base/help/which.html">which</a></code> in base R.
+</p>
+</li></ul>
+
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>## ---------------------------------------------------------------------
+## Display details of class definition &amp; known subclasses
+## ---------------------------------------------------------------------
+
+showClass("SparseArray")
+
+## ---------------------------------------------------------------------
+## The SparseArray() constructor
+## ---------------------------------------------------------------------
+
+a &lt;- array(rpois(9e6, lambda=0.3), dim=c(500, 3000, 6))
+SparseArray(a)    # an SVT_SparseArray object
+
+m &lt;- matrix(rpois(9e6, lambda=0.3), ncol=500)
+SparseArray(m)    # an SVT_SparseMatrix object
+
+dgc &lt;- sparseMatrix(i=c(4:1, 2:4, 9:12, 11:9), j=c(1:7, 1:7),
+                    x=runif(14), dims=c(12, 7))
+class(dgc)
+SparseArray(dgc)  # an SVT_SparseMatrix object
+
+dgr &lt;- as(dgc, "RsparseMatrix")
+class(dgr)
+SparseArray(dgr)  # a COO_SparseMatrix object
+
+## ---------------------------------------------------------------------
+## nzcount(), nzwhich(), nzvals(), `nzvals&lt;-`()
+## ---------------------------------------------------------------------
+x &lt;- SparseArray(a)
+
+## Get the number of nonzero array elements in 'x':
+nzcount(x)
+
+## nzwhich() returns the indices of the nonzero array elements in 'x'.
+## Either as an integer (or numeric) vector of length 'nzcount(x)'
+## containing "linear indices":
+nzidx &lt;- nzwhich(x)
+length(nzidx)
+head(nzidx)
+
+## Or as an integer matrix with 'nzcount(x)' rows and one column per
+## dimension where the rows represent "array indices" (a.k.a. "array
+## coordinates"):
+Mnzidx &lt;- nzwhich(x, arr.ind=TRUE)
+dim(Mnzidx)
+
+## Each row in the matrix is an n-tuple representing the "array
+## coordinates" of a nonzero element in 'x':
+head(Mnzidx)
+tail(Mnzidx)
+
+## Extract the values of the nonzero array elements in 'x' and return
+## them in a vector "parallel" to 'nzwhich(x)':
+x_nzvals &lt;- nzvals(x)  # equivalent to 'x[nzwhich(x)]'
+length(x_nzvals)
+head(x_nzvals)
+
+nzvals(x) &lt;- log1p(nzvals(x))
+x
+
+## Sanity checks:
+stopifnot(identical(nzidx, which(a != 0)))
+stopifnot(identical(Mnzidx, which(a != 0, arr.ind=TRUE, useNames=FALSE)))
+stopifnot(identical(x_nzvals, a[nzidx]))
+stopifnot(identical(x_nzvals, a[Mnzidx]))
+stopifnot(identical(`nzvals&lt;-`(x, nzvals(x)), x))
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>SparseArray</em> version 1.10.8 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

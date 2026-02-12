@@ -1,0 +1,14 @@
+andersondarling         Anderson-Darling test
+bartlett                Bartlett test
+cortest                 Correlation
+cosinor                 Cosinor
+fligner                 Fligner-Killeen test
+fvar                    F Variance test
+jarquebera              Jarque-Bera test
+kolmogorov              Kolmogorov-Smirnov test
+kruskalwallis           Kruskal-Wallis rank sum test
+levene                  Levene test
+oneway                  Oneway ANOVA
+ttest                   t-test
+waerden                 Van der Waerden test
+wilcoxon                Wilcoxon test

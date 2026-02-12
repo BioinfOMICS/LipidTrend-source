@@ -1,0 +1,111 @@
+<!DOCTYPE html><html><head><title>R: Control Nonlinear Robust Regression Algorithms</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>nlrob.control {robustbase}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Control Nonlinear Robust Regression Algorithms</h2>
+
+<h3>Description</h3>
+
+<p>Allow the user to specify details for the different nonlinear robust
+regression algorithms in <code><a href="../../robustbase/help/nlrob.html">nlrob</a></code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>nlrob.control(method,
+              psi = c("bisquare", "lqq", "welsh", "optimal", "hampel", "ggw"),
+              init = c("S", "lts"),
+              optimizer = "JDEoptim", optArgs  = list(),
+              ...)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="method">method</code></td>
+<td>
+<p><code><a href="../../base/html/character.html">character</a></code> string specifying the method</p>
+</td></tr>
+<tr><td><code id="psi">psi</code></td>
+<td>
+<p>string specifying the psi-function which defines the estimator.</p>
+</td></tr>
+<tr><td><code id="init">init</code></td>
+<td>
+<p>for some methods, currently, <code>"MM"</code> only, a string
+specifying the initial estimator.
+</p>
+</td></tr>
+<tr><td><code id="optimizer">optimizer</code></td>
+<td>
+<p>currently only <code>"JDEoptim"</code> from package <a href="https://CRAN.R-project.org/package=DEoptimR"><span class="pkg">DEoptimR</span></a>.</p>
+</td></tr>
+<tr><td><code id="optArgs">optArgs</code></td>
+<td>
+
+<p>a <code><a href="../../base/html/list.html">list</a></code> of optional arguments to the optimizer.
+Currently, that is <code><a href="../../DEoptimR/help/JDEoptim.html">JDEoptim</a></code> from package
+<a href="https://CRAN.R-project.org/package=DEoptimR"><span class="pkg">DEoptimR</span></a>.
+</p>
+</td></tr>
+<tr><td><code id="...">...</code></td>
+<td>
+<p>optional arguments depending on <code>method</code>, such as
+<code>fnscale</code>, <code>tuning.chi</code> or both <code>tuning.chi.tau</code>  and
+<code>tuning.chi.scale</code>; for <code>method = "MM"</code> also <code>optim.control</code>
+to be passed to the <code><a href="../../stats/html/optim.html">optim</a>(.., hessian=TRUE)</code> call.
+
+Internally, <code>nlrob.control()</code> will choose (or check) defaults for
+the psi/rho/chi related tuning parameters, also depending on the <code>method</code>
+chosen; see e.g., the &lsquo;Examples&rsquo;.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>a <code><a href="../../base/html/list.html">list</a></code> with several named components.
+The contents depend quite a bit on the <code>method</code>.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../robustbase/help/nlrob.html">nlrob</a></code>; for some details, <code><a href="../../robustbase/help/nlrob.algorithms.html">nlrob.algorithms</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>## Show how the different 'method's  have different smart defaults :
+str(nlrob.control("MM"))
+str(nlrob.control("MM", psi = "hampel"))# -&gt; other tuning.psi.M and tuning.chi.scale defaults
+str(nlrob.control("MM", psi = "lqq", tol = 1e-10))# other tuning.psi.M &amp; tuning.chi.scale defaults
+str(nlrob.control("tau"))
+str(nlrob.control("tau",psi= "lqq"))
+str(nlrob.control("CM")) # tuning.chi undefined, unneeded
+str(nlrob.control("CM", psi= "optimal"))
+str(nlrob.control("mtl"))
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>robustbase</em> version 0.99-7 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

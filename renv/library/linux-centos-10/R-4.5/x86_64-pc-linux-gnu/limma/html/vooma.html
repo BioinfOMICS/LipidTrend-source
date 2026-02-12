@@ -1,0 +1,215 @@
+<!DOCTYPE html><html><head><title>R: Convert Variance Trend to Observation Precision Weights for...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>vooma {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Convert Variance Trend to Observation Precision Weights for Microarray-style Data</h2>
+
+<h3>Description</h3>
+
+<p>Estimate the variance trend for microarray data and use it to compute appropriate observational-level weights.
+The variance trend optionally depends on a second predictor as well as on average log-expression.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>vooma(y, design = NULL, block = NULL, correlation,
+      predictor = NULL, span = NULL, legacy.span = FALSE, plot = FALSE, save.plot = FALSE)
+
+voomaByGroup(y, group, design = NULL, block = NULL, correlation,
+             span = NULL, legacy.span = FALSE, plot = FALSE, col = NULL, lwd = 1,
+             pch = 16, cex = 0.3, alpha = 0.5, legend = "topright")
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="y">y</code></td>
+<td>
+<p>a numeric <code>matrix</code>, <code>EList</code> object, or any object containing log-expression data that can be coerced to a matrix. Rows correpond to genes and columns to samples.</p>
+</td></tr>
+<tr><td><code id="design">design</code></td>
+<td>
+<p>design matrix with rows corresponding to samples and columns to coefficients to be estimated.  Defaults to the unit vector meaning that samples are treated as replicates.</p>
+</td></tr>
+<tr><td><code id="block">block</code></td>
+<td>
+<p>vector or factor specifying a blocking variable on the arrays. Has length equal to the number of arrays.</p>
+</td></tr>
+<tr><td><code id="correlation">correlation</code></td>
+<td>
+<p>intra-block correlation</p>
+</td></tr>
+<tr><td><code id="predictor">predictor</code></td>
+<td>
+
+<p>precision predictor.
+Numeric matrix of the same dimensions as <code>y</code> that predicts the precision of each log-expression value.
+Is used as a second covariate together with the log-intensities to predict the variances and produce the final precision weights.
+</p>
+</td></tr>
+<tr><td><code id="span">span</code></td>
+<td>
+
+<p>width of the smoothing window, as a proportion of the data set.
+Defaults to a value that depends the number of genes (<code>nrow(y)</code>).
+Equal to 1 if the number of genes is less than or equal to 50, then decreases slowly to 0.3 if the number of genes is very large.
+</p>
+</td></tr>
+<tr><td><code id="legacy.span">legacy.span</code></td>
+<td>
+<p>logical. If <code>TRUE</code>, then the original default setting will be used for <code>span</code>, which is slightly smaller than the new default.</p>
+</td></tr>
+<tr><td><code id="plot">plot</code></td>
+<td>
+<p>logical. If <code>TRUE</code>, a plot of the mean-variance trend is displayed.</p>
+</td></tr>
+<tr><td><code id="save.plot">save.plot</code></td>
+<td>
+
+<p>logical, should the coordinates and line of the plot be saved in the output?
+</p>
+</td></tr>
+<tr><td><code id="group">group</code></td>
+<td>
+<p>categorical vector or factor giving group membership of columns of <code>y</code>.</p>
+</td></tr>
+<tr><td><code id="col">col</code></td>
+<td>
+<p>vector of colors for plotting group trends</p>
+</td></tr>
+<tr><td><code id="lwd">lwd</code></td>
+<td>
+<p>line width for plotting group trends</p>
+</td></tr>
+<tr><td><code id="pch">pch</code></td>
+<td>
+<p>plotting character. Default is integer code 16, which gives a solid circle. If a vector, then should be of length <code>nrow(y)</code>.</p>
+</td></tr>
+<tr><td><code id="cex">cex</code></td>
+<td>
+<p>numeric vector of plot symbol expansions.  If a vector, then should be of length equal to number of groups.</p>
+</td></tr>
+<tr><td><code id="alpha">alpha</code></td>
+<td>
+<p>transparency of points, on scale from <code>0</code> for fully transparent to <code>1</code> for fully opaque.</p>
+</td></tr>
+<tr><td><code id="legend">legend</code></td>
+<td>
+<p>character string giving position to place legend.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p><code>vooma</code> is an acronym for &quot;mean-variance modelling at the observational level for arrays&quot;.
+It is analogous to <code>voom</code> but for continuous log-expression values rather than for sequencing counts.
+</p>
+<p><code>vooma</code> estimates the mean-variance relationship in the data and uses it to compute appropriate precision weights for each observation.
+The mean-variance trend is estimated from gene-level data but is extrapolated back to individual observations to obtain a precision weight (inverse variance) for each observation.
+The weights can then used by other functions such as <code>lmFit</code> to adjust for heteroscedasticity.
+</p>
+<p>If <code>span=NULL</code>, then an optimal span value is estimated depending on <code>nrow(y)</code>.
+The span is chosen by <code>chooseLowessSpan</code> with <code>n=nrow(y)</code>, <code>small.n=50</code>, <code>min.span=0.3</code> and <code>power=1.3</code>.
+If <code>legacy.span=TRUE</code>, then the <code>chooseLowessSpan</code> arguments are reset to <code>small.n=10</code>, <code>min.span=0.3</code> and <code>power=0.5</code> to match the settings used by <code>vooma</code> in limma version 3.59.1 and earlier.
+</p>
+<p>The variance trend can be modeled using a second optional <code>predictor</code> as well as in terms of log-expression.
+If <code>predictor</code> is not <code>NULL</code>, then the variance trend is modeled as a function of both the mean log-expression and the <code>predictor</code> using a multiple linear regression with the two predictors.
+In this case, the <code>predictor</code> is assumed to be some prior predictor of the precision or standard deviation of each log-expression value.
+Any <code>predictor</code> that is correlated with the precision of each observation should give good results.
+</p>
+<p><code>voomaByGroup</code> estimates precision weights separately for different groups of samples.
+In other words, it allows for different mean-variance curves in different groups.
+<code>voomaByGroup</code> has a quite simple implementation and simply subsets the design matrix for each group.
+This subsetting is equivalent to interacting the design factors with the groups and might not work well with complex design matrices.
+It will work fine if the design matrix corresponds to the same groups as defined by the <code>group</code> argument.
+It can work well for large datasets, for example it has been used by Ravindra et al (2023) to account for TMT groups in proteomics data.
+</p>
+
+
+<h3>Value</h3>
+
+<p>An EList object with the following components:
+</p>
+<table role = "presentation">
+<tr><td><code>E</code></td>
+<td>
+<p>numeric matrix of log-expression values. Equal to <code>y</code> for <code>vooma</code> or log2-counts-per-million for <code>voomaByGroup</code>.</p>
+</td></tr>
+<tr><td><code>weights</code></td>
+<td>
+<p>numeric matrix of observation precision weights.</p>
+</td></tr>
+<tr><td><code>design</code></td>
+<td>
+<p>numeric matrix of experimental design.</p>
+</td></tr>
+<tr><td><code>genes</code></td>
+<td>
+<p>data-frame of gene annotation, only if <code>counts</code> was a <code>DGEList</code> object.</p>
+</td></tr>
+<tr><td><code>voom.xy</code></td>
+<td>
+<p>if <code>save.plot</code>, list containing x and y coordinates for points in mean-variance plot</p>
+</td></tr>
+<tr><td><code>voom.line</code></td>
+<td>
+<p>if <code>save.plot</code>, list containing coordinates of lowess line in the mean-variance plot</p>
+</td></tr>
+</table>
+
+
+<h3>Author(s)</h3>
+
+<p>Charity Law, Gordon Smyth and Mengbo Li. Mengbo Li contributed the functionality associated with the <code>predictor</code> argument.</p>
+
+
+<h3>References</h3>
+
+<p>Law CW (2013).
+<em>Precision weights for gene expression analysis</em>.
+PhD Thesis. University of Melbourne, Australia.
+<a href="http://hdl.handle.net/11343/38150">http://hdl.handle.net/11343/38150</a>
+</p>
+<p>Ravindra KC, Vaidya VS, Wang Z, Federspiel JD, Virgen-Slane R, Everley RA, Grove JI, Stephens C, Ocana MF, Robles-Diaz M, Isabel Lucena M (2023).
+Tandem mass tag-based quantitative proteomic profiling identifies candidate serum biomarkers of drug-induced liver injury in humans.
+<em>Nature Communications</em> 14(1), 1215.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../limma/help/voomaLmFit.html">voomaLmFit</a></code>, <code><a href="../../limma/help/voom.html">voom</a></code>, <code><a href="../../limma/help/arrayWeights.html">arrayWeights</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>group &lt;- gl(2,4)
+design &lt;- model.matrix(~group)
+y &lt;- matrix(rnorm(500*8),500,8)
+u &lt;- matrix(runif(length(y)),500,8)
+yu &lt;- y*u
+v &lt;- vooma(yu,design,plot=TRUE,predictor=u)
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>limma</em> version 3.66.0 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

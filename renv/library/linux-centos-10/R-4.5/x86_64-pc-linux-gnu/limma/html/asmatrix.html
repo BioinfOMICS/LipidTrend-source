@@ -1,0 +1,78 @@
+<!DOCTYPE html><html><head><title>R: Turn a Microarray Data Object into a Matrix</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>as.matrix {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Turn a Microarray Data Object into a Matrix</h2>
+
+<h3>Description</h3>
+
+<p>Turn a microarray data object into a numeric matrix by extracting the expression values.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>## S3 method for class 'MAList'
+as.matrix(x,...)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="x">x</code></td>
+<td>
+<p>an object of class <code>RGList</code>, <code>MAList</code>, <code>EList</code>, <code>MArrayLM</code>, <code>marrayNorm</code>, <code>PLMset</code>, <code>ExpressionSet</code>, <code>LumiBatch</code> or <code>vsn</code>.</p>
+</td></tr>
+<tr><td><code id="...">...</code></td>
+<td>
+<p>additional arguments, not used for these methods.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>These methods extract the matrix of log-ratios, for <code>MAList</code> or <code>marrayNorm</code> objects, or the matrix of expression values for other expression objects such as <code>EList</code> or <code>ExressionSet</code>.
+For <code>MArrayLM</code> objects, the matrix of fitted coefficients is extracted.
+</p>
+<p>These methods involve loss of information, so the original data object is not recoverable.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A numeric matrix.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../base/html/matrix.html">as.matrix</a></code> in the base package or <code><a href="../../Biobase/help/exprs.html">exprs</a></code> in the Biobase package.
+</p>
+<p><a href="../../limma/help/02.Classes.html">02.Classes</a> gives an overview of data classes used in LIMMA.
+</p>
+
+<hr><div style="text-align: center;">[Package <em>limma</em> version 3.66.0 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

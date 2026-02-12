@@ -1,0 +1,147 @@
+<!DOCTYPE html><html><head><title>R: Subtract a set of genomic ranges from a GRanges object</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>subtract-methods {GenomicRanges}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Subtract a set of genomic ranges from a GRanges object</h2>
+
+<h3>Description</h3>
+
+<p>Similar to bedtools subtract.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>subtract(x, y, minoverlap=1L, ...)
+
+## S4 method for signature 'GenomicRanges,GenomicRanges'
+subtract(x, y, minoverlap=1L, ignore.strand=FALSE)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="x">x</code>, <code id="y">y</code></td>
+<td>
+
+<p>Two <a href="../../GenomicRanges/help/GRanges.html">GRanges</a> objects, typically, but any <a href="../../GenomicRanges/help/GenomicRanges.html">GenomicRanges</a>
+derivative should be supported.
+Note that <code>y</code> gets immediately replaced with:
+</p>
+<pre>  reduce(y, ignore.strand=ignore.strand)
+    </pre><p> internally.
+</p>
+</td></tr>
+<tr><td><code id="minoverlap">minoverlap</code></td>
+<td>
+
+<p>Minimum overlap (in number of genomic positions) between a range in
+<code>x</code> and a range in <code>reduce(y, ignore.strand=ignore.strand)</code>
+for the 2 ranges to be considered overlapping, and for their overlapping
+portion to be removed from the range in <code>x</code>.
+</p>
+</td></tr>
+<tr><td><code id="ignore.strand">ignore.strand</code></td>
+<td>
+
+<p>If set to TRUE, the strand information is ignored in the computation
+and the strand of <code>x</code> is propagated to the result.
+</p>
+</td></tr>
+<tr><td><code id="...">...</code></td>
+<td>
+
+<p>Further arguments to be passed to specific methods.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p><code>subtract()</code> first replaces its second argument <code>y</code> with:
+</p>
+<pre>  reduce(y, ignore.strand=ignore.strand)
+  </pre>
+<p>Then it searches for genomic ranges in <code>y</code> that overlap genomic
+ranges in <code>x</code> by at least the number of base pairs specified via
+the <code>minoverlap</code> argument. If an overlapping range is found in
+<code>y</code>, the overlapping portion is removed from any range in <code>x</code>
+involved in the overlap.
+</p>
+<p>Note that by default <code>subtract(x, y)</code> is equivalent to:
+</p>
+<pre>  psetdiff(x, rep(GRangesList(y), length(x)))
+  </pre><p> but will typically be hundred times more efficient.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A <a href="../../GenomicRanges/help/GRangesList.html">GRangesList</a> object <em>parallel</em> to <code>x</code>, that is, with
+one list element per range in <code>x</code>.
+The names and metadata columns on <code>x</code> are propagated to the result.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>H. Pagès</p>
+
+
+<h3>See Also</h3>
+
+
+<ul>
+<li><p> bedtools subtract at
+<a href="https://bedtools.readthedocs.io/en/latest/content/tools/subtract.html">https://bedtools.readthedocs.io/en/latest/content/tools/subtract.html</a>
+</p>
+</li>
+<li> <p><a href="../help/setops-methods.html">setops-methods</a> for set operations on
+<a href="../../GenomicRanges/help/GRanges.html">GRanges</a> objects.
+</p>
+</li>
+<li> <p><a href="../help/findOverlaps-methods.html">findOverlaps-methods</a> for finding/counting
+overlapping genomic ranges.
+</p>
+</li>
+<li> <p><a href="../help/intra-range-methods.html">intra-range-methods</a> and
+<a href="../help/inter-range-methods.html">inter-range-methods</a> for <em>intra range</em>
+and <em>inter range</em> transformations of a <a href="../../GenomicRanges/help/GRanges.html">GRanges</a> object.
+</p>
+</li>
+<li> <p><a href="../../GenomicRanges/help/GRanges.html">GRanges</a> and <a href="../../GenomicRanges/help/GRangesList.html">GRangesList</a> objects.
+</p>
+</li></ul>
+
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>x &lt;- GRanges(c(A="chr1:1-50", B="chr1:40-110", C="chrX:1-500"))
+y &lt;- GRanges(c("chr1:21-25", "chr1:38-150"))
+z &lt;- subtract(x, y)
+z
+
+unlist(z)
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>GenomicRanges</em> version 1.62.1 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

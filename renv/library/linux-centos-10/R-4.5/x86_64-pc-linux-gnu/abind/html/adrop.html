@@ -1,0 +1,129 @@
+<!DOCTYPE html><html><head><title>R: Drop dimensions of an array object</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>adrop {abind}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Drop dimensions of an array object </h2>
+
+<h3>Description</h3>
+
+<p>Drop degenerate dimensions of an array object.  Offers less
+automaticity and more control than the base <code>drop()</code> function.
+<code>adrop()</code> is a S3 generic, with one method, <code>adrop.default</code>,
+supplied in the <code>abind</code> package.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>adrop(x, drop = TRUE, named.vector = TRUE, one.d.array = FALSE, ...)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="x">x</code></td>
+<td>
+<p> An array (including a matrix) </p>
+</td></tr>
+<tr><td><code id="drop">drop</code></td>
+<td>
+<p> A logical or numeric vector describing exactly which dimensions to
+drop. It is intended that this argument be supplied always.  The
+default is very rarely useful (<code>drop=TRUE</code> means drop the first
+dimension of a 1-d array).</p>
+</td></tr>
+<tr><td><code id="named.vector">named.vector</code></td>
+<td>
+<p>Optional, defaults to <code>TRUE</code>.  Controls
+whether a vector result has names derived from the <code>dimnames</code>
+of <code>x</code>.</p>
+</td></tr>
+<tr><td><code id="one.d.array">one.d.array</code></td>
+<td>
+<p>Optional, defaults to <code>FALSE</code>.  If
+<code>TRUE</code>, a one-dimensional array result will be an object with a
+<code>dim</code> attribute of
+length 1, and possibly a <code>dimnames</code> attribute.  If
+<code>FALSE</code>, a one-dimensional result will be a vector object
+(named if <code>named.vector==TRUE</code>).</p>
+</td></tr>
+<tr><td><code id="...">...</code></td>
+<td>
+<p>There are no additional arguments allowed for
+<code>adrop.default</code> but other methods may use them.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Dimensions can only be dropped if their extent is one, i.e., dimension
+<code>i</code> of array <code>x</code> can be dropped only if <code>dim(x)[i]==1</code>.
+It is an error to request <code>adrop</code> to drop a dimension whose
+extent is not 1.
+</p>
+<p>A 1-d array can be converted to a named vector by supplying
+<code>drop=NULL</code> (which means drop no dimensions, and return a 1-d
+array result as a named vector).
+</p>
+
+
+<h3>Value</h3>
+
+<p>If <code>x</code> is an object with a <code>dim</code> attribute (e.g., a matrix or
+<code>array</code>), then <code>adrop</code> returns an object like <code>x</code>,
+but with the requested
+extents of length one removed.  Any accompanying <code>dimnames</code>
+attribute is adjusted and returned with <code>x</code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Tony Plate <a href="mailto:tplate@acm.org">tplate@acm.org</a></p>
+
+
+<h3>See Also</h3>
+
+ <p><code><a href="../../abind/help/abind.html">abind</a></code> </p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>x &lt;- array(1:24,dim=c(2,3,4),dimnames=list(letters[1:2],LETTERS[1:3],letters[23:26]))
+adrop(x[1,,,drop=FALSE],drop=1)
+adrop(x[,1,,drop=FALSE],drop=2)
+adrop(x[,,1,drop=FALSE],drop=3)
+adrop(x[1,1,1,drop=FALSE],drop=1)
+adrop(x[1,1,1,drop=FALSE],drop=2)
+adrop(x[1,1,1,drop=FALSE],drop=3)
+adrop(x[1,1,1,drop=FALSE],drop=1:2)
+adrop(x[1,1,1,drop=FALSE],drop=1:2,one.d=TRUE)
+adrop(x[1,1,1,drop=FALSE],drop=1:2,named=FALSE)
+dim(adrop(x[1,1,1,drop=FALSE],drop=1:2,one.d=TRUE))
+dimnames(adrop(x[1,1,1,drop=FALSE],drop=1:2,one.d=TRUE))
+names(adrop(x[1,1,1,drop=FALSE],drop=1:2,one.d=TRUE))
+dim(adrop(x[1,1,1,drop=FALSE],drop=1:2))
+dimnames(adrop(x[1,1,1,drop=FALSE],drop=1:2))
+names(adrop(x[1,1,1,drop=FALSE],drop=1:2))
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>abind</em> version 1.4-8 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

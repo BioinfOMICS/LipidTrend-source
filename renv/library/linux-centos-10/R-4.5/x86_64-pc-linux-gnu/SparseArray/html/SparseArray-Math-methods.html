@@ -1,0 +1,92 @@
+<!DOCTYPE html><html><head><title>R: 'Math' and 'Math2' methods for SparseArray objects</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>SparseArray-Math-methods {SparseArray}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>'Math' and 'Math2' methods for SparseArray objects</h2>
+
+<h3>Description</h3>
+
+<p><a href="../../SparseArray/help/SparseArray.html">SparseArray</a> derivatives support a <em>subset</em> of operations
+from the <code>Math</code> and <code>Math2</code> groups.
+See <code>?<a href="../../methods/help/S4groupGeneric.html">S4groupGeneric</a></code> in the <span class="pkg">methods</span> package
+for more information about the <code>Math</code> and <code>Math2</code> group generics.
+</p>
+<p>IMPORTANT NOTES:
+</p>
+
+<ul>
+<li><p> Only operations from these groups that preserve sparsity are
+supported. For example, <code>sqrt()</code>, <code>trunc()</code>,
+<code>log1p()</code>, and <code>sin()</code> are supported, but <code>cumsum()</code>,
+<code>log()</code>, <code>cos()</code>, or <code>gamma()</code> are not.
+</p>
+</li>
+<li><p> Only <a href="../../SparseArray/help/SVT_SparseArray.html">SVT_SparseArray</a> objects are supported at the moment.
+Support for <a href="../../SparseArray/help/COO_SparseArray.html">COO_SparseArray</a> objects might be added in the
+future.
+</p>
+</li>
+<li> <p><code>Math</code> and <code>Math2</code> operations only support
+<a href="../../SparseArray/help/SVT_SparseArray.html">SVT_SparseArray</a> objects of <code>type()</code> <code>"double"</code>
+at the moment.
+</p>
+</li></ul>
+
+
+
+<h3>Value</h3>
+
+<p>A <a href="../../SparseArray/help/SparseArray.html">SparseArray</a> derivative of the same dimensions as the input
+object.
+</p>
+
+
+<h3>See Also</h3>
+
+
+<ul>
+<li> <p><code><a href="../../methods/help/S4groupGeneric.html">S4groupGeneric</a></code> in the <span class="pkg">methods</span> package.
+</p>
+</li>
+<li> <p><a href="../../SparseArray/help/SparseArray.html">SparseArray</a> objects.
+</p>
+</li>
+<li><p> Ordinary <a href="../../base/help/array.html">array</a> objects in base R.
+</p>
+</li></ul>
+
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>m &lt;- matrix(0, nrow=15, ncol=6)
+m[c(2, 6, 12:17, 22:33, 55, 59:62, 90)] &lt;-
+    c(runif(22)*1e4, Inf, -Inf, NA, NaN)
+svt &lt;- SparseArray(m)
+
+svt2 &lt;- trunc(sqrt(svt))
+svt2
+
+## Sanity check:
+m2 &lt;- suppressWarnings(trunc(sqrt(m)))
+stopifnot(identical(as.matrix(svt2), m2))
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>SparseArray</em> version 1.10.8 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>

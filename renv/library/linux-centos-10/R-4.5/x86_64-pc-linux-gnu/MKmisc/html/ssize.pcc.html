@@ -1,0 +1,133 @@
+<!DOCTYPE html><html><head><title>R: Sample Size Planning for Developing Classifiers Using High...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body><div class="container"><main>
+
+<table style="width: 100%;"><tr><td>ssize.pcc {MKmisc}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Sample Size Planning for Developing Classifiers Using High Dimensional Data</h2>
+
+<h3>Description</h3>
+
+<p>Calculate sample size for training set in developing classifiers using high
+dimensional data. The calculation is based on the probability of correct classification 
+(PCC).
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>ssize.pcc(gamma, stdFC, prev = 0.5, nrFeatures, sigFeatures = 20, verbose = FALSE)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="gamma">gamma</code></td>
+<td>
+<p>tolerance between PCC(infty) and PCC(n).</p>
+</td></tr>
+<tr><td><code id="stdFC">stdFC</code></td>
+<td>
+<p>expected standardized fold-change; that is, expected fold-change devided
+by within class standard deviation.</p>
+</td></tr>
+<tr><td><code id="prev">prev</code></td>
+<td>
+<p>expected prevalence.</p>
+</td></tr>
+<tr><td><code id="nrFeatures">nrFeatures</code></td>
+<td>
+<p>number of features (variables) considered.</p>
+</td></tr>
+<tr><td><code id="sigFeatures">sigFeatures</code></td>
+<td>
+<p>number of significatn features; default (20) should be sufficient 
+for most if not all cases.</p>
+</td></tr>
+<tr><td><code id="verbose">verbose</code></td>
+<td>
+<p>print intermediate results.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The computations are based the algorithm provided in Section~4.2 of 
+Dobbin and Simon (2007). Prevalence is incorporated by the simple rough
+approach given in Section~4.4 (ibid.).
+</p>
+<p>The results for prevalence equal to $50%$ are identical to the numbers computed 
+by <a href="https://brb.nci.nih.gov/brb/samplesize/samplesize4GE.html">https://brb.nci.nih.gov/brb/samplesize/samplesize4GE.html</a>. For 
+other prevalences the numbers differ and are larger for our implementation. 
+</p>
+
+
+<h3>Value</h3>
+
+<p>Object of class <code>"power.htest"</code>, a list of the arguments
+(including the computed one) augmented with <code>method</code> and
+<code>note</code> elements.
+</p>
+
+
+<h3>Note</h3>
+
+<p><code>optimize</code> is used to solve equation (4.3) of Dobbin and Simon (2007), 
+so you may see errors from it.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Matthias Kohl <a href="mailto:Matthias.Kohl@stamats.de">Matthias.Kohl@stamats.de</a></p>
+
+
+<h3>References</h3>
+
+ 
+<p>K. Dobbin and R. Simon (2007). Sample size planning for developing classifiers 
+using high-dimensional DNA microarray data. 
+<em>Biostatistics</em>, <b>8</b>(1):101-117.
+</p>
+<p>K. Dobbin, Y. Zhao, R. Simon (2008). How Large a Training Set is Needed to 
+Develop a Classifier for Microarray Data?
+<em>Clin Cancer Res.</em>, <b>14</b>(1):108-114.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../stats/html/optimize.html">optimize</a></code></p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>## see Table 2 of Dobbin et al. (2008)
+g &lt;- 0.1
+fc &lt;- 1.6
+ssize.pcc(gamma = g, stdFC = fc, nrFeatures = 22000)
+
+## see Table 3 of Dobbin et al. (2008)
+g &lt;- 0.05
+fc &lt;- 1.1
+ssize.pcc(gamma = g, stdFC = fc, nrFeatures = 22000)
+</code></pre>
+
+<hr><div style="text-align: center;">[Package <em>MKmisc</em> version 1.9 <a href="00Index.html">Index</a>]</div></main>
+
+</div>
+</body></html>
