@@ -1,4 +1,4 @@
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18765956.svg)] (https://doi.org/10.5281/zenodo.18765956)
+![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18765956.svg)
 
 # LipidTrend Manuscript – Source Code and Data
 This repository contains all source code and processed data required to 
