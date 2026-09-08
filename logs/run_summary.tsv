@@ -1,0 +1,28 @@
+script	status	exit_code	seconds
+scripts/Dietary_Intervention/ALDR_DR/TG/totalChain_1D_chainLength.R	OK	0	50
+scripts/Dietary_Intervention/ALDR_DR/TG/totalChain_1D_doubleBond.R	OK	0	99
+scripts/HCC/tsne1_tsne0/TG/coordinate_correlation.R	OK	0	10
+scripts/HCC/tsne1_tsne0/TG/totalChain_2D.R	OK	0	25
+scripts/Mice_Development_1 /P7_P0/PC/fattyAcylChain_1D_chainLength.R	OK	0	85
+scripts/Mice_Development_2/P7_P0/DG/totalChain_2D.R	OK	0	15
+scripts/Mice_Development_2/PM-P21_PM-P0/CE/totalChain_2D.R	OK	0	13
+scripts/Mice_Development_2/PM-P21_PM-P0/TG/totalChain_1D_doubleBond.R	OK	0	13
+scripts/Mice_Development_2/PM-P21_PM-P0/TG/totalChain_2D.R	OK	0	20
+scripts/Viral_Infection_1/Day14-p16_Day14-Mock/DG/totalChain_1D_chainLength.R	OK	0	14
+scripts/Viral_Infection_1/Day14-p16_Day14-Mock/DG/totalChain_2D.R	OK	0	19
+scripts/Viral_Infection_2/HSD17B12KO_sgCtrl/Acyl-linked FA/fattyAcylChain_1D_chainLength.R	OK	0	16
+scripts/Viral_Infection_2/HSD17B12KO_sgCtrl/Acyl-linked FA/fattyAcylChain_1D_doubleBond.R	OK	0	12
+scripts/Viral_Infection_2/HSD17B12KO_sgCtrl/Acyl-linked FA/fattyAcylChain_2D.R	OK	0	16
+scripts/Viral_Infection_2/HSD17B12KO_sgCtrl/CE/fattyAcylChain_1D_chainLength.R	OK	0	13
+scripts/Viral_Infection_2/HSD17B12KO_sgCtrl/CE/fattyAcylChain_1D_doubleBond.R	OK	0	12
+scripts/Viral_Infection_2/HSD17B12KO_sgCtrl/CE/fattyAcylChain_2D.R	OK	0	16
+scripts/Viral_Infection_2/HSD17B12KO_sgCtrl/PC/fattyAcylChain_1D_chainLength.R	OK	0	12
+scripts/Viral_Infection_2/HSD17B12KO_sgCtrl/PC/fattyAcylChain_1D_doubleBond.R	OK	0	12
+scripts/Viral_Infection_2/HSD17B12KO_sgCtrl/PC/fattyAcylChain_2D.R	OK	0	14
+scripts/Viral_Infection_2/HSD17B12KO_sgCtrl/PE/fattyAcylChain_1D_chainLength.R	OK	0	12
+scripts/Viral_Infection_2/HSD17B12KO_sgCtrl/PE/fattyAcylChain_1D_doubleBond.R	OK	0	11
+scripts/Viral_Infection_2/HSD17B12KO_sgCtrl/PE/fattyAcylChain_2D.R	OK	0	14
+scripts/Viral_Infection_2/HSD17B12KO_sgCtrl/TG/fattyAcylChain_1D_chainLength.R	OK	0	13
+scripts/Viral_Infection_2/HSD17B12KO_sgCtrl/TG/fattyAcylChain_1D_doubleBond.R	OK	0	12
+scripts/Viral_Infection_2/HSD17B12KO_sgCtrl/TG/fattyAcylChain_2D.R	OK	0	16
+scripts/Viral_Infection_2/HSD17B12KO_sgCtrl/TG/totalChain_1D_chainLength.R	OK	0	14
