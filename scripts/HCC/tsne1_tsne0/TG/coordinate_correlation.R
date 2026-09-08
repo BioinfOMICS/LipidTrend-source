@@ -9,6 +9,21 @@
 # Generated: 2026-02-13
 # ============================================================================
 
+# ============================================================================
+# Re-run with LipidTrend v1.3.1
+# ============================================================================
+# This script is derived from the upstream repository
+# (github.com/BioinfOMICS/LipidTrend-source, generated for LipidTrend v1.0.0).
+# Changes from upstream, and nothing else:
+#   1. Fixed RNG seed. The upstream script set no seed, so its permutation
+#      p-values were not reproducible between runs. RNGkind() is pinned and
+#      set.seed(SEED) is called immediately before every analyzeLipidRegion().
+#   2. Project-relative paths, replacing the upstream path template.
+#   3. regionalTestFC() tables written alongside each smoothing result
+#      (region-level paired t-test / fold-change, new in v1.3.1).
+# Analysis parameters are unchanged.
+# ============================================================================
+
 
 # Load packages
 library(tidyverse)
@@ -20,11 +35,19 @@ library(SummarizedExperiment)
 # Configuration
 # ============================================================================
 
-# IMPORTANT:
-# This is a path template for illustration.
-# Please modify `~` and the placeholders according to your local environment.
-dataPATH <- "~/data/HCC/tsne1_tsne0/TG"
-outPATH <- "~/results/HCC/tsne1_tsne0/TG"
+# Paths are relative to the project root. Run this script from the root of
+# the LipidTrend-source project, so that renv activates and these paths
+# resolve:
+#     Rscript scripts/<dataset>/<comparison>/<class>/<script>.R
+# or, from an R session started at the root:
+#     source("scripts/<dataset>/<comparison>/<class>/<script>.R")
+if (!dir.exists("data") || !dir.exists("scripts")) {
+    stop("Working directory must be the LipidTrend-source project root; got: ",
+         getwd())
+}
+dataPATH <- "data/HCC/tsne1_tsne0/TG"
+outPATH <- "results/HCC/tsne1_tsne0/TG"
+dir.create(outPATH, recursive=TRUE, showWarnings=FALSE)
 
 
 # ============================================================================
@@ -57,8 +80,8 @@ for(ii in unique(stat.df$y)){
 x.cor.df <- data.frame(self = x.cor[,1],
                        neighbor = x.cor[,2])
 x.cor.res <- cor.test(x.cor.df$self, x.cor.df$neighbor, method = "pearson")
-x.r.val <- cor.res$estimate
-x.p.val <- cor.res$p.value
+x.r.val <- x.cor.res$estimate
+x.p.val <- x.cor.res$p.value
 
 
 y.cor <- NULL
@@ -73,8 +96,8 @@ for(ii in unique(stat.df$x)){
 y.cor.df <- data.frame(self = y.cor[,1],
                        neighbor = y.cor[,2])
 y.cor.res <- cor.test(y.cor.df$self, y.cor.df$neighbor, method = "pearson")
-y.r.val <- cor.res$estimate
-y.p.val <- cor.res$p.value
+y.r.val <- y.cor.res$estimate
+y.p.val <- y.cor.res$p.value
 
 
 x.cor.plot <- ggplot(x.cor.df) +
