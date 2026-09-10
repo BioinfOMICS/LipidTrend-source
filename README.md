@@ -167,7 +167,7 @@ modules, and manuscript figures.
 ## Data Sources
 
 All datasets analyzed in this study were obtained from previously published
-work and are described in the manuscript and Supplementary Table 1.
+work and are described in the manuscript and Supplementary Table 3.
 
 No raw data redistribution beyond published material is included.
 
